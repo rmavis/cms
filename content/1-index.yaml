@@ -1,5 +1,5 @@
 ---
-template: page-generic
+template: page_generic
 title: Yo yo
 date: 2017-12-19
 author: Richard Mavis
@@ -14,8 +14,12 @@ body:
   -
     text: this is some text
   -
-    image: /path/to/image.jpg
+    image:
+      file: /path/to/image.jpg
+      caption: cool image
   -
-    image: /path/to/another-image.jpg
+    image:
+      file: /path/to/another-image.jpg
+      caption: another cool image
   -
     text: this is more text

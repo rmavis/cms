@@ -1,3 +1,6 @@
+require 'yaml'
+
+
 module Base
 
   class Utils
@@ -31,49 +34,12 @@ module Base
 
   # A Record contains fields.
   class Record
-    # new :: Hash -> Record
-    def initialize(fields = { })
+    # new :: Array|Hash -> Record
+    def initialize(fields)
       @fields = fields
-      # fields.each do |k,v|
-      #   # Setter.
-      #   self.class.send(
-      #     :define_method,
-      #     "#{k}=".to_sym,
-      #     Proc.new do |val|
-      #       self.instance_variable_set("@#{k}".to_sym, val)
-      #     end
-      #   )
-      #   # Getter.
-      #   self.class.send(
-      #     :define_method,
-      #     "#{k}".to_sym,
-      #     Proc.new do
-      #       self.instance_variable_get("@#{k}")
-      #     end
-      #   )
-      #   # Set it.
-      #   self.send("#{k}=".to_sym, v)
-      # end
     end
 
     attr_reader :fields
-
-    def fill_values(opts = { })
-      puts "FILLING '#{opts}' in '#{self.fields}'"
-
-      opts.each do |k,v|
-        if (self.class.method_defined?(k))
-          if ((self.send(k).is_a?(Record)) &&
-              (v.is_a?(Hash)))
-            self.send(k).send(:fill_values, v)
-          else
-            self.send("#{k}=".to_sym, v)
-          end
-        else
-          raise ArgumentError, "Record lacks the given '#{k}' field."
-        end
-      end
-    end
   end
 
 
@@ -88,12 +54,29 @@ module Base
     def self.from_form
     end
 
-    def self.from_yaml
+    def self.from_yaml(filename)
+      template = self.new
+      yaml = YAML.load(File.read(filename))
+      template.fields.each do |k,f|
+puts f
+        if (yaml.has_key?(k.to_s))
+          if (f.is_a?(Symbol))
+            # f[:value] = yaml[k.to_s]  # Need to figure this out  @TODO
+          else
+            f.fields[:value] = f.validate(yaml[k.to_s])
+            if ((f.fields[:value].nil?) && (f.fields[:required]))
+              raise "The required value for `#{k}` is invalid."
+            end
+          end
+        elsif (f.fields[:required])
+          raise "The required key `#{k}` is missing."
+        end
+      end
+      return template
     end
 
-    def initialize(opts = { })
+    def initialize
       super(self.class.fields)
-      self.fill_values(opts)
     end
 
     def to_form
@@ -120,16 +103,6 @@ module Base
       nil
     end
 
-    # Field::validate :: m -> n|nil
-    # Subclasses should implement their own `validate` methods.
-    def self.validate(val)
-      if (val.is_a?(self.value_type))
-        return val
-      else
-        return nil
-      end
-    end
-
     # Field::required_attrs :: void -> Hash
     def self.required_attrs
       {
@@ -142,8 +115,18 @@ module Base
 
 
     # new :: Hash -> Field
-    def initialize(opts)
+    def initialize(opts = { })
       super(Form::Field::required_attrs.merge(opts))
+    end
+
+    # validate :: m -> n|nil
+    # Subclasses should implement their own `validate` methods.
+    def validate(val)
+      if (val.is_a?(self.class.value_type))
+        return val
+      else
+        return nil
+      end
     end
 
     # to_html :: (String, Hash?) -> string
@@ -161,9 +144,9 @@ module Base
       String
     end
 
-    # PlainText::validate :: s -> String|nil
-    def self.validate(val)
-      if ((val.is_a?(self.value_type)) &&
+    # validate :: s -> String|nil
+    def validate(val)
+      if ((val.is_a?(self.class.value_type)) &&
           (val.length > 0))
         return val
       elsif (val.is_a?(Numeric))
@@ -187,9 +170,9 @@ module Base
       Time
     end
 
-    # Date::validate :: s -> String|nil
-    def self.validate(val)
-      if ((val.is_a?(self.value_type)) &&
+    # validate :: s -> String|nil
+    def validate(val)
+      if ((val.is_a?(self.class.value_type)) &&
           (val.length > 0))
         return val
       elsif (val.is_a?(Numeric))
@@ -216,9 +199,9 @@ module Base
       String
     end
 
-    # Image::validate :: s -> String|nil
-    def self.validate(val)
-      if ((val.is_a?(self.value_type)) &&
+    # validate :: s -> String|nil
+    def validate(val)
+      if ((val.is_a?(self.class.value_type)) &&
           (val.length > 0))
         return val
       elsif (val.is_a?(Numeric))
@@ -237,9 +220,9 @@ module Base
 
 
   class Form::Field::Password < Form::Field::PlainText
-    # Password::validate :: s -> String|nil
-    def self.validate(val)
-      if ((val.is_a?(self.value_type)) &&
+    # validate :: s -> String|nil
+    def validate(val)
+      if ((val.is_a?(self.class.value_type)) &&
           (val.length > 0))
         return val
       elsif (val.is_a?(Numeric))
@@ -258,15 +241,14 @@ module Base
 
 
   class Form::Field::Tags < Form::Field::PlainText
-
     # Tags::value_type :: void -> Class
     def self.value_type
       Array
     end
 
-    # Tags::validate :: s -> String|nil
-    def self.validate(val)
-      if ((val.is_a?(self.value_type)) &&
+    # validate :: s -> String|nil
+    def validate(val)
+      if ((val.is_a?(self.class.value_type)) &&
           (val.length > 0))
         return val
       elsif (val.is_a?(Numeric))
@@ -286,13 +268,22 @@ module Base
 
   class Form::Field::Compound < Form::Field
     def initialize(opts = { })
-      fields = { }
-      # self.class.fields ust be defined by the subclass.
-      self.class.fields.each do |f|
-        fields[f.name.to_syn] = f
-      end
+      super(opts.merge({:fields => self.class.fields}))
+    end
 
-      super(self.class.fields)
+    def validate(val)
+      if (!val.is_a?(self.fields.class))
+        return nil
+      end
+      valid = { }
+      self.fields.each do |k,f|
+        if (val.has_key?(k))
+          valid[k] = f.validate(val[k])
+          if (valid[k].nil?)
+            return nil
+          end
+        end
+      end
     end
   end
 
@@ -300,28 +291,27 @@ module Base
 
   class Form::Field::Compound::Image < Form::Field::Compound
     def self.fields
-      [
-        Form::Field::Image.new(
+      {
+        :file => Form::Field::Image.new(
           {
-            :name => "file",
             :required => true,
-            :limit => 1,
           }
         ),
-        Form::Field::PlainText.new(
+        :caption => Form::Field::PlainText.new(
           {
-            :name => "caption",
             :required => nil,
-            :limit => 1,
           }
         ),
-      ]
+      }
     end    
   end
 
 
 
-  class Form::FieldSet
+  class Form::FieldSet < Form::Field
+    def initialize(opts = { })
+      super(opts.merge({:fields => self.class.fields}))
+    end
   end
 
 
@@ -329,20 +319,22 @@ module Base
   class Form::FieldSet::BodyBlocks < Form::FieldSet
     def self.fields
       [
-        Form::Field::Compound::Image.new(
-          {
-            :name => "image",
-            :required => nil,
-            :limit => nil,
-          }
-        ),
-        Form::Field::PlainText.new(
-          {
-            :name => "text",
-            :required => nil,
-            :limit => nil,
-          }
-        ),
+        {
+          :image => Form::Field::Compound::Image.new(
+            {
+              :required => nil,
+              :limit => nil,
+            }
+          )
+        },
+        {
+          :text => Form::Field::PlainText.new(
+            {
+              :required => nil,
+              :limit => nil,
+            }
+          )
+        },
       ]
     end
   end
@@ -355,57 +347,34 @@ module Templates
 
   class PageGeneric < Base::Template
     def self.fields
-      [
-        Base::Form::Field::PlainText.new(
+      {
+        :template => :page_generic,
+        :title => Base::Form::Field::PlainText.new(
           {
-            :name => "title",
-            :required => true,
+            :required => true
           }
         ),
-        Base::Form::Field::Date.new(
+        :date => Base::Form::Field::Date.new(
           {
-            :name => "date",
-            :required => true,
+            :required => true
           }
         ),
-        Base::Form::Field::PlainText.new(
+        :author => Base::Form::Field::PlainText.new,
+        :tags => Base::Form::Field::Tags.new,
+        :cover_image => Base::Form::Field::Compound::Image.new,
+        :body => Base::Form::FieldSet::BodyBlocks.new(
           {
-            :name => "author",
+            :required => true
           }
         ),
-        Base::Form::Field::Tags.new(
-          {
-            :name => "tags",
-          }
-        ),
-        Base::Form::Field::Compound::Image.new(
-          {
-            :name => "cover_image",
-          }
-        ),
-        # Base::Form::FieldSet::BodyBlocks.new(
-        #   {
-        #     :name => "body",
-        #     :required => true
-        #   }
-        # ),
-      ]
+      }
     end
   end
 
 end
 
 
-t = Templates::PageGeneric.new(
-  {
-    :title => 'testo',
-    :author => 'yesto',
-    :cover_image => {
-      :file => '/this/is/my/cover-image.jpg'
-    }
-  }
-)
-
+t = Templates::PageGeneric.from_yaml('content/1-index.yaml')
 t.fields.each do |field|
-  puts field.value
+  puts field[:value]
 end

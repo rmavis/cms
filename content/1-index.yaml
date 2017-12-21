@@ -1,0 +1,21 @@
+---
+template: page-generic
+title: Yo yo
+date: 2017-12-19
+author: Richard Mavis
+tags:
+  - one
+  - two
+  - three
+cover_image:
+  file: /path/to/cover-image.jpg
+  caption: this is so nice
+body:
+  -
+    text: this is some text
+  -
+    image: /path/to/image.jpg
+  -
+    image: /path/to/another-image.jpg
+  -
+    text: this is more text

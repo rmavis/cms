@@ -1,0 +1,11 @@
+* root
+** fields
+A container for value storage. Collects a unique name, value, (name of) value validator function?, (name of) rendering function
+*** groups
+For creating compound fields: a field that comprises/composes fields
+*** validators
+** forms
+Each form is a named collection of fields. Each field can have its own validator
+** pages
+
+A field is not a value type -- a field is a named container for a value, and that value has a type (string, boolean, date, number, etc)

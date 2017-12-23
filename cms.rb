@@ -31,6 +31,14 @@ class Hash
     end
     return m
   end
+
+  def tally(key)
+    if (!self.has_key?(key))
+      self[key] = 1
+    else
+      self[key] += 1
+    end
+  end
 end
 
 
@@ -66,9 +74,14 @@ module Base
 
 
 
-  # A Record contains fields.
+  # A Record has fields.
+  # A Template is a Record.
+  # A Record can be converted into an HTML form, an HTML page,
+  # a YAML object, a big Hash, etc.
+  # A Record's fields are Form::Fields, which contain attributes.
+  # One of those attributes is its value.
   class Record
-    # new :: Array|Hash -> Record
+    # new :: [Form::Field] -> Record
     def initialize(fields)
       @fields = fields
     end
@@ -96,13 +109,13 @@ module Base
           if (f.is_a?(Symbol))
             # f[:value] = yaml[k]  # Need to figure this out  @TODO
           else
-            f.fields[:value] = f.validate(yaml[k])
-            if (f.fields[:value].nil?)
-              raise "The required value for `#{k}` is invalid."
+            f.attrs[:value] = f.validate(yaml[k])
+            if (f.attrs[:value].nil?)
+              raise "The required value for '#{k}' is invalid."
             end
           end
-        elsif (f.fields[:required])
-          raise "The required key `#{k}` is missing."
+        elsif (f.attrs[:required])
+          raise "The required key '#{k}' is missing."
         end
       end
       return template
@@ -129,37 +142,38 @@ module Base
 
 
 
-  class Form::Field < Record
+  class Form::Field
     # Field::value_type :: void -> nil
     # Subclasses should set their own `value_type`s.
     def self.value_type
       nil
     end
 
-    # Field::required_attrs :: void -> Hash
-    def self.required_attrs
+    # Field::attrs :: void -> Hash
+    # A subclass can set its own `attrs`.
+    # If it does, it should merge these in.
+    def self.attrs
       {
+        :limit => nil,
         :name => nil,
         :required => nil,
         :value => nil,
-        :limit => 1,
       }
     end
 
 
     # new :: Hash -> Field
-    def initialize(opts = { })
-      super(Form::Field::required_attrs.merge(opts))
+    def initialize(attrs = { })
+      @attrs = self.class.attrs.merge(attrs)
     end
 
-    # validate :: m -> n|nil
+    attr_reader :attrs
+
+    # validate :: m -> nil
     # Subclasses should implement their own `validate` methods.
+    # To encourage that, this will always return nil.
     def validate(val)
-      if (val.is_a?(self.class.value_type))
-        return val
-      else
-        return nil
-      end
+      return nil
     end
 
     # to_html :: (String, Hash?) -> string
@@ -191,7 +205,7 @@ module Base
 
     # to_html :: Hash? -> String
     def to_html(attrs = { })
-      super('input', attrs.merge({:value => self.value}))
+      super('input', attrs.merge({:value => self.attrs[:value]}))
     end
   end
 
@@ -298,23 +312,22 @@ module Base
 
 
   class Form::Field::Compound < Form::Field
-    def initialize(opts = { }, fields_opts = { })
-      super(opts.merge({:fields => self.class.fields(fields_opts)}))
+    def initialize(attrs = { }, fields_attrs = { })
+      super(attrs)
+      @fields = self.class.fields(fields_attrs)
     end
 
-    # A compound field's :fields contains fields.
+    attr_reader :fields
+
     def validate(val)
-      if (!val.is_a?(self.fields.class))
-        return nil
-      end
+      return nil if (!val.is_a?(Hash))
+
       valid = { }
-      self.fields[:fields].each do |k,f|
+      self.fields.each do |k,f|
         if (val.has_key?(k))
           valid[k] = f.validate(val[k])
-          if (!valid[k])
-            return nil
-          end
-        elsif (f.fields[:required])
+          return nil if (!valid[k])
+        elsif (f.attrs[:required])
           return nil
         end
       end
@@ -325,19 +338,19 @@ module Base
 
 
   class Form::Field::Compound::Image < Form::Field::Compound
-    def self.fields(opts = { })
-      conf = {
+    def self.fields(attrs = { })
+      _attrs = {
         :file => {
           :required => true,
         },
         :caption => {
           :required => nil,
         },
-      }.deep_merge(opts)
+      }.deep_merge(attrs)
 
       return {
-        :file => Form::Field::Image.new(conf[:file]),
-        :caption => Form::Field::PlainText.new(conf[:caption]),
+        :file => Form::Field::Image.new(_attrs[:file]),
+        :caption => Form::Field::PlainText.new(_attrs[:caption]),
       }
     end
   end
@@ -345,8 +358,8 @@ module Base
 
 
   class Form::Field::Compound::ImagePair < Form::Field::Compound
-    def self.fields(opts = { })
-      conf = {
+    def self.fields(attrs = { })
+      _attrs = {
         :left => {
           :caption => {
             :required => nil,
@@ -357,52 +370,65 @@ module Base
             :required => nil,
           },
         },
-      }.deep_merge(opts)
+      }.deep_merge(attrs)
 
       return {
-        :left => Form::Field::Compound::Image.new(conf[:left]),
-        :right => Form::Field::Compound::Image.new(conf[:right]),
+        :left => Form::Field::Compound::Image.new(_attrs[:left]),
+        :right => Form::Field::Compound::Image.new(_attrs[:right]),
       }
     end
   end
 
 
 
-  class Form::FieldSet < Form::Field
-    def initialize(opts = { })
-      super(opts.merge({:fields => self.class.fields}))
+  class Form::Field::Opts < Form::Field::Compound
+    def initialize(attrs = { }, fields_attrs = { })
+      super({:limit => nil}.merge(attrs), fields_attrs)
     end
 
     def validate(vals)
-      if (!vals.is_a?(self.fields.class))
-        return nil
+      return nil if (!vals.is_a?(Array))
+
+      valid = [ ]
+      count = { }
+      vals.each do |_val|
+        val = _val.transform_keys(:to_sym)
+        val.each do |k,v|
+          if (self.fields.include?(k))
+            check = self.fields[k].validate(val[k])
+            return nil if (check.nil?)
+            valid.push(check)
+            count.tally(k)
+            if ((!self.fields[k].attrs[:limit].nil?) &&
+                (count[k] > self.fields[k].attrs[:limit]))
+              raise "Too many '#{k}' fields in opts field '#{self.class.name}': limit #{self.fields[k].attrs[:limit]}."
+            end
+          else
+            raise "Invalid key '#{k}' for opts field '#{self.class.name}'."
+          end
+        end
       end
-      self.fields.validate_fields(val)
+      return valid
     end
   end
 
 
 
-  class Form::FieldSet::BodyBlocks < Form::FieldSet
-    def self.fields
-      [
-        {
-          :image => Form::Field::Compound::Image.new(
-            {
-              :required => nil,
-              :limit => nil,
-            }
-          )
+  class Form::Field::Opts::BodyBlocks < Form::Field::Opts
+    def self.fields(attrs = { })
+      _attrs = {
+        :image => {
+          :required => true,
         },
-        {
-          :text => Form::Field::PlainText.new(
-            {
-              :required => nil,
-              :limit => nil,
-            }
-          )
+        :text => {
+          :required => true,
         },
-      ]
+      }.deep_merge(attrs)
+
+      return {
+        :image => Form::Field::Compound::Image.new(_attrs[:image]),
+        :text => Form::Field::PlainText.new(_attrs[:text]),
+      }
     end
   end
 
@@ -430,11 +456,14 @@ module Templates
         :tags => Base::Form::Field::Tags.new,
         :cover_image => Base::Form::Field::Compound::Image.new,
         :image_pair => Base::Form::Field::Compound::ImagePair.new,
-        # :body => Base::Form::FieldSet::BodyBlocks.new(
-        #   {
-        #     :required => true
-        #   }
-        # ),
+        :body => Base::Form::Field::Opts::BodyBlocks.new(
+          {
+            :required => true
+          },
+          # {
+          #   :image => {:limit => 1}
+          # },
+        ),
       }
     end
   end

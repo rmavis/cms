@@ -17,16 +17,16 @@ image_pair:
   right:
     file: /path/to/right-image.jpg
     caption: this is so nice right
-# body:
-#   -
-#     text: this is some text
-#   -
-#     image:
-#       file: /path/to/image.jpg
-#       caption: cool image
-#   -
-#     image:
-#       file: /path/to/another-image.jpg
-#       caption: another cool image
-#   -
-#     text: this is more text
+body:
+  -
+    text: this is some text
+  -
+    image:
+      file: /path/to/image.jpg
+      caption: cool image
+  -
+    image:
+      file: /path/to/another-image.jpg
+      caption: another cool image
+  -
+    text: this is more text

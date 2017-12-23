@@ -1,6 +1,13 @@
 require 'yaml'
 
 
+# TODO
+# - Add dynamic/calculated fields
+# - Convert Templates to HTML Pages
+# - Convert Templates to HTML Forms
+# - Convert Templates to YAML
+
+
 class Hash
   def transform_keys(trans)
     hsh = { }

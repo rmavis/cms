@@ -1,11 +1,19 @@
 require 'yaml'
+require 'digest'  # This is just for the md5 function.
 
 
 # TODO
-# - Add dynamic/calculated fields
-# - Convert Templates to HTML Pages
-# - Convert Templates to HTML Forms
-# - Convert Templates to YAML
+# - [X] Add dynamic/calculated fields
+# - [X] Create Templates from YAML files
+# - [X] Convert Templates to YAML
+#   Currently the values are not being set properly in compound fields.
+#   The field's `attrs[:value]` receives the value, but the component
+#   fields' `attrs[:value]` remains `nil`. So extracting those values
+#   via recursive, consistent calls to `val` are not working.  #HERE
+# - [X] When converting Template to YAML, add the `template` key
+# - [X] Are the `value_type`s even being used?
+# - [ ] Convert Templates to HTML Pages
+# - [ ] Convert Templates to HTML Forms
 
 
 class Hash
@@ -39,12 +47,20 @@ class Hash
     return m
   end
 
-  def tally(key)
+  def tally!(key)
     if (!self.has_key?(key))
       self[key] = 1
     else
       self[key] += 1
     end
+  end
+end
+
+
+
+class String
+  def to_const
+    Object.const_get(self)
   end
 end
 
@@ -109,18 +125,29 @@ module Base
     end
 
     def self.from_yaml(filename)
-      template = self.new
+      template = nil
       yaml = YAML.load(File.read(filename)).transform_keys(:to_sym)
-      template.fields.each do |k,f|
-        if (yaml.has_key?(k))
-          if (f.is_a?(Symbol))
-            # f[:value] = yaml[k]  # Need to figure this out  @TODO
+      yaml.each do |k,v|
+        if (k == :template)
+          if (::Templates.const_defined?(v))
+            template = "::Templates::#{v}".to_const.new
+            break
           else
-            f.attrs[:value] = f.validate(yaml[k])
-            if (f.attrs[:value].nil?)
-              raise "The required value for '#{k}' is invalid."
-            end
+            raise "Error: template named `#{v}` in file `#{filename}` is invalid."
           end
+        end
+      end
+
+      if (template.nil?)
+        raise "Error: no `template` specified in file `#{filename}`."
+      end
+
+      template.fields.each do |k,f|
+        if (k == :template)
+          next
+        end
+        if (yaml.has_key?(k))
+          f.set_if_valid!(yaml[k])
         elsif (f.attrs[:required])
           raise "The required key '#{k}' is missing."
         end
@@ -139,6 +166,13 @@ module Base
     end
 
     def to_yaml
+      fields = {
+        'template' => self.class.name,
+      }
+      self.fields.each do |k,f|
+        fields[k.to_s] = f.get_out_val
+      end
+      return YAML.dump(fields)
     end
   end
 
@@ -150,12 +184,6 @@ module Base
 
 
   class Form::Field
-    # Field::value_type :: void -> nil
-    # Subclasses should set their own `value_type`s.
-    def self.value_type
-      nil
-    end
-
     # Field::attrs :: void -> Hash
     # A subclass can set its own `attrs`.
     # If it does, it should merge these in.
@@ -176,11 +204,38 @@ module Base
 
     attr_reader :attrs
 
+    def get_attr(attr)
+      self.attrs[attr]
+    end
+
+    def set_attr!(attr, val)
+      self.attrs[attr] = val
+    end
+
+    def get_out_val
+      self.attrs[:value]
+    end
+
     # validate :: m -> nil
     # Subclasses should implement their own `validate` methods.
     # To encourage that, this will always return nil.
     def validate(val)
+      puts "WTF: field subclass needs to specify a `validate` method."
       return nil
+    end
+
+    def set_if_valid!(val)
+      _val = self.validate(val)
+      if (_val.nil?)
+        if (self.attrs[:required])
+          raise "The value given (`#{val}`) for field `#{self.class}` is required but invalid."
+        else
+          return nil
+        end
+      else
+        self.set_attr!(:value, _val)
+        return _val
+      end
     end
 
     # to_html :: (String, Hash?) -> string
@@ -193,14 +248,9 @@ module Base
 
 
   class Form::Field::PlainText < Form::Field
-    # PlainText::value_type :: void -> Class
-    def self.value_type
-      String
-    end
-
     # validate :: s -> String|nil
     def validate(val)
-      if ((val.is_a?(self.class.value_type)) &&
+      if ((val.is_a?(String)) &&
           (val.length > 0))
         return val
       elsif (val.is_a?(Numeric))
@@ -219,16 +269,11 @@ module Base
 
 
   class Form::Field::Date < Form::Field::PlainText
-    # Date::value_type :: void -> Class
-    def self.value_type
-      Time
-    end
-
     # validate :: s -> Time|nil
     def validate(val)
       if ((val.is_a?(String)) &&
           # This could be expanded.  @TODO
-          (t = val.match(/([0-9]{4})-([0-9]{2})-([0-9]{2})/)))
+          (m = val.match(/([0-9]{4})-([0-9]{2})-([0-9]{2})/)))
         return Time.new(m[1], m[2], m[3])
       elsif (val.respond_to?(:to_time))
         return val.to_time
@@ -244,21 +289,21 @@ module Base
       super(attrs.merge({:type => 'date'}))
     end
 
-    # Might want to add a `clean` or whatever method that returns
-    # a string form of the Time `value` for the content file.  @TODO
+    def get_out_val
+      if (self.attrs[:value].nil?)
+        return ''
+      else
+        self.attrs[:value].strftime("%F")
+      end
+    end
   end
 
 
 
   class Form::Field::Image < Form::Field::PlainText
-    # Image::value_type :: void -> Class
-    def self.value_type
-      String
-    end
-
     # validate :: s -> String|nil
     def validate(val)
-      if ((val.is_a?(self.class.value_type)) &&
+      if ((val.is_a?(String)) &&
           (val.length > 0))
         return val
       else
@@ -277,7 +322,7 @@ module Base
   class Form::Field::Password < Form::Field::PlainText
     # validate :: s -> String|nil
     def validate(val)
-      if ((val.is_a?(self.class.value_type)) &&
+      if ((val.is_a?(String)) &&
           (val.length > 0))
         return val
       else
@@ -294,11 +339,6 @@ module Base
 
 
   class Form::Field::Tags < Form::Field::PlainText
-    # Tags::value_type :: void -> Class
-    def self.value_type
-      Array
-    end
-
     # validate :: s -> [String]|nil
     def validate(val)
       if (val.is_a?(Array))
@@ -318,6 +358,28 @@ module Base
 
 
 
+  class Form::Field::ThisYear < Form::Field
+    def validate(val)
+      return Time.now.year
+    end
+  end
+
+  # ThisYear and MD5 demonstrate how to handle fields that do not
+  # simply echo values given by the content file. Additional but
+  # expected processing occurs when they are `validate`d. This
+  # processing could be anything -- database lookups, reading files,
+  # calculating values with given input, etc.
+
+  class Form::Field::MD5 < Form::Field::PlainText
+    def validate(val)
+      md5 = Digest::MD5.new
+      md5.update(val.to_s)
+      return md5.hexdigest
+    end
+  end
+
+
+
   class Form::Field::Compound < Form::Field
     def initialize(attrs = { }, fields_attrs = { })
       super(attrs)
@@ -326,19 +388,33 @@ module Base
 
     attr_reader :fields
 
-    def validate(val)
-      return nil if (!val.is_a?(Hash))
+    # A compound field's subfields can be either simple fields or
+    # other compound fields. Either way, the fieldwill have a
+    # `set_if_valid!` method. And all simple fields have a `validate`
+    # method (called in the simple field's `set_if_valid!` method).
+    def set_if_valid!(val)
+      if (!val.is_a?(Hash))
+        raise "Error: a Compound field must be validated with a Hash."
+      end
 
-      valid = { }
       self.fields.each do |k,f|
         if (val.has_key?(k))
-          valid[k] = f.validate(val[k])
-          return nil if (!valid[k])
+          if (f.set_if_valid!(val[k]).nil?)
+            return nil
+          end
         elsif (f.attrs[:required])
-          return nil
+          raise "Error: the required sub-field keyed on `#{k}` is missing."
         end
       end
-      return valid
+      return true
+    end
+
+    def get_out_val
+      val = { }
+      self.fields.each do |k,f|
+        val[k.to_s] = f.get_out_val
+      end
+      return val
     end
   end
 
@@ -393,19 +469,19 @@ module Base
       super({:limit => nil}.merge(attrs), fields_attrs)
     end
 
-    def validate(vals)
-      return nil if (!vals.is_a?(Array))
+    def set_if_valid!(vals)
+      if (!vals.is_a?(Array))
+        raise "Error: an Opts field must be validated with an Array."
+      end
 
-      valid = [ ]
       count = { }
-      vals.each do |_val|
-        val = _val.transform_keys(:to_sym)
-        val.each do |k,v|
+      vals.each do |val|
+        val.transform_keys(:to_sym).each do |k,v|
           if (self.fields.include?(k))
-            check = self.fields[k].validate(val[k])
-            return nil if (check.nil?)
-            valid.push(check)
-            count.tally(k)
+            if (self.fields[k].set_if_valid!(v).nil?)
+              return nil
+            end
+            count.tally!(k)
             if ((!self.fields[k].attrs[:limit].nil?) &&
                 (count[k] > self.fields[k].attrs[:limit]))
               raise "Too many '#{k}' fields in opts field '#{self.class.name}': limit #{self.fields[k].attrs[:limit]}."
@@ -415,7 +491,15 @@ module Base
           end
         end
       end
-      return valid
+      return true
+    end
+
+    def get_out_val
+      v = [ ]
+      self.fields.each do |k,f|
+        v.push({k.to_s => f.get_out_val})
+      end
+      return v
     end
   end
 
@@ -448,7 +532,7 @@ module Templates
   class PageGeneric < Base::Template
     def self.fields
       {
-        :template => :page_generic,
+        # :template => :page_generic,
         :title => Base::Form::Field::PlainText.new(
           {
             :required => true
@@ -471,6 +555,8 @@ module Templates
           #   :image => {:limit => 1}
           # },
         ),
+        :this_year => Base::Form::Field::ThisYear.new,
+        :make_md5 => Base::Form::Field::MD5.new,
       }
     end
   end
@@ -478,10 +564,11 @@ module Templates
 end
 
 
-t = Templates::PageGeneric.from_yaml('content/1-index.yaml')
-t.fields.each do |k,f|
-  puts "- #{k} :: #{f}"
-end
+t = Base::Template.from_yaml('content/2-index.yaml')
+# t.fields.each do |k,f|
+#   puts "- #{k} :: #{f}"  # .attrs[:value]
+# end
+puts t.to_yaml
 
 # puts "IMAGE PAIR:"
 # t.fields[:image_pair].fields.each do |k,f|

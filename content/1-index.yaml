@@ -1,5 +1,5 @@
 ---
-template: page_generic
+template: PageGeneric
 title: Yo yo
 date: 2017-12-19
 author: Richard Mavis
@@ -30,3 +30,5 @@ body:
       caption: another cool image
   -
     text: this is more text
+this_year: true
+make_md5: make a hash of this

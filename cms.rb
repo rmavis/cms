@@ -1,19 +1,6 @@
 require 'yaml'
+require 'erb'
 require 'digest'  # This is just for the md5 function.
-
-
-# TODO
-# - [X] Add dynamic/calculated fields
-# - [X] Create Templates from YAML files
-# - [X] Convert Templates to YAML
-#   Currently the values are not being set properly in compound fields.
-#   The field's `attrs[:value]` receives the value, but the component
-#   fields' `attrs[:value]` remains `nil`. So extracting those values
-#   via recursive, consistent calls to `val` are not working.  #HERE
-# - [X] When converting Template to YAML, add the `template` key
-# - [X] Are the `value_type`s even being used?
-# - [ ] Convert Templates to HTML Pages
-# - [ ] Convert Templates to HTML Forms
 
 
 class Hash
@@ -62,6 +49,10 @@ class String
   def to_const
     Object.const_get(self)
   end
+
+  def last(div)
+    self.split(div).last
+  end
 end
 
 
@@ -92,6 +83,15 @@ module Base
       else
         return "<#{tag} #{parts.join(' ')}>#{body}</#{tag}>"
       end
+    end
+
+    def self.render_template(binding, file)
+      return ERB.new(
+        IO.read(file),
+        $SAFE,
+        '>',
+        "_#{file.gsub(/[^A-Z0-9a-z]/, '')}_#{Time.now.to_f.to_s.gsub(/\./, '')}"
+      ).result(binding)
     end
   end
 
@@ -155,6 +155,14 @@ module Base
       return template
     end
 
+    def self.page_head_file
+      "templates/snippets/generic-head.html.erb"
+    end
+
+    def self.page_body_file
+      "templates/snippets/generic-body.html.erb"
+    end
+
     def initialize
       super(self.class.fields)
     end
@@ -163,16 +171,27 @@ module Base
     end
 
     def to_page
+      return Utils.render_template(binding(), self.class.page_file)
     end
 
     def to_yaml
       fields = {
-        'template' => self.class.name,
+        'template' => self.class.name.last('::'),
       }
       self.fields.each do |k,f|
         fields[k.to_s] = f.get_out_val
       end
       return YAML.dump(fields)
+    end
+
+    def body_fields(keys)
+      fields = [ ]
+      keys.each do |key|
+        if (self.class.fields.has_key?(key))
+          fields.push(self.fields[key])
+        end
+      end
+      return fields
     end
   end
 
@@ -238,10 +257,20 @@ module Base
       end
     end
 
-    # to_html :: (String, Hash?) -> string
-    # Subclasses should implement their own `to_html` methods.
-    def to_html(tag, attrs = { })
-      Utils::make_html(tag, attrs)
+    def to_html
+      file = nil
+      self.class.ancestors.each do |c|
+        check = "templates/fields/#{c.to_s.last('::').downcase}.html.erb"
+        if ((File.exist?(check)) &&
+            (File.readable?(check)))
+          file = check
+          break
+        end
+      end
+      if (file.nil?)
+        raise "Error: missing template file `#{file}`."
+      end
+      return Utils.render_template(binding(), file)
     end
   end
 
@@ -258,11 +287,6 @@ module Base
       else
         return nil
       end
-    end
-
-    # to_html :: Hash? -> String
-    def to_html(attrs = { })
-      super('input', attrs.merge({:value => self.attrs[:value]}))
     end
   end
 
@@ -282,11 +306,6 @@ module Base
       else
         return nil
       end
-    end
-
-    # to_html :: Hash? -> String
-    def to_html(attrs = { })
-      super(attrs.merge({:type => 'date'}))
     end
 
     def get_out_val
@@ -310,11 +329,6 @@ module Base
         return nil
       end
     end
-
-    # to_html :: Hash? -> String
-    def to_html(attrs = { })
-      super(attrs.merge({:type => 'file'}))
-    end
   end
 
 
@@ -328,11 +342,6 @@ module Base
       else
         return nil
       end
-    end
-
-    # to_html :: Hash? -> String
-    def to_html(attrs = { })
-      super(attrs.merge({:type => 'password'}))
     end
   end
 
@@ -349,16 +358,11 @@ module Base
         return nil
       end
     end
-
-    # to_html :: Hash? -> String
-    def to_html(attrs = { })
-      super(attrs.merge({:type => 'tags'}))
-    end
   end
 
 
 
-  class Form::Field::ThisYear < Form::Field
+  class Form::Field::ThisYear < Form::Field::PlainText
     def validate(val)
       return Time.now.year
     end
@@ -416,11 +420,53 @@ module Base
       end
       return val
     end
+
+    def to_html
+      file = "templates/fields/#{self.class.name.last('::').downcase}.html.erb"
+      if ((File.exist?(file)) &&
+          (File.readable?(file)))
+        return Utils.render_template(binding(), file)
+      else
+        parts = [ ]
+        self.fields.each do |k,f|
+          parts.push(f.to_html)
+        end
+        return parts.join('')
+      end
+    end
   end
 
 
 
-  class Form::Field::Compound::Image < Form::Field::Compound
+  class Form::Field::Compound::Meta < Form::Field::Compound
+    def self.fields(attrs = { })
+      _attrs = {
+        :title => {
+          :required => true,
+        },
+        :date => {
+          :required => nil,
+        },
+        :author => {
+          :required => nil,
+        },
+        :tags => {
+          :required => nil,
+        },
+      }.deep_merge(attrs)
+
+      return {
+        :title => Form::Field::PlainText.new(_attrs[:title]),
+        :date => Form::Field::Date.new(_attrs[:date]),
+        :author => Form::Field::PlainText.new(_attrs[:author]),
+        :tags => Form::Field::Tags.new(_attrs[:tags]),
+      }
+    end
+  end
+
+
+
+  class Form::Field::Compound::ImageAndText < Form::Field::Compound
     def self.fields(attrs = { })
       _attrs = {
         :file => {
@@ -456,8 +502,8 @@ module Base
       }.deep_merge(attrs)
 
       return {
-        :left => Form::Field::Compound::Image.new(_attrs[:left]),
-        :right => Form::Field::Compound::Image.new(_attrs[:right]),
+        :left => Form::Field::Compound::ImageAndText.new(_attrs[:left]),
+        :right => Form::Field::Compound::ImageAndText.new(_attrs[:right]),
       }
     end
   end
@@ -517,7 +563,7 @@ module Base
       }.deep_merge(attrs)
 
       return {
-        :image => Form::Field::Compound::Image.new(_attrs[:image]),
+        :image => Form::Field::Compound::ImageAndText.new(_attrs[:image]),
         :text => Form::Field::PlainText.new(_attrs[:text]),
       }
     end
@@ -532,20 +578,12 @@ module Templates
   class PageGeneric < Base::Template
     def self.fields
       {
-        # :template => :page_generic,
-        :title => Base::Form::Field::PlainText.new(
+        :meta => Base::Form::Field::Compound::Meta.new(
           {
-            :required => true
+            :required => true,
           }
         ),
-        :date => Base::Form::Field::Date.new(
-          {
-            :required => true
-          }
-        ),
-        :author => Base::Form::Field::PlainText.new,
-        :tags => Base::Form::Field::Tags.new,
-        :cover_image => Base::Form::Field::Compound::Image.new,
+        :cover_image => Base::Form::Field::Compound::ImageAndText.new,
         :image_pair => Base::Form::Field::Compound::ImagePair.new,
         :body => Base::Form::Field::Opts::BodyBlocks.new(
           {
@@ -559,6 +597,21 @@ module Templates
         :make_md5 => Base::Form::Field::MD5.new,
       }
     end
+
+    def self.page_file
+      "templates/pages/generic.html.erb"
+    end
+
+    def body_fields
+      super(
+        [
+          :cover_image,
+          :image_pair,
+          :body,
+          :this_year,
+        ]
+      )
+    end
   end
 
 end
@@ -568,7 +621,10 @@ t = Base::Template.from_yaml('content/2-index.yaml')
 # t.fields.each do |k,f|
 #   puts "- #{k} :: #{f}"  # .attrs[:value]
 # end
-puts t.to_yaml
+# puts "YAML:"
+# puts t.to_yaml
+puts "PAGE:"
+puts t.to_page
 
 # puts "IMAGE PAIR:"
 # t.fields[:image_pair].fields.each do |k,f|

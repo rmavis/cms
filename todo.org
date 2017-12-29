@@ -1,0 +1,17 @@
+* TODO [6/12]
+- [X] Add dynamic/calculated fields
+- [X] Create Templates from YAML files
+- [X] Convert Templates to YAML
+  Currently the values are not being set properly in compound fields.
+  The field's `attrs[:value]` receives the value, but the component fields' `attrs[:value]` remains `nil`. So extracting those values via recursive, consistent calls to `val` are not working.
+- [X] When converting Template to YAML, add the `template` key
+- [X] Are the `value_type`s even being used?
+- [X] Convert Templates to HTML Pages
+- [ ] Convert Templates to HTML Forms
+- [ ] Move field template name into field class as property?
+      Could have `page_file` and `form_file`?
+      Because assuming filenames / requiring filenames to conform to rules sucks.
+- [ ] Collections of pages/templates?
+- [ ] Make the erb variable name easier-working
+- [ ] Address all @TODOs
+- [ ] Documentation

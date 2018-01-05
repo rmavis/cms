@@ -1,4 +1,5 @@
-* TODO [6/12]
+* Todo
+** Base [8/12]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -8,10 +9,20 @@
 - [X] Are the `value_type`s even being used?
 - [X] Convert Templates to HTML Pages
 - [ ] Convert Templates to HTML Forms
-- [ ] Move field template name into field class as property?
+- [X] Move field template name into field class as property?
       Could have `page_file` and `form_file`?
       Because assuming filenames / requiring filenames to conform to rules sucks.
-- [ ] Collections of pages/templates?
-- [ ] Make the erb variable name easier-working
+- [X] Make the erb variable name easier-working
 - [ ] Address all @TODOs
 - [ ] Documentation
+- [ ] Code cleanup / organization
+** Admin panel [0/4]
+- [ ] Admin login
+- [ ] View pages
+- [ ] Edit pages
+- [ ] Upload assets
+** Public [0/2]
+- [ ] Router?
+- [ ] View pages
+** Next [0/1]
+- [ ] Collections of pages/templates?

@@ -59,40 +59,44 @@ end
 
 module Base
 
-  class Utils
-    def self.make_html(tag, attrs = { }, body = '')
-      parts = [ ]
-      attrs.each { |key,val| parts.push("#{key}=\"#{val}\"") }
+  class Render
+    @@counter = 0
 
-      if ((body.length == 0) &&
-          (['area',
-            'base',
-            'br',
-            'col',
-            'embed',
-            'hr',
-            'img',
-            'input',
-            'link',
-            'meta',
-            'param',
-            'source',
-            'track',
-            'wbr'].include?(tag)))
-        return "<#{tag} #{parts.join(' ')} />"
+    def self.render_name
+      @@counter += 1
+      "_erb_template_#{@@counter}"
+    end
+
+    def self.template(binding, filename)
+      if ((File.exist?(filename)) &&
+          (File.readable?(filename)))
+        return ERB.new(IO.read(filename), $SAFE, '>', self.render_name).result(binding)
       else
-        return "<#{tag} #{parts.join(' ')}>#{body}</#{tag}>"
+        raise "Error: template file `#{filename}` doesn't exist or cannot be read."
       end
     end
 
-    def self.render_template(binding, file)
-      return ERB.new(
-        IO.read(file),
-        $SAFE,
-        '>',
-        "_#{file.gsub(/[^A-Z0-9a-z]/, '')}_#{Time.now.to_f.to_s.gsub(/\./, '')}"
-      ).result(binding)
-    end
+    # This is an alternative strategy for enabling stacked rendering.
+    # Instead of relying on internal state, it converts the given
+    # filename and execution time to a valid variable name. If the
+    # filename is the same as the one beneath it, and if the execution
+    # time is in the same microsecond, then there could be a clash.
+    # A strategy involving a random number or hashed string could
+    # help avoid that. Computation is cheaper than storage, so the
+    # ideal strategy would not rely on internal state. Think on it.  @TODO
+    # def self.template(binding, filename)
+    #   if ((File.exist?(filename)) &&
+    #       (File.readable?(filename)))
+    #     return ERB.new(
+    #              IO.read(filename),
+    #              $SAFE,
+    #              '>',
+    #              "_#{filename.gsub(/[^A-Z0-9a-z]/, '')}_#{Time.now.to_f.to_s.gsub(/\./, '')}"
+    #            ).result(binding)
+    #   else
+    #     raise "Error: template file `#{filename}` doesn't exist or cannot be read."
+    #   end
+    # end
   end
 
 
@@ -114,6 +118,8 @@ module Base
 
 
 
+  # A Template is an object that contains a collection of fields and
+  # methods for rendering those fields in various ways.
   class Template < Record
     def self.form_file
     end
@@ -168,10 +174,16 @@ module Base
     end
 
     def to_form
+      return Render.template(binding(), self.class.form_file)
     end
 
     def to_page
-      return Utils.render_template(binding(), self.class.page_file)
+      return Render.template(binding(), self.class.page_file)
+    end
+
+    # A convenience method.
+    def render(filename)
+      Render.template(binding(), filename)
     end
 
     def to_yaml
@@ -185,6 +197,16 @@ module Base
     end
 
     def body_fields(keys)
+      fields = [ ]
+      keys.each do |key|
+        if (self.class.fields.has_key?(key))
+          fields.push(self.fields[key])
+        end
+      end
+      return fields
+    end
+
+    def form_fields(keys)
       fields = [ ]
       keys.each do |key|
         if (self.class.fields.has_key?(key))
@@ -213,6 +235,14 @@ module Base
         :required => nil,
         :value => nil,
       }
+    end
+
+    def self.page_files_dir
+      "templates/fields"
+    end
+
+    def self.form_files_dir
+      "templates/admin/fields"
     end
 
 
@@ -258,25 +288,25 @@ module Base
     end
 
     def to_html
-      file = nil
-      self.class.ancestors.each do |c|
-        check = "templates/fields/#{c.to_s.last('::').downcase}.html.erb"
-        if ((File.exist?(check)) &&
-            (File.readable?(check)))
-          file = check
-          break
-        end
-      end
-      if (file.nil?)
-        raise "Error: missing template file `#{file}`."
-      end
-      return Utils.render_template(binding(), file)
+      return Render.template(binding(), self.class.page_file)
+    end
+
+    def to_input
+      return Render.template(binding(), self.class.form_file)
     end
   end
 
 
 
   class Form::Field::PlainText < Form::Field
+    def self.page_file
+      "#{self.page_files_dir}/plain-text.html.erb"
+    end
+
+    def self.form_file
+      "#{self.form_files_dir}/plain-text.html.erb"
+    end
+
     # validate :: s -> String|nil
     def validate(val)
       if ((val.is_a?(String)) &&
@@ -293,6 +323,14 @@ module Base
 
 
   class Form::Field::Date < Form::Field::PlainText
+    def self.page_file
+      "#{self.page_files_dir}/date.html.erb"
+    end
+
+    def self.form_file
+      "#{self.form_files_dir}/date.html.erb"
+    end
+
     # validate :: s -> Time|nil
     def validate(val)
       if ((val.is_a?(String)) &&
@@ -320,6 +358,14 @@ module Base
 
 
   class Form::Field::Image < Form::Field::PlainText
+    def self.page_file
+      "#{self.page_files_dir}/image.html.erb"
+    end
+
+    def self.form_file
+      "#{self.form_files_dir}/image.html.erb"
+    end
+
     # validate :: s -> String|nil
     def validate(val)
       if ((val.is_a?(String)) &&
@@ -334,6 +380,14 @@ module Base
 
 
   class Form::Field::Password < Form::Field::PlainText
+    def self.page_file
+      "#{self.page_files_dir}/password.html.erb"
+    end
+
+    def self.form_file
+      "#{self.form_files_dir}/password.html.erb"
+    end
+
     # validate :: s -> String|nil
     def validate(val)
       if ((val.is_a?(String)) &&
@@ -348,6 +402,14 @@ module Base
 
 
   class Form::Field::Tags < Form::Field::PlainText
+    def self.page_file
+      "#{self.page_files_dir}/tags.html.erb"
+    end
+
+    def self.form_file
+      "#{self.form_files_dir}/tags.html.erb"
+    end
+
     # validate :: s -> [String]|nil
     def validate(val)
       if (val.is_a?(Array))
@@ -422,16 +484,26 @@ module Base
     end
 
     def to_html
-      file = "templates/fields/#{self.class.name.last('::').downcase}.html.erb"
-      if ((File.exist?(file)) &&
-          (File.readable?(file)))
-        return Utils.render_template(binding(), file)
+      if (self.class.respond_to?(:page_file))
+        return Render.template(binding(), self.class.page_file)
       else
-        parts = [ ]
-        self.fields.each do |k,f|
-          parts.push(f.to_html)
-        end
-        return parts.join('')
+        return self.render_fields(:to_html)
+      end
+    end
+
+    def render_fields(meth)
+      parts = [ ]
+      self.fields.each do |k,f|
+        parts.push(f.send(meth))
+      end
+      return parts.join('')
+    end
+
+    def to_input
+      if (self.class.respond_to?(:form_file))
+        return Render.template(binding(), self.class.form_file)
+      else
+        return self.render_fields(:to_input)
       end
     end
   end
@@ -467,6 +539,14 @@ module Base
 
 
   class Form::Field::Compound::ImageAndText < Form::Field::Compound
+    def self.page_file
+      "#{self.page_files_dir}/image-and-text.html.erb"
+    end
+
+    def self.form_file
+      "#{self.form_files_dir}/image-and-text.html.erb"
+    end
+
     def self.fields(attrs = { })
       _attrs = {
         :file => {
@@ -487,6 +567,14 @@ module Base
 
 
   class Form::Field::Compound::ImagePair < Form::Field::Compound
+    def self.page_file
+      "#{self.page_files_dir}/image-pair.html.erb"
+    end
+
+    def self.form_file
+      "#{self.form_files_dir}/image-pair.html.erb"
+    end
+
     def self.fields(attrs = { })
       _attrs = {
         :left => {
@@ -602,9 +690,25 @@ module Templates
       "templates/pages/generic.html.erb"
     end
 
+    def self.form_file
+      "templates/admin/forms/generic.html.erb"
+    end
+
     def body_fields
       super(
         [
+          :cover_image,
+          :image_pair,
+          :body,
+          :this_year,
+        ]
+      )
+    end
+
+    def form_fields
+      super(
+        [
+          :meta,
           :cover_image,
           :image_pair,
           :body,
@@ -617,17 +721,12 @@ module Templates
 end
 
 
-t = Base::Template.from_yaml('content/2-index.yaml')
-# t.fields.each do |k,f|
-#   puts "- #{k} :: #{f}"  # .attrs[:value]
-# end
-# puts "YAML:"
-# puts t.to_yaml
-puts "PAGE:"
-puts t.to_page
-
-# puts "IMAGE PAIR:"
-# t.fields[:image_pair].fields.each do |k,f|
-#   puts "- #{k} :: #{f}"
-# end
-
+t = Base::Template.from_yaml('content/1-index.yaml')
+puts "YAML:"
+puts t.to_yaml
+# puts "\n\n\n"
+# puts "PAGE:"
+# puts t.to_page
+puts "\n\n\n"
+puts "FORM:"
+puts t.to_form

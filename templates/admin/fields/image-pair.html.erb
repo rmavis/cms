@@ -1,0 +1,12 @@
+<div class="form-field__wrap form-field__wrap--image-pair">
+    <div class="form-field__cell form-field__cell--left">
+        <h5 class="form-field__head">Left</h5>
+        <input class="form-field__input form-field__input--file" type="file" value="<%= self.fields[:left].fields[:file].get_out_val %> />
+        <input class="form-field__input form-field__input--plaintext" type="text" value="<%= self.fields[:left].fields[:caption].get_out_val %>" />
+    </div>
+    <div class="form-field__cell form-field__cell--right">
+        <h5 class="form-field__head">Right</h5>
+        <input class="form-field__input form-field__input--file" type="file" value="<%= self.fields[:right].fields[:file].get_out_val %> />
+        <input class="form-field__input form-field__input--plaintext" type="text" value="<%= self.fields[:right].fields[:caption].get_out_val %>" />
+    </div>
+</div>

@@ -1,4 +1,4 @@
-<form>
+<form <%= self.class.form_attrs.to_attrs %>>
     <% self.form_fields.each do |f| %>
         <%= f.to_input %>
     <% end %>

@@ -41,6 +41,14 @@ class Hash
       self[key] += 1
     end
   end
+
+  def to_attrs
+    attrs = [ ]
+    self.each do |k,v|
+      attrs.push("#{k}=\"#{v}\"")
+    end
+    return attrs.join(' ')
+  end
 end
 
 
@@ -692,6 +700,14 @@ module Templates
 
     def self.form_file
       "templates/admin/forms/generic.html.erb"
+    end
+
+    def self.form_attrs
+      {
+        :action => '/admin/edit/forms/generic',
+        :method => 'post',
+        :name => 'form--generic',
+      }
     end
 
     def body_fields

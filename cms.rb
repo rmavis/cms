@@ -1,6 +1,6 @@
 require 'yaml'
 require 'erb'
-require 'digest'  # This is just for the md5 function.
+require 'openssl'
 
 
 class Hash
@@ -553,9 +553,7 @@ module Base
   class Field::MD5 < Field::PlainText
     # validate :: a -> string
     def validate(val)
-      md5 = Digest::MD5.new
-      md5.update(val.to_s)
-      return md5.hexdigest
+      return OpenSSL::Digest.new('md5', val.to_s).hexdigest
     end
   end
 

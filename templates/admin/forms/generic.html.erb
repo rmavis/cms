@@ -1,5 +1,5 @@
 <form <%= self.class.form_attrs.to_attrs %>>
     <% self.form_fields.each do |f| %>
-        <%= f.to_input %>
+        <%= f.to_form %>
     <% end %>
 </form>

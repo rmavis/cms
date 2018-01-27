@@ -1,0 +1,34 @@
+* /
+** content/
+*** index.yaml
+** templates/
+*** fields/
+**** date/
+***** date.rb
+***** view.html.erb
+***** edit.html.erb
+**** image/
+***** image.rb
+***** view.html.erb
+***** edit.html.erb
+*** pages/
+**** generic/
+***** page.rb
+***** view.html.erb
+***** edit.html.erb
+*** snippets/
+**** common-head.html.erb
+**** nav.html.erb
+** {cms}/
+*** fields.rb
+*** template.rb
+*** utils.rb
+
+
+
+** TODO
+*** JS? CSS? Images?
+Placement will depend on whether the CMS generates static pages.
+Is there a middle way?
+
+

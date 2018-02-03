@@ -1,5 +1,5 @@
 * Todo
-** Base [10/12]
+** Base [10/14]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -10,19 +10,24 @@
 - [X] Convert Templates to HTML Pages
 - [X] Convert Templates to HTML Forms
 - [X] Move field template name into field class as property?
-      Could have `page_file` and `form_file`?
-      Because assuming filenames / requiring filenames to conform to rules sucks.
+  Could have `page_file` and `form_file`?
+  Because assuming filenames / requiring filenames to conform to rules sucks.
 - [X] Make the erb variable name easier-working
 - [X] Documentation
 - [ ] Code cleanup / organization
+  Maybe rename `template` to `blueprint`. Make Page and Form subclasses of blueprint. Make `PageGeneric` a subclass of Page. Then can put properties for fetching a global nav and footer, etc, in Page.
+- [ ] File loader
+  Subclasses, especially.
+  Could just use regular `require` lines.
+- [ ] Router
 - [ ] Address all @TODOs
 ** Admin panel [0/4]
 - [ ] Admin login
 - [ ] View pages
 - [ ] Edit pages
+  Receiving and validating data, whether that's from a YAML file or an HTML form, is essentially the same process: data comes into a function, that function cycles through and calls all appropriate `validate` methods, collects validated data, and directs it somewhere.
 - [ ] Upload assets
-** Public [0/2]
-- [ ] Router?
+** Public [0/1]
 - [ ] View pages
 ** Next [0/1]
 - [ ] Collections of pages/templates?

@@ -1,4 +1,8 @@
 * /
+** base/
+*** fields.rb
+*** template.rb
+*** utils.rb
 ** content/
 *** index.yaml
 ** templates/
@@ -19,10 +23,6 @@
 *** snippets/
 **** common-head.html.erb
 **** nav.html.erb
-** {cms}/
-*** fields.rb
-*** template.rb
-*** utils.rb
 
 
 
@@ -32,3 +32,6 @@ Placement will depend on whether the CMS generates static pages.
 Is there a middle way?
 
 
+Every field has a type
+The user should be able to specify how each field is rendered
+In the admin panel, each field will be rendered according to its type, the user doesn't control that

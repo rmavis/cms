@@ -1,4 +1,4 @@
-  class Field::Opts::BodyBlocks < Field::Opts
+  class Field::Collection::BodyBlocks < Field::Collection
     # BodyBlocks.fields :: hash -> hash
     def self.fields(attrs = { })
       _attrs = {

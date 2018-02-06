@@ -10,7 +10,7 @@ module Pages
         ),
         :cover_image => Base::Field::Compound::ImageAndText.new,
         :image_pair => Base::Field::Compound::ImagePair.new,
-        :body => Base::Field::Opts::BodyBlocks.new(
+        :body => Base::Field::Collection::BodyBlocks.new(
           {
             :required => true
           },

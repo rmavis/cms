@@ -27,4 +27,8 @@ module Templates::Specs::Fields::Meta
       :tags => {:Tags => _attrs[:tags]},
     }
   end
+
+  def view_file
+    "_compound.html.erb"
+  end
 end

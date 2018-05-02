@@ -3,9 +3,9 @@ module Templates::Specs::Fields::Password
     :PlainText
   end
 
-  # Password.page_file :: void -> string
-  def self.page_file
-    "#{self.page_files_dir}/password.html.erb"
+  # view_file :: void -> string
+  def view_file
+    "password.html.erb"
   end
 
   # Password.form_file :: void -> string

@@ -3,9 +3,9 @@ module Templates::Specs::Fields::Tags
     :Tags
   end
 
-  # Tags.page_file :: void -> string
-  def self.page_file
-    "#{self.page_files_dir}/tags.html.erb"
+  # view_file :: void -> string
+  def view_file
+    "tags.html.erb"
   end
 
   # Tags.form_file :: void -> string

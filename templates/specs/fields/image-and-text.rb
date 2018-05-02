@@ -20,9 +20,9 @@ module Templates::Specs::Fields::ImageAndText
     }
   end
 
-  # ImageAndText.page_file :: void -> string
-  def self.page_file
-    "#{self.page_files_dir}/image-and-text.html.erb"
+  # view_file :: void -> string
+  def view_file
+    "image-and-text.html.erb"
   end
 
   # ImageAndText.form_file :: void -> string

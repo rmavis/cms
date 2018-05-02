@@ -3,13 +3,13 @@ module Templates::Specs::Fields::Date
     :PlainText
   end
 
-  # Date.page_file :: void -> string
-  def self.page_file
-    "#{self.page_files_dir}/date.html.erb"
+  # view_file :: void -> string
+  def self.view_file
+    "date.html.erb"
   end
 
-  # Date.page_file :: void -> string
-  def self.form_file
+  # input_view_file :: void -> string
+  def input_view_file
     "#{self.form_files_dir}/date.html.erb"
   end
 

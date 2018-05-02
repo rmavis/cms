@@ -1,6 +1,9 @@
+# Requirements from stdlib, etc.
 require 'yaml'
 
+# Local loads.
 require_relative 'extensions.rb'
+require_relative 'dir_map.rb'
 
 
 module Base

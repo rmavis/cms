@@ -1,5 +1,5 @@
 * Todo
-** Base [11/15]
+** Base [12/16]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -16,10 +16,12 @@
 - [X] Documentation
 - [X] Code cleanup / organization
   Make Page and Form subclasses of template. Make `PageGeneric` a subclass of Page. Then can put properties for fetching a global nav and footer, etc, in Page.
-- [ ] Class to manage CLI
-- [ ] File loader
+- [X] File loader
   Subclasses, especially.
   Could just use regular `require` lines.
+- [ ] Rename `templates/` to `site/`
+  And all module references.
+- [ ] Class to manage CLI
 - [ ] Router
 - [ ] Address all @TODOs
 ** Admin panel [0/4]

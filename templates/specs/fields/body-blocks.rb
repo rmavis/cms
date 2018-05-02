@@ -19,4 +19,8 @@ module Templates::Specs::Fields::BodyBlocks
       :text => {:PlainText => _attrs[:text]},
     }
   end
+
+  def view_file
+    "_compound.html.erb"
+  end
 end

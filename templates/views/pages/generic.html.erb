@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <%= self.render('../snippets/generic-head.html.erb') %>
+    <%= self.render("#{DirMap.snippet_views}/generic-head.html.erb") %>
 
     <body>
-        <% self.body_fields.each do |field| -%>
-            <% if (field.class == PlainText) -%>
-                <%= field.render('../fields/plain-text.html.erb') %>
-            <% elsif (field.class == Date) -%>
-                <%= field.render('../fields/date.html.erb') %>
-            <% end %>
+        <% self.body_fields.each do |field| %>
+            <%= field.to_view %>
         <% end %>
     </body>
 </html>

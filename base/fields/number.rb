@@ -1,6 +1,3 @@
-require_relative '../field.rb'
-
-
 module Base::Fields
   class Number < ::Base::Field
     # validate :: a -> [string]|nil

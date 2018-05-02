@@ -60,7 +60,6 @@ module Base
         end
       end
 
-      puts fields
       return fields
     end
 
@@ -71,18 +70,18 @@ module Base
 
     attr_reader :fields
 
-    # to_form :: void -> string
-    # to_form renders the current Template as an HTML form, meaning
-    # it renders and collects the `form_file` for each of its fields.
-    def to_form
-      return Render.template(binding(), self.class.form_file)
+    # to_input_view :: void -> string
+    # to_input_view renders the current Template as an HTML form, meaning
+    # it collects and renders the `input_view_file`s of its fields.
+    def to_input_view
+      return Render.template(binding(), self.input_view_file)
     end
 
-    # to_page :: void -> string
-    # to_page renders the current Template as an HTML page, meaning
+    # to_view :: void -> string
+    # to_view renders the current Template as an HTML page, meaning
     # it renders and collects the `page_file` for each of its fields.
-    def to_page
-      return Render.template(binding(), self.class.page_file)
+    def to_view
+      return Render.template(binding(), "#{DirMap.page_views}/#{self.view_file}")
     end
 
     # render :: string -> string
@@ -113,7 +112,7 @@ module Base
     def make_fields(keys)
       fields = [ ]
       keys.each do |key|
-        if (self.class.fields.has_key?(key))
+        if (self.fields.has_key?(key))
           fields.push(self.fields[key])
         end
       end

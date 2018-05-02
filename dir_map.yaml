@@ -1,8 +1,12 @@
 ---
-base: '/base'
-templates: '/templates'
-content: '/templates/content'
-specs: '/templates/specs'
-fields: '/templates/specs/fields'
-views: '/templates/views'
+base: 'base'
+templates: 'templates'
+content: 'templates/content'
+specs: 'templates/specs'
+fields: 'templates/specs/fields'
+pages: 'templates/specs/pages'
+views: 'templates/views'
+page_views: 'templates/views/pages'
+field_views: 'templates/views/fields'
+snippet_views: 'templates/views/snippets'
 ...

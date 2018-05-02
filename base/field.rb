@@ -8,6 +8,10 @@ module Base
       ::Templates::Specs::Fields
     end
 
+    def self.fields_prefix
+      ::Base::Fields
+    end
+
 
     def self.from_plan(name, attrs = { })
       if (self.specs_prefix.const_defined?(name))
@@ -26,13 +30,13 @@ module Base
     end
 
     def self.make_simple(spec, attrs = { })
-      field = "Base::Fields::#{spec.type}".to_const.new(attrs)
+      field = "#{self.fields_prefix}::#{spec.type}".to_const.new(attrs)
       field.extend(spec)
       return field
     end
 
     def self.make_compound(spec, attrs = { })
-      field = (attrs.has_key?(:_self)) ? "Base::Fields::#{spec.type}".to_const.new(attrs[:_self]) : "Base::Fields::#{spec.type}".to_const.new()
+      field = (attrs.has_key?(:_self)) ? "#{self.fields_prefix}::#{spec.type}".to_const.new(attrs[:_self]) : "#{self.fields_prefix}::#{spec.type}".to_const.new()
       field.extend(spec)
 
       fields = { }
@@ -59,20 +63,6 @@ module Base
         :required => nil,
         :value => nil,
       }
-    end
-
-    # Field.page_files_dir :: void -> string
-    # Field.page_files_dir returns the directory that contains the
-    # field templates as snippets of an HTML page.
-    def self.page_files_dir
-      "templates/specs/fields"
-    end
-
-    # Field.form_files_dir :: void -> string
-    # Field.form_files_dir returns the directory that contains the
-    # field templates as snippets of an HTML form.
-    def self.form_files_dir
-      "templates/admin/fields"
     end
 
 
@@ -129,12 +119,12 @@ module Base
       end
     end
 
-    # to_page :: void -> string
+    # to_view :: void -> string
     # Each Field can be rendered as (read-only) HTML, intended for a
     # web page. The subclass should specify the filename of the template
-    # snippet in its class' `page_file` method.
-    def to_page
-      return Render.template(binding(), self.class.page_file)
+    # snippet in its class' `view_file` method.
+    def to_view
+      return Render.template(binding(), "#{DirMap.field_views}/#{self.view_file}")
     end
 
     # to_form :: void -> string

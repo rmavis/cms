@@ -3,13 +3,13 @@ module Templates::Specs::Fields::PlainText
     :PlainText
   end
 
-  # PlainText.view_file :: void -> string
-  def self.view_file
-    "#{::Templates.fields_views_dir}/plain-text.html.erb"
+  # view_file :: void -> string
+  def view_file
+    "plain-text.html.erb"
   end
 
-  # PlainText.input_file :: void -> string
-  def self.input_file
+  # input_view_file :: void -> string
+  def input_view_file
     "#{::Templates.fields_inputs_dir}/plain-text.html.erb"
   end
 

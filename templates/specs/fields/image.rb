@@ -3,9 +3,9 @@ module Templates::Specs::Fields::Image
     :Asset
   end
 
-  # Image.page_file :: void -> string
-  def self.page_file
-    "#{self.page_files_dir}/image.html.erb"
+  # view_file :: void -> string
+  def view_file
+    "image.html.erb"
   end
 
   # Image.form_file :: void -> string

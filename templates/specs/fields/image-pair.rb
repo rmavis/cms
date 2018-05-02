@@ -25,9 +25,9 @@ module Templates::Specs::Fields::ImagePair
     }
   end
 
-  # ImagePair.page_file :: void -> string
-  def self.page_file
-    "#{self.page_files_dir}/image-pair.html.erb"
+  # view_file :: void -> string
+  def view_file
+    "image-pair.html.erb"
   end
 
   # ImagePair.form_file :: void -> string

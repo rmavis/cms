@@ -3,6 +3,10 @@ module Templates::Specs::Fields::ThisYear
     :Number
   end
 
+  def view_file
+    "plain-text.html.erb"
+  end
+
   # validate :: a -> string
   def validate(val)
     return Time.now.year

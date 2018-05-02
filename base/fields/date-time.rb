@@ -1,6 +1,3 @@
-require_relative 'plain-text.rb'
-
-
 module Base::Fields
   class Date < PlainText
     def self.validate(val)

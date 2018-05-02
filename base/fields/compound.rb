@@ -47,12 +47,12 @@ module Base::Fields
       return val
     end
 
-    # to_page :: void -> string
-    def to_page
-      if (self.class.respond_to?(:page_file))
-        return ::Base::Render.template(binding(), self.class.page_file)
+    # to_view :: void -> string
+    def to_view
+      if (self.respond_to?(:view_file))
+        return ::Base::Render.template(binding(), "#{DirMap.field_views}/#{self.view_file}")
       else
-        return self.render_fields(:to_page)
+        return self.render_fields(:to_view)
       end
     end
 
@@ -69,13 +69,13 @@ module Base::Fields
     end
 
     # to_form :: void -> string
-    def to_form
-      if (self.class.respond_to?(:form_file))
-        return ::Base::Render.template(binding(), self.class.form_file)
-      else
-        return self.render_fields(:to_form)
-      end
-    end
+    # def to_form
+    #   if (self.respond_to?(:form_file))
+    #     return ::Base::Render.template(binding(), self.form_file)
+    #   else
+    #     return self.render_fields(:to_form)
+    #   end
+    # end
 
   end
 end

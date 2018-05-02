@@ -31,9 +31,9 @@ module Templates::Specs::Pages::Generic
     }
   end
 
-  # Generic.page_file :: void -> string
-  def self.page_file
-    "#{DirMap.get[:views]}/pages/generic.html.erb"
+  # view_file :: void -> string
+  def view_file
+    "generic.html.erb"
   end
 
   # body_fields :: void -> [Field]

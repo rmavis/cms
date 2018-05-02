@@ -1,5 +1,5 @@
 ---
-template: PageGeneric
+spec: Pages::Generic
 meta:
   title: Yo yo
   date: 2017-12-19

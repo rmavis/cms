@@ -1,0 +1,8 @@
+---
+base: '/base'
+templates: '/templates'
+content: '/templates/content'
+specs: '/templates/specs'
+fields: '/templates/specs/fields'
+views: '/templates/views'
+...

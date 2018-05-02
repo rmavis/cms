@@ -1,5 +1,8 @@
+require_relative 'plain-text.rb'
 
-  class Tags < Field::PlainText
+
+module Base::Fields
+  class Tags < PlainText
     # validate :: a -> [string]|nil
     def self.validate(val)
       if (val.is_a?(Array))
@@ -11,4 +14,4 @@
       end
     end
   end
-
+end

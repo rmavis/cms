@@ -1,5 +1,8 @@
+require_relative '../field.rb'
 
-  class Asset
+
+module Base::Fields
+  class Asset < ::Base::Field
     # validate :: a -> string|nil
     def self.validate(val)
       if ((val.is_a?(String)) &&
@@ -10,4 +13,4 @@
       end
     end
   end
-
+end

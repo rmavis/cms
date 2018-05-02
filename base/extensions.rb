@@ -1,12 +1,18 @@
 class Hash
-  # transform_keys :: symbol -> hash
-  # transform_keys receives a symbol indicating a method callable on
-  # the keys of the current hash. It returns a hash identical to the
-  # current hash but with the keys transformed by the given method.
+  # transform_keys :: lambda -> hash
   def transform_keys(trans)
     hsh = { }
     self.each do |k,v|
-      hsh[k.send(trans)] = (v.is_a?(Hash)) ? v.transform_keys(trans) : v
+      hsh[trans.call(k)] = (v.is_a?(Hash)) ? v.transform_keys(trans) : v
+    end
+    return hsh
+  end
+
+  # transform_vals :: lambda -> hash
+  def transform_vals(trans)
+    hsh = { }
+    self.each do |k,v|
+      hsh[k] = (v.is_a?(Hash)) ? v.transform_vals(trans) : trans.call(v)
     end
     return hsh
   end

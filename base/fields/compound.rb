@@ -1,19 +1,18 @@
-  # A Compound Field is a Field that contains Fields.
-  class Field::Compound < Field
-    # new :: (hash, hash) -> Compound
-    # Initialize a Compound Field with two attribute hashes: one for
-    # the Compound Field itself, and one containing subhashes for
-    # each of its component Fields.
-    def initialize(attrs = { }, fields_attrs = { })
+# A Compound Field is a Field that contains Fields.
+module Base::Fields
+  class Compound < ::Base::Field
+
+    # new :: hash -> Compound
+    def initialize(attrs = { })
       super(attrs)
-      # The `fields` methods of Compound Fields must have the
-      # signature `hash -> hash`. For the argument hash, the keys
-      # will name subfields, and the values will be attribute hashes
-      # that will, in turn, get passed to each subfield's initializer.
-      @fields = self.class.fields(fields_attrs)
+      @fields = { }
     end
 
     attr_reader :fields
+
+    def set_fields!(fields)
+      @fields = fields
+    end
 
     # set_if_valid! :: hash -> true|nil
     # A compound field's subfields can be either simple fields or
@@ -51,7 +50,7 @@
     # to_page :: void -> string
     def to_page
       if (self.class.respond_to?(:page_file))
-        return Render.template(binding(), self.class.page_file)
+        return ::Base::Render.template(binding(), self.class.page_file)
       else
         return self.render_fields(:to_page)
       end
@@ -72,9 +71,11 @@
     # to_form :: void -> string
     def to_form
       if (self.class.respond_to?(:form_file))
-        return Render.template(binding(), self.class.form_file)
+        return ::Base::Render.template(binding(), self.class.form_file)
       else
         return self.render_fields(:to_form)
       end
     end
+
   end
+end

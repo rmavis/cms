@@ -1,5 +1,8 @@
+require_relative 'plain-text.rb'
 
-  class Date < Fields::PlainText
+
+module Base::Fields
+  class Date < PlainText
     def self.validate(val)
       if ((val.is_a?(String)) &&
           # This could be expanded.  @TODO
@@ -23,3 +26,4 @@
       end
     end
   end
+end

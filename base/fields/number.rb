@@ -1,5 +1,8 @@
+require_relative '../field.rb'
 
-  class Number
+
+module Base::Fields
+  class Number < ::Base::Field
     # validate :: a -> [string]|nil
     def self.validate(val)
       if (val.is_a?(Numeric))
@@ -17,4 +20,4 @@
       end
     end
   end
-
+end

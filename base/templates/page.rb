@@ -1,4 +1,5 @@
-  class Page < Template
+module Base::Templates
+  class Page < ::Base::Template
     # Page.head_file :: void -> string
     # Page.head_file returns the filename containing the
     # generic page's `head` element.
@@ -13,3 +14,4 @@
       "templates/snippets/generic-body.html.erb"
     end
   end
+end

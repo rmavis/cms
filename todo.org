@@ -1,5 +1,5 @@
 * Todo
-** Base [10/14]
+** Base [11/15]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -14,8 +14,9 @@
   Because assuming filenames / requiring filenames to conform to rules sucks.
 - [X] Make the erb variable name easier-working
 - [X] Documentation
-- [ ] Code cleanup / organization
-  Maybe rename `template` to `blueprint`. Make Page and Form subclasses of blueprint. Make `PageGeneric` a subclass of Page. Then can put properties for fetching a global nav and footer, etc, in Page.
+- [X] Code cleanup / organization
+  Make Page and Form subclasses of template. Make `PageGeneric` a subclass of Page. Then can put properties for fetching a global nav and footer, etc, in Page.
+- [ ] Class to manage CLI
 - [ ] File loader
   Subclasses, especially.
   Could just use regular `require` lines.

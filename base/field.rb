@@ -1,7 +1,53 @@
-  # A Field is an object containing a value and other attributes and
-  # methods for setting, validating, retrieving, and rendering that
-  # value.
+# A Field is an object containing a value and other attributes and
+# methods for setting, validating, retrieving, and rendering that
+# value.
+module Base
   class Field
+
+    def self.specs_prefix
+      ::Templates::Specs::Fields
+    end
+
+
+    def self.from_plan(name, attrs = { })
+      if (self.specs_prefix.const_defined?(name))
+        return self.make("#{self.specs_prefix}::#{name}".to_const, attrs)
+      else
+        raise "Can't create a `#{name}` field: that module doesn't exist in `#{self.specs_prefix}`."
+      end
+    end
+
+    def self.make(spec, attrs = { })
+      if (spec.respond_to?(:fields))
+        return self.make_compound(spec, attrs)
+      else
+        return self.make_simple(spec, attrs)
+      end
+    end
+
+    def self.make_simple(spec, attrs = { })
+      field = "Base::Fields::#{spec.type}".to_const.new(attrs)
+      field.extend(spec)
+      return field
+    end
+
+    def self.make_compound(spec, attrs = { })
+      field = (attrs.has_key?(:_self)) ? "Base::Fields::#{spec.type}".to_const.new(attrs[:_self]) : "Base::Fields::#{spec.type}".to_const.new()
+      field.extend(spec)
+
+      fields = { }
+      spec.fields(attrs.select { |k,v| k != :_self }).each do |key,plan|
+        if (attrs.has_key?(key))
+          fields[key] = self.from_plan(plan.keys[0], plan.values[0].merge(attrs[key]))
+        else
+          fields[key] = self.from_plan(plan.keys[0], plan.values[0])
+        end
+      end
+      field.set_fields!(fields)
+
+      return field
+    end
+
     # Field.attrs :: void -> Hash
     # Field.attrs returns a hash of attributes related to the value
     # this Field can hold. Each subclass can set its own `attrs`.
@@ -19,7 +65,7 @@
     # Field.page_files_dir returns the directory that contains the
     # field templates as snippets of an HTML page.
     def self.page_files_dir
-      "templates/fields"
+      "templates/specs/fields"
     end
 
     # Field.form_files_dir :: void -> string
@@ -63,14 +109,7 @@
     # Each Field can implement its own `validate` method which must
     # have the signature `a -> b|nil`. If it doesn't, the field's type
     def validate(val)
-      begin
-        class_name = "FieldType::#{self.class.type.to_s}"
-        class_ref = Object.const_get(type_class)
-        return class_ref::validate(val)
-      rescue Exception => e
-        puts "A field must specify a `type` and a `validate` method: #{e.message}"
-        return nil
-      end
+      raise "A Field must define a `validate` method."
     end
 
     # set_if_valid! :: a -> b|nil
@@ -111,4 +150,9 @@
     def render(filename)
       Render.template(binding(), filename)
     end
+
   end
+end
+
+
+Base.autoload(:Fields, "#{__dir__}/fields/_autoload.rb")

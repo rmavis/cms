@@ -1,7 +1,8 @@
 require 'erb'
 
 
-  # The Render class exists to help render templates.
+# The Render class exists to help render templates.
+module Base
   class Render
     @@counter = 0
 
@@ -49,3 +50,4 @@ require 'erb'
     #   end
     # end
   end
+end

@@ -1,75 +1,66 @@
-module Pages
-  class PageGeneric < Base::Page
-    # PageGeneric.fields :: void -> hash
-    def self.fields
-      {
-        :meta => Base::Field::Compound::Meta.new(
-          {
+module Templates::Specs::Pages::Generic
+  # This is the Template type.
+  def self.type
+    :Page
+  end
+
+  # Generic.fields :: void -> hash
+  def self.fields
+    {
+      :meta => {
+        :Meta => {
+          :_self => {
             :required => true,
-          }
-        ),
-        :cover_image => Base::Field::Compound::ImageAndText.new,
-        :image_pair => Base::Field::Compound::ImagePair.new,
-        :body => Base::Field::Collection::BodyBlocks.new(
-          {
-            :required => true
           },
-          # {
-          #   :image => {:limit => 1}
-          # },
-        ),
-        :this_year => Base::Field::ThisYear.new,
-        :make_md5 => Base::Field::MD5.new,
-      }
-    end
+          :author => {
+            :required => true,
+          },
+        },
+      },
+      :cover_image => :ImageAndText,
+      :image_pair => :ImagePair,
+      :body => {
+        :BodyBlocks => {
+          :self => {
+            :required => true,
+          },
+        },
+      },
+      :this_year => :ThisYear,
+      :make_md5 => :MD5,
+    }
+  end
 
-    # PageGeneric.page_file :: void -> string
-    def self.page_file
-      "templates/pages/generic.html.erb"
-    end
+  # Generic.page_file :: void -> string
+  def self.page_file
+    "#{DirMap.get[:views]}/pages/generic.html.erb"
+  end
 
-    # PageGeneric.form_file :: void -> string
-    def self.form_file
-      "templates/admin/forms/generic.html.erb"
-    end
+  # body_fields :: void -> [Field]
+  # body_fields returns an array of Fields to be included in an
+  # HTML page's `body` element.
+  def body_fields
+    self.make_fields(
+      [
+        :cover_image,
+        :image_pair,
+        :body,
+        :this_year,
+      ]
+    )
+  end
 
-    # PageGeneric.form_attrs :: void -> hash
-    # The form_attrs are used in the form's HTML in a simple key->val
-    # pattern for the `form` element's attributes.
-    def self.form_attrs
-      {
-        :action => '/admin/edit/forms/generic',
-        :method => 'post',
-        :name => 'form--generic',
-      }
-    end
-
-    # body_fields :: void -> [Field]
-    # body_fields returns an array of Fields to be included in an
-    # HTML page's `body` element.
-    def body_fields
-      self.make_fields(
-        [
-          :cover_image,
-          :image_pair,
-          :body,
-          :this_year,
-        ]
-      )
-    end
-
-    # form_fields :: void -> [Field]
-    # form_fields returns an array of Fields to be included in an
-    # HTML form.
-    def form_fields
-      self.make_fields(
-        [
-          :meta,
-          :cover_image,
-          :image_pair,
-          :body,
-        ]
-      )
-    end
+  # form_fields :: void -> [Field]
+  # form_fields returns an array of Fields to be included in an
+  # HTML form.
+  def form_fields
+    self.make_fields(
+      [
+        :meta,
+        :cover_image,
+        :image_pair,
+        :body,
+      ]
+    )
   end
 end

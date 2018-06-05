@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <%= self.render("#{DirMap.snippet_views}/generic-head.html.erb") %>
+
+    <body>
+        <% self.body_fields.each do |field| %>
+            <%= field.to_view %>
+        <% end %>
+    </body>
+</html>

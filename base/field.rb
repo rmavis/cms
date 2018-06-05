@@ -13,44 +13,34 @@ module Base
     end
 
 
-    def self.from_plan(name, attrs = { })
+    # Field.from_plan :: (spec, attrs, val) -> Field
+    #   spec = (symbol) the name of the field's template spec
+    #          e.g., :Meta, :BodyBlocks, etc.
+    #   attrs = (hash) the field's attributes
+    #   val = (var) the field's value, which will be set if valid
+    def self.from_plan(name, attrs = { }, value = nil)
       if (self.specs_prefix.const_defined?(name))
-        return self.make("#{self.specs_prefix}::#{name}".to_const, attrs)
+        spec = "#{self.specs_prefix}::#{name}".to_const
+        type = "#{self.fields_prefix}::#{spec.type}".to_const
+        return type.make(spec, attrs, value)
       else
         raise "Can't create a `#{name}` field: that module doesn't exist in `#{self.specs_prefix}`."
       end
     end
 
-    def self.make(spec, attrs = { })
-      if (spec.respond_to?(:fields))
-        return self.make_compound(spec, attrs)
-      else
-        return self.make_simple(spec, attrs)
-      end
-    end
-
-    def self.make_simple(spec, attrs = { })
-      field = "#{self.fields_prefix}::#{spec.type}".to_const.new(attrs)
-      field.extend(spec)
-      return field
-    end
-
-    def self.make_compound(spec, attrs = { })
-      field = (attrs.has_key?(:_self)) ? "#{self.fields_prefix}::#{spec.type}".to_const.new(attrs[:_self]) : "#{self.fields_prefix}::#{spec.type}".to_const.new()
-      field.extend(spec)
-
-      fields = { }
-      spec.fields(attrs.select { |k,v| k != :_self }).each do |key,plan|
-        if (attrs.has_key?(key))
-          fields[key] = self.from_plan(plan.keys[0], plan.values[0].merge(attrs[key]))
-        else
-          fields[key] = self.from_plan(plan.keys[0], plan.values[0])
-        end
-      end
-      field.set_fields!(fields)
-
-      return field
-    end
+    # def self.make(spec, attrs = { })
+    #   if (spec.respond_to?(:fields))
+    #     if (spec.type == :Compound)
+    #       return self.make_compound(spec, attrs)
+    #     elsif (spec.type == :Collection)
+    #       return self.make_collection(spec, attrs)
+    #     else
+    #       raise "Invalid compound field type `#{spec.type}`."
+    #     end
+    #   else
+    #     return self.make_simple(spec, attrs)
+    #   end
+    # end
 
     # Field.attrs :: void -> Hash
     # Field.attrs returns a hash of attributes related to the value
@@ -63,6 +53,21 @@ module Base
         :required => nil,
         :value => nil,
       }
+    end
+
+    # Field.make :: (spec, attrs, value) -> Field
+    #   spec = (string) the name of the field's template spec
+    #   attrs = (hash) the field's attributes
+    #   val = (var) the field's value, which will be set if valid
+    # Subclasses can override this method but those methods must have
+    # the same type signature.
+    def self.make(spec, attrs = { }, value = nil)
+      field = self.new(attrs)
+      field.extend(spec)
+      if (!value.nil?)
+        field.set_if_valid!(value)
+      end
+      return field
     end
 
 
@@ -99,7 +104,7 @@ module Base
     # Each Field can implement its own `validate` method which must
     # have the signature `a -> b|nil`. If it doesn't, the field's type
     def validate(val)
-      raise "A Field must define a `validate` method."
+      raise "A Field must define a `validate` method (#{self.class.name})."
     end
 
     # set_if_valid! :: a -> b|nil

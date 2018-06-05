@@ -2,6 +2,25 @@
 module Base::Fields
   class Compound < ::Base::Field
 
+    # Compound.make :: (spec, attrs, val) -> Compound
+    # For more, see `Field.make`.
+    def self.make(spec, attrs = { }, value = nil)
+      field = (attrs.has_key?(:_self)) ? self.new(attrs[:_self]) : self.new()
+      field.extend(spec)
+puts "MAKING COMPOUND FIELD: '#{spec}' :: '#{attrs}' :: '#{value}'"
+      fields = { }
+      spec.fields(attrs.select { |k,v| k != :_self }).each do |key,plan|
+puts "MAKING SUBFIELD: '#{key}' :: '#{plan}'"
+        field_type = plan.keys[0]
+        field_attrs = (attrs.has_key?(key)) ? plan.values[0].merge(attrs[key]) : plan.values[0]
+        field_val = ((value.is_a?(Hash)) && (value.has_key?(:nil))) ? 'ok' : 'nok'
+        fields[key] = ::Base::Field.from_plan(field_type, field_attrs, field_val)
+      end
+      field.set_fields!(fields)
+
+      return field
+    end
+
     # new :: hash -> Compound
     def initialize(attrs = { })
       super(attrs)

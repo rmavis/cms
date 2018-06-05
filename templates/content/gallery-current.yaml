@@ -1,0 +1,21 @@
+---
+spec: Pages::Gallery
+meta:
+  title: Current Work
+  date: 2018-05-17
+  author: Richard Mavis
+  tags:
+    - work
+    - painting
+body:
+  -
+    text: Current Work
+  -
+    image:
+      file: /img/work/current/1.jpg
+  -
+    image:
+      file: /img/work/current/2.jpg
+  -
+    image:
+      file: /img/work/current/3.jpg

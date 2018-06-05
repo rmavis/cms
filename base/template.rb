@@ -26,9 +26,11 @@ module Base
         raise "Error: no `spec` specified in content file `#{filename}`."
       end
 
+      # Working on creating fields from specs and compound/collection
+      # field, in particular for collections, which need to map
+      # one-to-many from the spec to the content
       template_spec = "#{self.specs_prefix}::#{content[:spec]}".to_const
-      fields = self.load_fields(template_spec)
-      template = "Base::Templates::#{template_spec.type}".to_const.new(fields)
+      template = "::Base::Templates::#{template_spec.type}".to_const.new(self.load_fields(template_spec))
       template.extend(template_spec)
 
       template_spec.fields.each do |key,_val|
@@ -39,19 +41,44 @@ module Base
         end
       end
 
+      # fields = self.make_fields(template_spec, content)
+      # template.set_fields!(fields)
+
       return template
     end
 
     # Template.load_fields :: Spec -> {Fields}
     # The keys of the Fields hash will be identical to the Spec's
     # `fields` hash, but the values will be with Field objects.
-    def self.load_fields(template_spec)
+    def self.load_fields(template_spec, content = { })
       fields = { }
 
       template_spec.fields.each do |key,val|
         if (val.is_a?(Symbol))
           fields[key] = Field.from_plan(val)
         elsif (val.is_a?(Hash))
+          # There should only be one of each `key` in the spec,
+          # this is just an easy way to reference the values.
+          val.each do |_key,_val|
+            fields[key] = Field.from_plan(_key, _val)
+          end
+        else
+          raise "The classes of a Spec's `fields` must be specified as a Symbol or a Hash."
+        end
+      end
+
+      return fields
+    end
+
+    def self.make_fields(template_spec, content)
+      fields = { }
+
+      template_spec.fields.each do |key,val|
+        if (val.is_a?(Symbol))
+          fields[key] = Field.from_plan(val)
+        elsif (val.is_a?(Hash))
+          # There should only be one of each `key` in the spec,
+          # this is just an easy way to reference the values.
           val.each do |_key,_val|
             fields[key] = Field.from_plan(_key, _val)
           end
@@ -69,6 +96,10 @@ module Base
     end
 
     attr_reader :fields
+
+    def set_fields!(fields)
+      @fields = fields
+    end
 
     # to_input_view :: void -> string
     # to_input_view renders the current Template as an HTML form, meaning

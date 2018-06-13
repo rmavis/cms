@@ -15,6 +15,8 @@ class CLI
     cmd = args[0].downcase
     if (cmd == 'html')
       self.for_each_file(:yaml_to_html, args.slice(1, args.length - 1))
+    elsif (cmd == 'yaml')
+      self.for_each_file(:yaml_to_yaml, args.slice(1, args.length - 1))
     else
     end
   end
@@ -26,7 +28,11 @@ class CLI
   end
 
   def self.yaml_to_html(file)
-    puts Base::Template.from_yaml(file).to_view
+    puts ::Base::Template.from_yaml(file).to_view
+  end
+
+  def self.yaml_to_yaml(file)
+    puts ::Base::Template.from_yaml(file).to_yaml
   end
 
 end

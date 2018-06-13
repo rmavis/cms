@@ -7,13 +7,12 @@ module Base::Fields
     def self.make(spec, attrs = { }, value = nil)
       field = (attrs.has_key?(:_self)) ? self.new(attrs[:_self]) : self.new()
       field.extend(spec)
-puts "MAKING COMPOUND FIELD: '#{spec}' :: '#{attrs}' :: '#{value}'"
       fields = { }
+
       spec.fields(attrs.select { |k,v| k != :_self }).each do |key,plan|
-puts "MAKING SUBFIELD: '#{key}' :: '#{plan}'"
         field_type = plan.keys[0]
         field_attrs = (attrs.has_key?(key)) ? plan.values[0].merge(attrs[key]) : plan.values[0]
-        field_val = ((value.is_a?(Hash)) && (value.has_key?(:nil))) ? 'ok' : 'nok'
+        field_val = ((value.is_a?(Hash)) && (value.has_key?(key))) ? value[key] : nil
         fields[key] = ::Base::Field.from_plan(field_type, field_attrs, field_val)
       end
       field.set_fields!(fields)
@@ -37,22 +36,21 @@ puts "MAKING SUBFIELD: '#{key}' :: '#{plan}'"
     # A compound field's subfields can be either simple fields or
     # other compound fields. Either way, the field will have a
     # `set_if_valid!` method.
-    def set_if_valid!(val)
-      if (!val.is_a?(Hash))
-        raise "Error: a Compound field must be validated with a Hash."
-      end
-
-      self.fields.each do |k,f|
-        if (val.has_key?(k))
-          if (f.set_if_valid!(val[k]).nil?)
-            return nil
-          end
-        elsif (f.attrs[:required])
-          raise "Error: the required sub-field keyed on `#{k}` is missing."
-        end
-      end
-      return true
-    end
+    # def set_if_valid!(val)
+    #   if (!val.is_a?(Hash))
+    #     raise "Error: a Compound field must be validated with a Hash."
+    #   end
+    #   self.fields.each do |k,f|
+    #     if (val.has_key?(k))
+    #       if (f.set_if_valid!(val[k]).nil?)
+    #         return nil
+    #       end
+    #     elsif (f.attrs[:required])
+    #       raise "Error: the required sub-field keyed on `#{k}` is missing."
+    #     end
+    #   end
+    #   return true
+    # end
 
     # get_out_val :: void -> hash
     # get_out_val returns a hash shaped just like the class' `fields`

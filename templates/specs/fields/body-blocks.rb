@@ -21,6 +21,6 @@ module Templates::Specs::Fields::BodyBlocks
   end
 
   def view_file
-    "_compound.html.erb"
+    "_collection.html.erb"
   end
 end

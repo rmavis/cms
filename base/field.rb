@@ -28,19 +28,18 @@ module Base
       end
     end
 
-    # def self.make(spec, attrs = { })
-    #   if (spec.respond_to?(:fields))
-    #     if (spec.type == :Compound)
-    #       return self.make_compound(spec, attrs)
-    #     elsif (spec.type == :Collection)
-    #       return self.make_collection(spec, attrs)
-    #     else
-    #       raise "Invalid compound field type `#{spec.type}`."
-    #     end
-    #   else
-    #     return self.make_simple(spec, attrs)
-    #   end
-    # end
+    # Field.make :: (spec, attrs, value) -> Field
+    # For type definitions, see `from_plan`.
+    # Subclasses can override this method but those methods must have
+    # the same type signature.
+    def self.make(spec, attrs = { }, value = nil)
+      field = self.new(attrs)
+      field.extend(spec)
+      if (!value.nil?)
+        field.set_if_valid!(value)
+      end
+      return field
+    end
 
     # Field.attrs :: void -> Hash
     # Field.attrs returns a hash of attributes related to the value
@@ -53,21 +52,6 @@ module Base
         :required => nil,
         :value => nil,
       }
-    end
-
-    # Field.make :: (spec, attrs, value) -> Field
-    #   spec = (string) the name of the field's template spec
-    #   attrs = (hash) the field's attributes
-    #   val = (var) the field's value, which will be set if valid
-    # Subclasses can override this method but those methods must have
-    # the same type signature.
-    def self.make(spec, attrs = { }, value = nil)
-      field = self.new(attrs)
-      field.extend(spec)
-      if (!value.nil?)
-        field.set_if_valid!(value)
-      end
-      return field
     end
 
 

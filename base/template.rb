@@ -15,6 +15,10 @@ module Base
       "#{self.specs_prefix}::Pages"
     end
 
+    def self.base_templates_prefix
+      ::Base::Templates
+    end
+
     # Template.from_yaml :: string -> Template
     def self.from_yaml(filename)
       return self.from_content(YAML.load(File.read(filename)).transform_keys(lambda {|s| s.to_sym}))
@@ -26,41 +30,42 @@ module Base
         raise "Error: no `spec` specified in content file `#{filename}`."
       end
 
-      # Working on creating fields from specs and compound/collection
-      # field, in particular for collections, which need to map
-      # one-to-many from the spec to the content
       template_spec = "#{self.specs_prefix}::#{content[:spec]}".to_const
-      template = "::Base::Templates::#{template_spec.type}".to_const.new(self.load_fields(template_spec))
+      template = "#{self.base_templates_prefix}::#{template_spec.type}".to_const.new(
+        template_spec,
+        self.make_fields(template_spec, content)
+      )
       template.extend(template_spec)
-
-      template_spec.fields.each do |key,_val|
-        if (content.has_key?(key))
-          template.fields[key].set_if_valid!(content[key])
-        elsif (template.fields[key].attrs[:required])
-          raise "The required key `#{key}` is missing."
-        end
-      end
-
-      # fields = self.make_fields(template_spec, content)
-      # template.set_fields!(fields)
 
       return template
     end
 
-    # Template.load_fields :: Spec -> {Fields}
-    # The keys of the Fields hash will be identical to the Spec's
-    # `fields` hash, but the values will be with Field objects.
-    def self.load_fields(template_spec, content = { })
+    # Template.make_fields :: (spec, content) -> Fields
+    #   spec = (const) The name of the template spec to build,
+    #     e.g. `:Page`
+    #   content = (hash) The keys of which will be contained in the
+    #     hash returned by the spec's `fields` method, and the values
+    #     will be the content to make the `:value` of the newly-created
+    #     fields
+    #   Fields = (hash) The keys of which will be the same as given by
+    #     the content hash, and the values will be Field objects, the
+    #     values of which will be the values given by the content hash
+    def self.make_fields(template_spec, content = { })
       fields = { }
 
       template_spec.fields.each do |key,val|
         if (val.is_a?(Symbol))
-          fields[key] = Field.from_plan(val)
+          if (content.has_key?(key))
+            fields[key] = Field.from_plan(val, { }, content[key])
+          else
+            fields[key] = Field.from_plan(val)
+          end
         elsif (val.is_a?(Hash))
-          # There should only be one of each `key` in the spec,
-          # this is just an easy way to reference the values.
-          val.each do |_key,_val|
-            fields[key] = Field.from_plan(_key, _val)
+          # There should only be one of each `key` in the spec.
+          if (content.has_key?(key))
+            fields[key] = Field.from_plan(val.keys[0], val.values[0], content[key])
+          else
+            fields[key] = Field.from_plan(val.keys[0], val.values[0])
           end
         else
           raise "The classes of a Spec's `fields` must be specified as a Symbol or a Hash."
@@ -70,32 +75,18 @@ module Base
       return fields
     end
 
-    def self.make_fields(template_spec, content)
-      fields = { }
 
-      template_spec.fields.each do |key,val|
-        if (val.is_a?(Symbol))
-          fields[key] = Field.from_plan(val)
-        elsif (val.is_a?(Hash))
-          # There should only be one of each `key` in the spec,
-          # this is just an easy way to reference the values.
-          val.each do |_key,_val|
-            fields[key] = Field.from_plan(_key, _val)
-          end
-        else
-          raise "The classes of a Spec's `fields` must be specified as a Symbol or a Hash."
-        end
-      end
-
-      return fields
-    end
-
-    # new :: {Fields} -> Template
-    def initialize(fields)
+    # new :: (const, {Field}) -> Template
+    def initialize(spec, fields)
+      @spec = spec
       @fields = fields
     end
 
-    attr_reader :fields
+    attr_reader :spec, :fields
+
+    def set_spec!(spec)
+      @spec = spec
+    end
 
     def set_fields!(fields)
       @fields = fields
@@ -128,7 +119,7 @@ module Base
     # resulting string.
     def to_yaml
       fields = {
-        'spec' => self.class.name.last('::'),
+        'spec' => self.spec_short_name,
       }
       self.fields.each do |k,f|
         fields[k.to_s] = f.get_out_val
@@ -148,6 +139,10 @@ module Base
         end
       end
       return fields
+    end
+
+    def spec_short_name
+      return self.spec.to_s.sub("#{Template.specs_prefix}::", '')
     end
 
   end

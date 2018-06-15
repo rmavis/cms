@@ -10,5 +10,11 @@ module Base::Fields
         return nil
       end
     end
+
+    # def each(block)
+    #   self.get_attr(:value).each do |val|
+    #     block.call(val)
+    #   end
+    # end
   end
 end

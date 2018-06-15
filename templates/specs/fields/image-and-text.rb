@@ -20,6 +20,10 @@ module Templates::Specs::Fields::ImageAndText
     }
   end
 
+  def type
+    "ImageAndText"
+  end
+
   # view_file :: void -> string
   def view_file
     "image-and-text.html.erb"

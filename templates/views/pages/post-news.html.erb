@@ -1,0 +1,27 @@
+<div class="news-post__wrap">
+    <div class="news-post-head__wrap">
+        <h2 class="news-post-head__title"><%= self.fields[:meta].fields[:title].get_out_val %></h2>
+        <div class="news-post-byline__wrap">
+            <span class="news-post-byline__author">By <%= self.fields[:meta].fields[:author].get_out_val %></span>
+            <span class="news-post-byline__date"><%= self.fields[:meta].fields[:date].get_out_val %>
+        </div>
+        <div class="news-post-tags__wrap">
+            <% self.fields[:meta].fields[:tags].get_attr(:value).each do |tag| %>
+                <span class="news-post-tags__tag"><%= tag %></span>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="news-post-body__wrap">
+        <% self.fields[:body].fields.each do |field| %>
+<%= field.type %>
+            <% if (field.type == 'PlainText') %>
+                <div class="news-post-body-copy__wrap">
+                    <%= field.get_out_val %>
+                </div>
+            <% elsif (field.type == 'ImageAndText') %>
+                <%= field.to_view %>
+            <% end %>
+        <% end %>
+    </div>
+</div>

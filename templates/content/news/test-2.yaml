@@ -1,0 +1,15 @@
+---
+spec: Posts::News
+meta:
+  title: This is the second news post
+  data: 2018-01-02
+  author: Great Good
+  tags:
+    - great
+    - good
+    - news
+body:
+  -
+    text: "We have great news!"
+  -
+    text: "It's so great!"

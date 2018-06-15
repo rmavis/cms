@@ -12,6 +12,7 @@ end
 
 {
   :Field => 'field.rb',
+  :Group => 'group.rb',
   :Template => 'template.rb',
   :Render => 'render.rb'
 }.each do |mod,file|

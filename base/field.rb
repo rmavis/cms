@@ -108,6 +108,16 @@ module Base
       end
     end
 
+    # type :: void -> string
+    # type returns the last segment of field's class name.
+    # The previous segments will be, e.g., `Base::Fields`, etc.
+    # It might be better to know the the segments that are safe to
+    # strip out rather than assume that only the last one is the
+    # most relevant. The user could define arbitrary subclasses.  #TODO
+    def type
+      self.class.name.split('::').last
+    end
+
     # to_view :: void -> string
     # Each Field can be rendered as (read-only) HTML, intended for a
     # web page. The subclass should specify the filename of the template

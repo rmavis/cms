@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages by tags</title>
+        <link rel="stylesheet" type="text/css" href="/main.css" />
+        <script type="text/javascript" src="/main.js"></script>
+    </head>
+
+    <body>
+        <% self.items.each do |group| %>
+            <div class="group__wrap">
+                <h4 class="group-tag__copy"><%= group[:tag] %></h4>
+                <div class="group-items__wrap">
+                    <% group[:items].each do |item| %>
+                        <span class="group-item__title"><%= item.fields[:meta].fields[:title].get_out_val %></span>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+    </body>
+</html>

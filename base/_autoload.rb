@@ -14,7 +14,8 @@ end
   :Field => 'field.rb',
   :Group => 'group.rb',
   :Template => 'template.rb',
-  :Render => 'render.rb'
+  :Render => 'render.rb',
+  :Renderable => 'renderable.rb'
 }.each do |mod,file|
   Base.autoload(mod, "#{__dir__}/#{file}")
 end

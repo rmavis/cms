@@ -2,7 +2,7 @@
 spec: Posts::News
 meta:
   title: This is the first news post
-  data: 2018-01-01
+  date: 2018-01-01
   author: Great Good
   tags:
     - great

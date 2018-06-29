@@ -1,14 +1,18 @@
 module Base
   class Group
+    include Renderable
 
     def self.from_spec(spec)
-      return self.make(
-               File.expand_path(spec.path),
-               lambda { |item| spec.filter(item) }
-             )
+      group = self.make(
+        File.expand_path(spec.path),
+        lambda { |item| spec.filter(item) },
+        lambda { |items| spec.prepare(items) }
+      )
+      group.extend(spec)
+      return group
     end
 
-    def self.make(path, filter)
+    def self.make(path, filter, prepare = nil)
       full_path = File.expand_path(path)
       if (!Dir.exist?(full_path))
         raise "Can't make group: directory `#{path}` doesn't exist."
@@ -26,8 +30,11 @@ module Base
         end
       end
 
-      group = self.new(items)
-      return group
+      if (prepare.nil?)
+          return self.new(items)
+      else
+        return self.new(prepare.call(items))
+      end
     end
 
 

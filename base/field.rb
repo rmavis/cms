@@ -78,6 +78,13 @@ module Base
       self.attrs[attr] = val
     end
 
+    # value :: void -> a
+    # value is a convenience method for retrieving the field's `value`
+    # from its attributes.
+    def value
+      self.attrs[:value]
+    end
+
     # get_out_val :: void -> a
     # get_out_val returns the current Field's `value`.
     def get_out_val

@@ -1,10 +1,11 @@
 * Notes
 There should be two ways to define groups: pre-defined, and ad hoc.
-Predefined groups should be defined in a spec class. Two methods: one to specify the path, one to filter the items.
-Ad hoc group should be defined by a (base) function, say `Group.of(path, filter-func)`.
-The Group object will contain an array of items, as a Collection field contains an array of hashes. The group can be modified in arbitrary ways before being rendered. This would allow for Table Of Content and Index pages, lists of news posts, etc. (the mutation function would receive the array of items and return an array of objects, and the details of those objects, how their properties are accessed, etc, will be left up to the spec and the view files)
-Can render ad hoc Groups like `Render.template(Group.of('path/to/files', filter-function), 'path/to/template/file.html.erb)`.
+Predefined groups should be defined in a spec class. Two required methods: one to specify the path, one to filter the items. One optional method: to prepare the items before piping them to the view.
+Ad hoc group should be defined by a (base) function, say `Group.of(path, filter-func, prepare-func)`.
+Can render ad hoc Groups like `Render.template(Group.of('path/to/files', filter, prepare), 'path/to/template/file.html.erb)`.
+The Group object will contain an array of items, as a Collection field contains an array of Fields. The group can be modified in arbitrary ways before being rendered. This would allow for Table Of Content and Index pages, lists of news posts, etc. (the mutation function would receive the array of items and return an array of objects, and the details of those objects, how their properties are accessed, etc, will be left up to the spec and the view files)
 
 * Parts
 - `path`: a string naming a directory of files. The files in this directory are candidates for inclusion in the collection
 - `filter`: a function. The item will be passed to it. If an item is returned, then it will be included in the group. If `nil`, then not.
+- `prepare`: a function. The items that cleared the `filter` will be grouped into an array and passed to this function.

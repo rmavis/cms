@@ -2,7 +2,7 @@
 spec: Posts::News
 meta:
   title: This is the third news post
-  data: 2018-01-03
+  date: 2018-01-03
   author: Great Good
   tags:
     - great

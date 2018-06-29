@@ -39,12 +39,7 @@ class CLI
   end
 
   def self.group_to_html(file)
-    group = ::Base::Group.from_spec(::Templates::Specs::Groups::News)
-    puts "GROUP: #{group.items.count} items"
-    group.items.each do |item|
-      puts "\nITEM:"
-      puts item.to_view
-    end
+    puts ::Base::Group.from_spec(::Templates::Specs::Groups::News).to_view
   end
 
 end

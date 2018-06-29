@@ -6,6 +6,7 @@
 # methods for reading and rendering those fields in various ways.
 module Base
   class Template
+    include Renderable
 
     def self.specs_prefix
       ::Templates::Specs
@@ -97,21 +98,6 @@ module Base
     # it collects and renders the `input_view_file`s of its fields.
     def to_input_view
       return Render.template(binding(), self.input_view_file)
-    end
-
-    # to_view :: void -> string
-    # to_view renders the current Template as an HTML page, meaning
-    # it renders and collects the `page_file` for each of its fields.
-    def to_view
-      return Render.template(binding(), "#{DirMap.page_views}/#{self.view_file}")
-    end
-
-    # render :: string -> string
-    # render is a convenience method. It receives a filename and
-    # passes that and a binding to the current Template to
-    # `Render.template`.
-    def render(filename)
-      Render.template(binding(), filename)
     end
 
     # to_yaml :: void -> string

@@ -10,4 +10,18 @@ module Templates::Specs::Groups::News
             (item[:meta][:tags].include?('news')))
   end
 
+  def self.prepare(items)
+    return self.sort_by_date(items)
+  end
+
+  def self.sort_by_date(items)
+    return items.sort do |fieldA, fieldB|
+      fieldA.fields[:meta].fields[:date].value <=> fieldB.fields[:meta].fields[:date].value
+    end
+  end
+
+  def view_file
+    "news-posts.html.erb"
+  end
+
 end

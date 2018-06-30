@@ -4,6 +4,7 @@ end
 
 {
   :BodyBlocks => 'body-blocks.rb',
+  :Bool => 'bool.rb',
   :Date => 'date.rb',
   :ImageAndText => 'image-and-text.rb',
   :ImagePair => 'image-pair.rb',

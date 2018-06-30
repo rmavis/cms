@@ -65,6 +65,12 @@ Page and Post specs should contain a couple instance methods:
 
 ## Groups
 
-Group specs differ from the others. Their purpose is different: rather than specifying an object, a Group spec specifies how to build a collection of objects. So it needs no `fields` method, no instance methods at all. Instead, it needs a few module methods:
+Group specs differ from the others. Their purpose is different: rather than specifying an object, a Group spec specifies how to build a collection of objects. So it needs no `fields` method, because it won't contain fields. Instead, it will contain `items`, and methods for determining exactly what those items are.
+
+All groups need a couple module methods:
 - path: which returns a (string) path to the directory to read through
 - filter, which receives a hash and returns a boolean indicating whether the object represented by that hash should be built and included in the group
+
+A group spec can also include a `prepare` method. If it does, the method must receive an array (of Templates) and return pretty much whatever. The purpose of the `prepare` method is to enable arbitrary transformation of the Templates that comprise the Group. If the spec defines this method, it will be called just before creating the Group. Else, not.
+
+A group spec should also define a `view_file` instance method. Groups, like Pages, will `extend` the spec, and thereby inherit its instance methods. The file path returned by the `view_file` method will be used in the same way it is with Pages, etc.

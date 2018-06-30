@@ -8,6 +8,7 @@ meta:
     - one
     - two
     - three
+  live: true
 cover_image:
   file: /path/to/cover-image.jpg
   caption: this is so nice

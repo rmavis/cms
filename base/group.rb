@@ -3,11 +3,18 @@ module Base
     include Renderable
 
     def self.from_spec(spec)
-      group = self.make(
-        File.expand_path(spec.path),
-        lambda { |item| spec.filter(item) },
-        lambda { |items| spec.prepare(items) }
-      )
+      if (spec.respond_to?(:prepare))
+        group = self.make(
+          File.expand_path(spec.path),
+          lambda { |item| spec.filter(item) },
+          lambda { |items| spec.prepare(items) }
+        )
+      else
+        group = self.make(
+          File.expand_path(spec.path),
+          lambda { |item| spec.filter(item) }
+        )
+      end
       group.extend(spec)
       return group
     end

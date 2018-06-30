@@ -8,6 +8,7 @@ meta:
     - great
     - good
     - news
+  live: true
 body:
   -
     text: "We have great news!"

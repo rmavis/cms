@@ -6,8 +6,8 @@ module Templates::Specs::Groups::News
 
   def self.filter(item)
     return ((item.has_key?(:meta)) &&
-            (item[:meta].has_key?(:tags)) &&
-            (item[:meta][:tags].include?('news')))
+            (item[:meta].has_key?(:live)) &&
+            (item[:meta][:live]))
   end
 
   def self.prepare(items)

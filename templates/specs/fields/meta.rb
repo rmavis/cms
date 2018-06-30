@@ -18,6 +18,9 @@ module Templates::Specs::Fields::Meta
       :tags => {
         :required => nil,
       },
+      :live => {
+        :required => nil,
+      },
     }.deep_merge(attrs)
 
     return {
@@ -25,6 +28,7 @@ module Templates::Specs::Fields::Meta
       :date => {:Date => _attrs[:date]},
       :author => {:PlainText => _attrs[:author]},
       :tags => {:Tags => _attrs[:tags]},
+      :live => {:Bool => _attrs[:live] },
     }
   end
 

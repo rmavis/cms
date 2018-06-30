@@ -4,9 +4,11 @@ end
 
 {
   :Asset => 'asset.rb',
+  :Bool => 'bool.rb',
   :Collection => 'collection.rb',
   :Compound => 'compound.rb',
   :Date => 'date-time.rb',
+  :Group => 'group.rb',
   :Number => 'number.rb',
   :PlainText => 'plain-text.rb',
   :Tags => 'tags.rb'

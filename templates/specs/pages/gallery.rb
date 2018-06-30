@@ -21,6 +21,12 @@ module Templates::Specs::Pages::Gallery
           },
         },
       },
+     :news => {
+        :Group => {
+          :spec => :News,
+          :limit => 2,
+        },
+      }
     }
   end
 

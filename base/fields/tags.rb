@@ -1,7 +1,8 @@
 module Base::Fields
   class Tags < PlainText
+
     # validate :: a -> [string]|nil
-    def self.validate(val)
+    def validate(val)
       if (val.is_a?(Array))
         return val.select { |s| s.is_a?(String) }
       elsif (val.is_a?(String))
@@ -16,5 +17,6 @@ module Base::Fields
     #     block.call(val)
     #   end
     # end
+
   end
 end

@@ -1,0 +1,16 @@
+---
+spec: News
+meta:
+  title: This is the third news post
+  date: 2018-01-03
+  author: Great Good
+  tags:
+    - great
+    - good
+    - news
+  live: true
+body:
+  -
+    text: "We have great news!"
+  -
+    text: "It's so great!"

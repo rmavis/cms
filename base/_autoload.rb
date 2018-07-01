@@ -11,6 +11,7 @@ end
 
 
 {
+  :Extendable => 'extendable.rb',
   :Field => 'field.rb',
   :Group => 'group.rb',
   :Template => 'template.rb',

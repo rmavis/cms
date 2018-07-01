@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <%= self.render("#{DirMap.snippet_views}/generic-head.html.erb") %>
+
+    <body>
+        <% self.body_fields.each do |field| %>
+            <%= field.to_view %>
+        <% end %>
+
+        <%
+        Group.make(
+            'local/content/news',
+            lambda do |item|
+              ((item.has_key?(:meta)) &&
+               (item[:meta].has_key?(:tags)) &&
+               (item[:meta][:tags].include?('news')))
+            end,
+            lambda do |items|
+              items.sort do |a,b|
+                a.fields[:meta].fields[:date].value <=> b.fields[:meta].fields[:date].value
+              end
+            end
+        ).items.each do |item|
+        %>
+            <%= item.to_view %>
+        <% end %>
+    </body>
+</html>

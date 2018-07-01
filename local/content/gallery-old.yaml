@@ -1,0 +1,22 @@
+---
+spec: Gallery
+meta:
+  title: Past Work
+  date: 2018-05-17
+  author: Richard Mavis
+  tags:
+    - work
+    - painting
+  live: true
+body:
+  -
+    text: Past Work
+  -
+    image:
+      file: work/past/1.jpg
+  -
+    image:
+      file: work/past/2.jpg
+  -
+    image:
+      file: work/past/3.jpg

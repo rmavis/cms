@@ -1,6 +1,7 @@
 module Base::Fields
   class Date < PlainText
-    def self.validate(val)
+
+    def validate(val)
       if ((val.is_a?(String)) &&
           # This could be expanded.  @TODO
           (m = val.match(/([0-9]{4})-([0-9]{2})-([0-9]{2})/)))
@@ -22,5 +23,6 @@ module Base::Fields
         self.attrs[:value].strftime("%F")
       end
     end
+
   end
 end

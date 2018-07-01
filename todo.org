@@ -1,5 +1,5 @@
 * Todo
-** Base [12/20]
+** Base [12/21]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -22,6 +22,19 @@
 - [ ] Build groups
 - [ ] How to specify Groups in Content files?
   What about a Group (base) field type?
+- [ ] How to specify a group of related objects in a specific order and by a specific key?
+  If a Group is an array, then this type is a hash.
+  Can call it a Set.
+  A Set maps slugs to objects.
+  Or just use a Compound field with a new data type: reference.
+  Can refer to things by slugs, file paths, etc?
+  Can make the `asset` type a `reference` type. Or can make `local_file` a subclass of the reference type.
+  Want to enable content entries like:
+  users:
+    - adrian
+    - benny
+    - charles
+  And then reference the full objects referenced by those slugs.
 - [ ] Improve organization of view templates
 - [ ] Need a way to easily identify a field's `type`
   Particularly for the templates, so can check `field.type` and react accordingly.

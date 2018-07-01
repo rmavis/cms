@@ -1,0 +1,25 @@
+---
+spec: Gallery
+meta:
+  title: Current Work
+  date: 2018-05-17
+  author: Richard Mavis
+  tags:
+    - work
+    - painting
+  live: true
+body:
+  -
+    text: Current Work
+  -
+    image:
+      file: work/current/1.jpg
+  -
+    image:
+      file: work/current/2.jpg
+  -
+    image:
+      file: work/current/3.jpg
+news:
+  - test-1
+  - test-3

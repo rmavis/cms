@@ -5,7 +5,7 @@ module Base
   class Field
 
     def self.specs_prefix
-      ::Templates::Specs::Fields
+      ::Local::Specs::Fields
     end
 
     def self.fields_prefix
@@ -33,8 +33,7 @@ module Base
     # Subclasses can override this method but those methods must have
     # the same type signature.
     def self.make(spec, attrs = { }, value = nil)
-      field = self.new(attrs)
-      field.extend(spec)
+      field = self.new(spec, attrs)
       if (!value.nil?)
         field.set_if_valid!(value)
       end
@@ -55,10 +54,11 @@ module Base
     end
 
 
-    # new :: Hash -> Field
+    # new :: (contant, hash) -> Field
     # Initialize a Field with a hash of atributes. The given hash
     # will be merged with the class's default attributes.
-    def initialize(attrs = { })
+    def initialize(spec, attrs = { })
+      self.extend(spec)
       @attrs = self.class.attrs.merge(attrs)
     end
 
@@ -93,7 +93,7 @@ module Base
 
     # validate :: m -> nil
     # Each Field can implement its own `validate` method which must
-    # have the signature `a -> b|nil`. If it doesn't, the field's type
+    # have the signature `a -> b|nil`.
     def validate(val)
       raise "A Field must define a `validate` method (#{self.class.name})."
     end

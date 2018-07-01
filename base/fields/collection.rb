@@ -10,8 +10,7 @@ module Base::Fields
 
     # Collection.make :: (spec, attrs, value) -> Collection
     def self.make(spec, attrs = { }, value = nil)
-      field = (attrs.has_key?(:_self)) ? self.new(attrs[:_self]) : self.new()
-      field.extend(spec)
+      field = (attrs.has_key?(:_self)) ? self.new(spec, attrs[:_self]) : self.new(spec)
 
       protos = { }
       rules = spec.fields(attrs.select { |k,v| k != :_self })
@@ -61,8 +60,8 @@ module Base::Fields
     # new :: (hash, hash) -> Collection
     # Initialize a new Collection with two attribute hashes, like
     # with a Compound Field.
-    def initialize(attrs = { })
-      super({:limit => nil}.merge(attrs))  # Does this :limit even make sense?  #TODO
+    def initialize(spec, attrs = { })
+      super(spec, {:limit => nil}.merge(attrs))  # Does this :limit even make sense?  #TODO
     end
 
     # set_if_valid! :: [hash] -> true|nil

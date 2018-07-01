@@ -6,14 +6,15 @@
 # methods for reading and rendering those fields in various ways.
 module Base
   class Template
+    include Extendable
     include Renderable
 
     def self.specs_prefix
-      ::Templates::Specs
+      ::Local::Specs
     end
 
-    def self.page_specs_prefix
-      "#{self.specs_prefix}::Pages"
+    def self.content_specs_prefix
+      "#{self.specs_prefix}::Content"
     end
 
     def self.base_templates_prefix
@@ -31,12 +32,11 @@ module Base
         raise "Error: no `spec` specified in content file `#{filename}`."
       end
 
-      template_spec = "#{self.specs_prefix}::#{content[:spec]}".to_const
+      template_spec = "#{self.content_specs_prefix}::#{content[:spec]}".to_const
       template = "#{self.base_templates_prefix}::#{template_spec.type}".to_const.new(
         template_spec,
         self.make_fields(template_spec, content)
       )
-      template.extend(template_spec)
 
       return template
     end
@@ -81,6 +81,21 @@ module Base
     def initialize(spec, fields)
       @spec = spec
       @fields = fields
+      self.extend(spec)
+      extend!(spec, [:content_path, :public_path, :view_file])
+
+      # This block defines instance methods for each of the given
+      # symbols if they are defined on the spec. Else, they will
+      # be inherited inherit from their class.
+      # [
+      #   :content_path,
+      #   :public_path,
+      #   :view_file,
+      # ].each do |meth|
+      #   if (self.spec.respond_to?(meth))
+      #     self.class.send(:define_method, meth, lambda { self.spec.send(meth) })
+      #   end
+      # end
     end
 
     attr_reader :spec, :fields
@@ -91,6 +106,14 @@ module Base
 
     def set_fields!(fields)
       @fields = fields
+    end
+
+    def content_path
+      DirMap.content
+    end
+
+    def public_path
+      DirMap.public
     end
 
     # to_input_view :: void -> string

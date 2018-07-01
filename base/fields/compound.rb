@@ -5,8 +5,7 @@ module Base::Fields
     # Compound.make :: (spec, attrs, val) -> Compound
     # For more, see `Field.make`.
     def self.make(spec, attrs = { }, value = nil)
-      field = (attrs.has_key?(:_self)) ? self.new(attrs[:_self]) : self.new()
-      field.extend(spec)
+      field = (attrs.has_key?(:_self)) ? self.new(spec, attrs[:_self]) : self.new(spec)
       fields = { }
 
       spec.fields(attrs.select { |k,v| k != :_self }).each do |key,plan|
@@ -21,8 +20,9 @@ module Base::Fields
     end
 
     # new :: hash -> Compound
-    def initialize(attrs = { })
-      super(attrs)
+    def initialize(spec, attrs = { })
+      super(spec, attrs)
+      self.extend(spec)
       @fields = { }
     end
 

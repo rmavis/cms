@@ -2,7 +2,7 @@
 
 # These two lines are crucial. #HERE
 require_relative 'base/_autoload.rb'
-require_relative 'templates/_autoload.rb'
+require_relative 'local/_autoload.rb'
 
 
 class CLI
@@ -39,11 +39,11 @@ class CLI
   end
 
   def self.group_to_html(file)
-    puts ::Base::Group.from_spec(::Templates::Specs::Groups::News).to_view
+    puts ::Base::Group.from_spec(::Local::Specs::Groups::News).to_view
   end
 
 end
 
 CLI.run(ARGV)
 
-# example: ruby cms.rb html templates/content/index.yaml
+# example: ruby cms.rb html local/content/index.yaml

@@ -1,0 +1,20 @@
+---
+spec: News
+meta:
+  title: This is the first news post
+  date: 2018-01-01
+  author: Great Good
+  tags:
+    - great
+    - good
+    - news
+  live: true
+body:
+  -
+    text: "We have great news!"
+  -
+    text: "It's so great!"
+  -
+    image:
+      file: path/to/image.jpg
+      caption: This is so great.

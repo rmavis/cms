@@ -1,5 +1,5 @@
 * Todo
-** Base [12/21]
+** Base [13/23]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -19,6 +19,8 @@
 - [X] File loader
   Subclasses, especially.
   Could just use regular `require` lines.
+- [X] Rename `templates/` to `local/`
+  And all module references.
 - [ ] Build groups
 - [ ] How to specify Groups in Content files?
   What about a Group (base) field type?
@@ -31,21 +33,25 @@
   Can make the `asset` type a `reference` type. Or can make `local_file` a subclass of the reference type.
   Want to enable content entries like:
   users:
-    - adrian
-    - benny
-    - charles
+  - adrian
+  - benny
+  - charles
   And then reference the full objects referenced by those slugs.
+- [ ] Make a `Markdown` field type?
+  Want to enable a way to separate big chunks of Markdown from normal YAML content types.
+  And it'd be super great if it could include bits of metadata in the markdown file.
+- [ ] Need a way to specify build procedures.
+  And run them.
+  To process/produce views from content files and pipe those into public files.
 - [ ] Improve organization of view templates
 - [ ] Need a way to easily identify a field's `type`
   Particularly for the templates, so can check `field.type` and react accordingly.
   Could add a `type` method in field specs.
   Could get it programmatically in Base::Field.
   Could set it in Base::Field.make when the the field is `extend`ed, say to (some part of) the spec's name.
-- [ ] Rename `templates/` to `site/`
-  And all module references.
 - [ ] Class to manage CLI
 - [ ] Router
-- [ ] Address all @TODOs
+- [ ] Address all TODOs
 
 ** Admin panel [0/4]
 - [ ] Admin login

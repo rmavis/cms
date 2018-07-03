@@ -12,5 +12,9 @@ module Base::Fields
       return field
     end
 
+    def to_view
+      self.fields[:in]
+    end
+
   end
 end

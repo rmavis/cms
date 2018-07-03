@@ -64,7 +64,7 @@ module Local::Specs::Fields::MarkdownFile
     return YAML.load(lines.join).transform_keys(lambda {|s| s.to_sym})
   end
 
-  def to_view
-    return ::Base::Render.template(binding(), "#{DirMap.field_views}/markdown-file.html.erb")
+  def view_file
+    "markdown-file.html.erb"
   end
 end

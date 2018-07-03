@@ -4,7 +4,7 @@ module Local::Specs::Fields::Date
   end
 
   # view_file :: void -> string
-  def self.view_file
+  def view_file
     "date.html.erb"
   end
 

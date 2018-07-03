@@ -18,4 +18,8 @@ module Local::Specs::Fields::MarkdownTransform
       :out => {:PlainText => _attrs[:out]},
     }
   end
+
+  def to_view
+    self.fields[:in].to_view
+  end
 end

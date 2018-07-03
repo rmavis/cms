@@ -9,6 +9,10 @@ module Base
     include Extendable
     include Renderable
 
+    def self.render_dir
+      DirMap.content_views
+    end
+
     def self.specs_prefix
       ::Local::Specs
     end
@@ -33,17 +37,25 @@ module Base
       end
 
       template_spec = "#{self.content_specs_prefix}::#{content[:spec]}".to_const
-      template = "#{self.base_templates_prefix}::#{template_spec.type}".to_const.new(
+      template = "#{self.base_templates_prefix}::#{template_spec.type}".to_const.make(
         template_spec,
-        self.make_fields(template_spec, content)
+        content
       )
 
       return template
     end
 
+    # Template.make :: (spec, content) -> Template
+    def self.make(template_spec, content)
+      self.new(
+        template_spec,
+        self.make_fields(template_spec, content)
+      )
+    end
+
     # Template.make_fields :: (spec, content) -> Fields
     #   spec = (const) The name of the template spec to build,
-    #     e.g. `:Page`
+    #     e.g. `:View`
     #   content = (hash) The keys of which will be contained in the
     #     hash returned by the spec's `fields` method, and the values
     #     will be the content to make the `:value` of the newly-created
@@ -83,19 +95,6 @@ module Base
       @fields = fields
       self.extend(spec)
       extend!(spec, [:content_path, :public_path, :view_file])
-
-      # This block defines instance methods for each of the given
-      # symbols if they are defined on the spec. Else, they will
-      # be inherited inherit from their class.
-      # [
-      #   :content_path,
-      #   :public_path,
-      #   :view_file,
-      # ].each do |meth|
-      #   if (self.spec.respond_to?(meth))
-      #     self.class.send(:define_method, meth, lambda { self.spec.send(meth) })
-      #   end
-      # end
     end
 
     attr_reader :spec, :fields
@@ -114,13 +113,6 @@ module Base
 
     def public_path
       DirMap.public
-    end
-
-    # to_input_view :: void -> string
-    # to_input_view renders the current Template as an HTML form, meaning
-    # it collects and renders the `input_view_file`s of its fields.
-    def to_input_view
-      return Render.template(binding(), self.input_view_file)
     end
 
     # to_yaml :: void -> string

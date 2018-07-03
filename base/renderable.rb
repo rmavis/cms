@@ -4,11 +4,9 @@ module Base
   module Renderable
 
     # to_view :: void -> string
-    # to_view renders the current Group as an HTML page, meaning
-    # it renders and collects the `view_file` for each of its fields.
+    # to_view renders the Template through its `view_file`.
     def to_view
-puts "HERE WITH #{self.view_file}"
-      return Render.template(binding(), "#{DirMap.page_views}/#{self.view_file}")
+      return Render.template(binding(), "#{self.class.render_dir}/#{self.view_file}")
     end
 
     # render :: string -> string

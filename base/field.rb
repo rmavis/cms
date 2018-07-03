@@ -3,6 +3,12 @@
 # value.
 module Base
   class Field
+    include Extendable
+    include Renderable
+
+    def self.render_dir
+      DirMap.field_views
+    end
 
     def self.specs_prefix
       ::Local::Specs::Fields
@@ -59,6 +65,7 @@ module Base
     # will be merged with the class's default attributes.
     def initialize(spec, attrs = { })
       self.extend(spec)
+      extend!(spec, [:view_file])
       @attrs = self.class.attrs.merge(attrs)
     end
 
@@ -129,9 +136,7 @@ module Base
     # Each Field can be rendered as (read-only) HTML, intended for a
     # web page. The subclass should specify the filename of the template
     # snippet in its class' `view_file` method.
-    def to_view
-      return Render.template(binding(), "#{DirMap.field_views}/#{self.view_file}")
-    end
+    # See Renderable.to_view
 
     # to_form :: void -> string
     # Each Field can be rendered as an input field in an HTML form.

@@ -1,4 +1,4 @@
 module Base::Templates
-  class Post < ::Base::Template
+  class View < ::Base::Template
   end
 end

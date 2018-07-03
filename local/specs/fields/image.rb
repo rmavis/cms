@@ -11,7 +11,7 @@ module Local::Specs::Fields::Image
     "#{DirMap.public}/img"
   end
 
-  def self.view_file
+  def view_file
     "image.html.erb"
   end
 

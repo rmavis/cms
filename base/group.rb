@@ -2,6 +2,10 @@ module Base
   class Group
     include Renderable
 
+    def self.render_dir
+      DirMap.content_views
+    end
+
     def self.from_spec(spec)
       if (spec.respond_to?(:prepare))
         group = self.make(
@@ -54,6 +58,5 @@ module Base
     def set_items!(items)
       @items = items
     end
-
   end
 end

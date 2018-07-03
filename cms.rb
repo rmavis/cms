@@ -39,7 +39,7 @@ class CLI
   end
 
   def self.group_to_html(file)
-    puts ::Base::Group.from_spec(::Local::Specs::Groups::News).to_view
+    puts ::Base::Group.from_spec(::Local::Specs::Groups::PagesByTags).to_view
   end
 
 end

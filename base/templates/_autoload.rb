@@ -3,9 +3,9 @@ end
 
 
 {
+  :Convertible => 'convertible.rb',
   :Form => 'form.rb',
-  :Page => 'page.rb',
-  :Post => 'post.rb'
+  :View => 'view.rb',
 }.each do |mod,file|
   Base::Templates.autoload(mod, "#{__dir__}/#{file}")
 end

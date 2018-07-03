@@ -1,24 +1,16 @@
 module Local::Specs::Content::MarkdownArticle
   def self.type
-    :Convertible
+    :View
   end
 
   def self.fields
     {
-      :files => {
-        :MarkdownTransform => {
-          :in => {
-            :required => true,
-          },
-          :out => {
-            :required => true,
-          },
-        },
-      }
+      :files => :MarkdownTransform,
     }
   end
 
+  # Defer the view to the transform field's view.
   def to_view
-    self.fields[:files].fields[:in].to_view
+    self.fields[:files].to_view
   end
 end

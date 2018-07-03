@@ -2,7 +2,7 @@
 
 Spec files specify how the objects that they relate to should be built.
 
-The Specs themselves shouldn't be thought of as objects -- instead, they are rules for how an object should be built. So Specs are not instantiable -- they should contain no Class definition, no `initialize` method, etc. Instead, they contain singleton methods:
+The Specs themselves shouldn't really be thought of as objects -- instead, they are rules for how an object should be built. So Specs are not instantiable -- they should contain no Class definition, no `initialize` method, etc. Instead, they can contain singleton methods, such as:
 - type: which returns a symbol naming the type of object (from the base types) to instantiate
 - content_path: which returns a string naming the directory where the content files based on the spec are stored
 - public_path: which returns a string naming the directory where the view files should be output
@@ -45,7 +45,7 @@ In this hash, the top-level keys map to keys that will be used in the content (y
 
 The `content_path`, `public_path`, and `view_file` methods are optional. If they are not specified in the spec, then they will be inherited from the Template/Field that the Spec specifies as its `type`.
 
-The Spec can contain instance methods. When the object (a Page, Field, etc) is built from the Spec, the object will `extend` the Spec, thereby inheriting those instance methods.
+All this said, the Spec can contain instance methods. When the object (a Template, Field, etc) is built from the Spec, the object will `extend` the Spec, thereby inheriting those instance methods.
 
 
 ## Fields
@@ -59,10 +59,13 @@ Specs for simple fields should contain a couple instance methods:
 Specs for compound fields don't need those methods -- they will call them on their member fields.
 
 
-## Pages & Posts
+## Content
 
-Page and Post specs should contain a couple instance methods:
-- body_fields: which returns an array of Fields that should be included in the page's `body` element
+Content specs will be instantiated by the their base Template `type` class. Like Compound Fields, they should also contain:
+- a `fields` method that specifies their components
+- a `view_file` method that species a renderable template file
+
+Aside from those three, Content specs should be built to suit, providing what their base types require.
 
 
 ## Groups
@@ -76,3 +79,16 @@ All groups need a couple module methods:
 A group spec can also include a `prepare` method. If it does, the method must receive an array (of Templates) and return pretty much whatever. The purpose of the `prepare` method is to enable arbitrary transformation of the Templates that comprise the Group. If the spec defines this method, it will be called just before creating the Group. Else, not.
 
 A group spec should also define a `view_file` method. This will work as it does for Pages, etc.
+
+
+## Transclusion (kinda sorta)
+
+Sometimes it's more convenient to write/store content in formats other than YAML. Sometimes it's nice to store an article's metadata (in YAML) and body (in Markdown) in the same file. There's a reasonably easy and flexible way to accomplish that.
+
+This example will use the `MarkdownArticle` Content Spec and the `MarkdownTransform` and `MarkdownFile` Field Specs:
+- The content template (MarkdownArticle) has its own `to_view` method, which defers to (calls) the appropriate field's `to_view`.
+- The transform field (MarkdownTransform) specifies two methods, `(in|out)put_field`, which the parent class (FileTransform) uses in its own `to_view` procedure.
+- As part of that procedure, the FileTransform class will call `to_view` on the `input_field`, which will get written to the filename specified by the `output_field`. That file will be read and returned as the field's view.
+- The content that gets written to that file is determined by the `input_field`'s subfields. When that `input_field` is instantiated (see ReadableFile::make), its subfields will be the result of calling `read` on the ReadableFile's child (in this case `MarkdownFile`).
+
+It's a somewhat complex process but each part is small and functions pretty well as expected and within their own jurisdictions.

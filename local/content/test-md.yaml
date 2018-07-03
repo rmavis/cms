@@ -1,5 +1,5 @@
 ---
 spec: Article
 markdown:
-  in: articles/test.md
+  in: local/content/articles/test.md
   out: pages/test.html

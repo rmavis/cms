@@ -10,9 +10,9 @@ end
   :Entry => 'entry.rb',
   :FileTransform => 'file-transform.rb',
   :Group => 'group.rb',
-  :MutableFile => 'mutable-file.rb',
   :Number => 'number.rb',
   :PlainText => 'plain-text.rb',
+  :ReadableFile => 'readable-file.rb',
   :Reference => 'reference.rb',
   :StaticFile => 'static-file.rb',
   :Tags => 'tags.rb'

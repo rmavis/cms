@@ -1,6 +1,6 @@
 module Local::Specs::Fields::MarkdownFile
   def self.type
-    :MutableFile
+    :ReadableFile
   end
 
   def self.fields(attrs = { })
@@ -39,7 +39,7 @@ module Local::Specs::Fields::MarkdownFile
     }
   end
 
-  def self.mutate(file)
+  def self.read(file)
     return {
       :meta => self.read_metadata(file),
       :body => `multimarkdown -s #{file}`,

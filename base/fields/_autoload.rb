@@ -8,6 +8,7 @@ end
   :Compound => 'compound.rb',
   :Date => 'date-time.rb',
   :Entry => 'entry.rb',
+  :FileTransform => 'file-transform.rb',
   :Group => 'group.rb',
   :MutableFile => 'mutable-file.rb',
   :Number => 'number.rb',

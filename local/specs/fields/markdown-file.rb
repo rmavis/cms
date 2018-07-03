@@ -34,15 +34,15 @@ module Local::Specs::Fields::MarkdownFile
     }.deep_merge(attrs)
 
     return {
-      :meta => {:Meta => _attrs[:meta]},
+      :meta => {:ArticleMeta => _attrs[:meta]},
       :body => {:PlainText => _attrs[:body]},
     }
   end
 
   def self.mutate(file)
     return {
-      :meta => self.read_metadata(file)
-      :body => `multimarkdown -s #{file}`
+      :meta => self.read_metadata(file),
+      :body => `multimarkdown -s #{file}`,
     }
   end
 
@@ -61,7 +61,10 @@ module Local::Specs::Fields::MarkdownFile
       end
     end
     handle.close
-    return Yaml.load(lines.join).transform_keys(lambda {|s| s.to_sym})
+    return YAML.load(lines.join).transform_keys(lambda {|s| s.to_sym})
   end
 
+  def to_view
+    return ::Base::Render.template(binding(), "#{DirMap.field_views}/markdown-file.html.erb")
+  end
 end

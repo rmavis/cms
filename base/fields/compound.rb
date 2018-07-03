@@ -6,17 +6,24 @@ module Base::Fields
     # For more, see `Field.make`.
     def self.make(spec, attrs = { }, value = nil)
       field = (attrs.has_key?(:_self)) ? self.new(spec, attrs[:_self]) : self.new(spec)
-      fields = { }
+      field.set_fields!(self.make_subfields(spec, attrs.select { |k,v| k != :_self }, value))
+      return field
+    end
 
-      spec.fields(attrs.select { |k,v| k != :_self }).each do |key,plan|
+    # Compound.make_subfields :: (spec, attrs, vals) -> subfields
+    # For `spec` and `attrs`, see `Field.make`.
+    #   vals = A hash of values for the subfields.
+    #   subfields = A hash keyed on the same keys as `vals`, with the
+    #     values being Fields containing the corresponding values.
+    def self.make_subfields(spec, attrs, vals)
+      fields = { }
+      spec.fields(attrs).each do |key,plan|
         field_type = plan.keys[0]
         field_attrs = (attrs.has_key?(key)) ? plan.values[0].merge(attrs[key]) : plan.values[0]
-        field_val = ((value.is_a?(Hash)) && (value.has_key?(key))) ? value[key] : nil
+        field_val = ((vals.is_a?(Hash)) && (vals.has_key?(key))) ? vals[key] : nil
         fields[key] = ::Base::Field.from_plan(field_type, field_attrs, field_val)
       end
-      field.set_fields!(fields)
-
-      return field
+      return fields
     end
 
     # new :: hash -> Compound

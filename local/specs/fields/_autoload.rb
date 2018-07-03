@@ -3,6 +3,7 @@ end
 
 
 {
+  :ArticleMeta => 'article-meta.rb',
   :BodyBlocks => 'body-blocks.rb',
   :Bool => 'bool.rb',
   :Date => 'date.rb',
@@ -10,6 +11,8 @@ end
   :ImageAndText => 'image-and-text.rb',
   :ImagePair => 'image-pair.rb',
   :Image => 'image.rb',
+  :MarkdownFile => 'markdown-file.rb',
+  :MarkdownTransform => 'markdown-transform.rb',
   :MD5 => 'md5.rb',
   :Meta => 'meta.rb',
   :Password => 'password.rb',

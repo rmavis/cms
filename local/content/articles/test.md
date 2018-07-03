@@ -7,8 +7,9 @@ tags:
   - is
   - so
   - nice
-datePosted: 20180701
-dateUpdated: 20180701
+datePosted: 2018-07-01
+dateUpdated: 2018-07-01
+live: true
 ...
 
 

@@ -1,4 +1,4 @@
-module Local::Specs::Fields::Meta
+module Local::Specs::Fields::ArticleMeta
   def self.type
     :Compound
   end
@@ -9,13 +9,19 @@ module Local::Specs::Fields::Meta
       :title => {
         :required => true,
       },
-      :date => {
-        :required => nil,
-      },
       :author => {
         :required => nil,
       },
+      :blurb => {
+        :required => nil,
+      },
       :tags => {
+        :required => nil,
+      },
+      :datePosted => {
+        :required => nil,
+      },
+      :dateUpdated => {
         :required => nil,
       },
       :live => {
@@ -25,9 +31,11 @@ module Local::Specs::Fields::Meta
 
     return {
       :title => {:PlainText => _attrs[:title]},
-      :date => {:Date => _attrs[:date]},
       :author => {:PlainText => _attrs[:author]},
+      :blurb => {:PlainText => _attrs[:blurb]},
       :tags => {:Tags => _attrs[:tags]},
+      :datePosted => {:Date => _attrs[:datePosted]},
+      :dateUpdated => {:Date => _attrs[:dateUpdated]},
       :live => {:Bool => _attrs[:live]},
     }
   end

@@ -1,5 +1,5 @@
 ---
-spec: Article
-markdown:
+spec: MarkdownArticle
+files:
   in: local/content/articles/test.md
   out: pages/test.html

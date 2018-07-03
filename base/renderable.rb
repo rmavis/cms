@@ -7,6 +7,7 @@ module Base
     # to_view renders the current Group as an HTML page, meaning
     # it renders and collects the `view_file` for each of its fields.
     def to_view
+puts "HERE WITH #{self.view_file}"
       return Render.template(binding(), "#{DirMap.page_views}/#{self.view_file}")
     end
 

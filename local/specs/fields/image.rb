@@ -1,6 +1,6 @@
 module Local::Specs::Fields::Image
   def self.type
-    :LocalFile
+    :StaticFile
   end
 
   def self.content_path

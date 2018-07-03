@@ -1,0 +1,5 @@
+---
+spec: Article
+markdown:
+  in: articles/test.md
+  out: pages/test.html

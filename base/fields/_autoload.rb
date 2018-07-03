@@ -9,10 +9,11 @@ end
   :Date => 'date-time.rb',
   :Entry => 'entry.rb',
   :Group => 'group.rb',
-  :LocalFile => 'local-file.rb',
+  :MutableFile => 'mutable-file.rb',
   :Number => 'number.rb',
   :PlainText => 'plain-text.rb',
   :Reference => 'reference.rb',
+  :StaticFile => 'static-file.rb',
   :Tags => 'tags.rb'
 }.each do |mod,file|
   Base::Fields.autoload(mod, "#{__dir__}/#{file}")

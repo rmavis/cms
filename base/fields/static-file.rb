@@ -1,8 +1,8 @@
 module Base::Fields
-  class LocalFile < Reference
+  class StaticFile < Reference
     include ::Base::Extendable
 
-    # A LocalFile's `make` procedure is identical to that of the
+    # A StaticFile's `make` procedure is identical to that of the
     # base field's, so no additional work is required here.
     def self.make(spec, attrs = { }, value = nil)
       field = self.new(spec, attrs)

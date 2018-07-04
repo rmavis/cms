@@ -40,28 +40,37 @@ module Local::Specs::Fields::MarkdownFile
   end
 
   def self.read(file)
-    return {
-      :meta => self.read_metadata(file),
-      :body => `multimarkdown -s #{file}`,
-    }
-  end
+    meta = [ ]
+    more_meta = false
+    body = IO.popen("multimarkdown -s --nolabels", 'r+') do |mmd_io|
+      n = 0
+      IO.foreach(file) do |line|
+        if (n == 0)
+          if (line.match(/^-{3,}$/))
+            more_meta = true
+            meta.push(line)
+          else
+            mmd_io.puts line
+          end
+        elsif (more_meta)
+          meta.push(line)
+          if (line.match(/^\.{3,}$/))
+            more_meta = false
+          end
+        else
+          mmd_io.puts line
+        end
+        n += 1
+      end
 
-  def self.read_metadata(file)
-    lines = [ ]
-    block_open = false
-    handle = File.open(file, 'r')
-    handle.each_line do |line|
-      if (line.match(/^-{3,}$/))
-        block_open = true
-      elsif (line.match(/^\.{3,}$/))
-        break
-      end
-      if (block_open)
-        lines.push(line)
-      end
+      mmd_io.close_write
+      mmd_io.readlines.join
     end
-    handle.close
-    return YAML.load(lines.join).transform_keys(lambda {|s| s.to_sym})
+
+    return {
+      :meta => YAML.load(meta.join).transform_keys(lambda {|s| s.to_sym}),
+      :body => body
+    }
   end
 
   def view_file

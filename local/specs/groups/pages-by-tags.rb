@@ -25,7 +25,7 @@ module Local::Specs::Groups::PagesByTags
     tags.keys.sort!.each do |tag|
       groups.push({
                     :tag => tag,
-                    :items => tags[tag],
+                    :items => tags[tag].sort! { |a,b| a.fields[:meta].fields[:title].value <=> b.fields[:meta].fields[:title].value },
                   })
     end
 

@@ -1,5 +1,5 @@
 * Todo
-** Base [13/23]
+** Base [14/23]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -21,6 +21,12 @@
   Could just use regular `require` lines.
 - [X] Rename `templates/` to `local/`
   And all module references.
+- [X] Make a `Markdown` field type?
+  Want to enable a way to separate big chunks of Markdown from normal YAML content types.
+  And it'd be super great if it could include bits of metadata in the markdown file.
+  So two things:
+  - Use the `reference`/`entry` type to point to a markdown file, which will be parsed.
+  - Use the metadate in the markdown file as the Template's metadata.
 - [ ] Build groups
 - [ ] How to specify Groups in Content files?
   What about a Group (base) field type?
@@ -37,12 +43,6 @@
   - benny
   - charles
   And then reference the full objects referenced by those slugs.
-- [ ] Make a `Markdown` field type?
-  Want to enable a way to separate big chunks of Markdown from normal YAML content types.
-  And it'd be super great if it could include bits of metadata in the markdown file.
-  So two things:
-  - Use the `reference`/`entry` type to point to a markdown file, which will be parsed.
-  - Use the metadate in the markdown file as the Template's metadata.
 - [ ] Need a way to specify build procedures.
   And run them.
   To process/produce views from content files and pipe those into public files.

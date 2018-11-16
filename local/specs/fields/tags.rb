@@ -3,9 +3,13 @@ module Local::Specs::Fields::Tags
     :Tags
   end
 
-  # view_file :: void -> string
-  def view_file
-    "tags.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/tags.html.erb"
+    else
+      "#{DirMap.html_views}/fields/tags.html.erb"
+    end
   end
 
   # Tags.form_file :: void -> string

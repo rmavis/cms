@@ -1,7 +1,7 @@
 module Local::Specs::Groups::News
 
-  def self.path
-    "local/content/news"
+  def self.content_path
+    "#{DirMap.content}/news"
   end
 
   def self.filter(file)
@@ -29,8 +29,13 @@ module Local::Specs::Groups::News
     end
   end
 
-  def view_file
-    "news-posts.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/news-posts.html.erb"
+    else
+      "#{DirMap.html_views}/content/news-posts.html.erb"
+    end
   end
 
 end

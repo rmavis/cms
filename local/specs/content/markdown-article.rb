@@ -9,8 +9,9 @@ module Local::Specs::Content::MarkdownArticle
     }
   end
 
+  # to_view :: symbol -> string
   # Defer the view to the transform field's view.
-  def to_view
-    self.fields[:files].to_view
+  def to_view(type)
+    self.fields[:files].to_view(type)
   end
 end

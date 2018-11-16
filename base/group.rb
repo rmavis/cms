@@ -2,20 +2,16 @@ module Base
   class Group
     include Renderable
 
-    def self.render_dir
-      DirMap.content_views
-    end
-
     def self.from_spec(spec)
       if (spec.respond_to?(:prepare))
         group = self.make(
-          File.expand_path(spec.path),
+          File.expand_path(spec.content_path),
           lambda { |item| spec.filter(item) },
           lambda { |items| spec.prepare(items) }
         )
       else
         group = self.make(
-          File.expand_path(spec.path),
+          File.expand_path(spec.content_path),
           lambda { |item| spec.filter(item) }
         )
       end

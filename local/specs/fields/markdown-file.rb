@@ -82,7 +82,12 @@ module Local::Specs::Fields::MarkdownFile
     }
   end
 
-  def view_file
-    "markdown-file.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/markdown-file.html.erb"
+    else
+      "#{DirMap.html_views}/fields/markdown-file.html.erb"
+    end
   end
 end

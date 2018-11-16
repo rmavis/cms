@@ -31,8 +31,13 @@ module Local::Specs::Content::Generic
     }
   end
 
-  def view_file
-    "generic.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/generic.html.erb"
+    else
+      "#{DirMap.html_views}/content/generic.html.erb"
+    end
   end
 
   # body_fields :: void -> [Field]

@@ -3,9 +3,13 @@ module Local::Specs::Fields::Password
     :PlainText
   end
 
-  # view_file :: void -> string
-  def view_file
-    "password.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/password.html.erb"
+    else
+      "#{DirMap.html_views}/fields/password.html.erb"
+    end
   end
 
   # Password.form_file :: void -> string

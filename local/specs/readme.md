@@ -63,7 +63,7 @@ Specs for compound fields don't need those methods -- they will call them on the
 
 Content specs will be instantiated by the their base Template `type` class. Like Compound Fields, they should also contain:
 - a `fields` method that specifies their components
-- a `view_file` method that species a renderable template file
+- a `view_file` method that returns a renderable file for the desired type of view
 
 Aside from those three, Content specs should be built to suit, providing what their base types require.
 
@@ -73,7 +73,7 @@ Aside from those three, Content specs should be built to suit, providing what th
 Group specs differ from the others. Their purpose is different: rather than specifying an object, a Group spec specifies how to build a collection of objects. So it needs no `fields` method, because it won't contain fields. Instead, it will contain `items`, and methods for determining exactly what those items are.
 
 All groups need a couple module methods:
-- path: which returns a (string) path to the directory to read through
+- content_path: which returns a (string) path to the directory to read through
 - filter, which receives a hash and returns a boolean indicating whether the object represented by that hash should be built and included in the group
 
 A group spec can also include a `prepare` method. If it does, the method must receive an array (of Templates) and return pretty much whatever. The purpose of the `prepare` method is to enable arbitrary transformation of the Templates that comprise the Group. If the spec defines this method, it will be called just before creating the Group. Else, not.

@@ -11,7 +11,12 @@ module Local::Specs::Fields::MD5
     return OpenSSL::Digest.new('md5', val.to_s).hexdigest
   end
 
-  def view_file
-    "plain-text.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/plain-text.html.erb"
+    else
+      "#{DirMap.html_views}/fields/plain-text.html.erb"
+    end
   end
 end

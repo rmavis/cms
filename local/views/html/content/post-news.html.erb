@@ -20,7 +20,7 @@
                     <%= field.get_out_val %>
                 </div>
             <% elsif (field.type == 'ImageAndText') %>
-                <%= field.to_view %>
+                <%= field.to_view(:html) %>
             <% end %>
         <% end %>
     </div>

@@ -3,9 +3,13 @@ module Local::Specs::Fields::PlainText
     :PlainText
   end
 
-  # view_file :: void -> string
-  def view_file
-    "plain-text.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/plain-text.html.erb"
+    else
+      "#{DirMap.html_views}/fields/plain-text.html.erb"
+    end
   end
 
   # input_view_file :: void -> string

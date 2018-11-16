@@ -31,9 +31,13 @@ module Local::Specs::Content::Gallery
     }
   end
 
-  # view_file :: void -> string
-  def view_file
-    "gallery.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/gallery.html.erb"
+    else
+      "#{DirMap.html_views}/content/gallery.html.erb"
+    end
   end
 
   # body_fields :: void -> [Field]

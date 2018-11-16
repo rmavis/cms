@@ -20,7 +20,12 @@ module Local::Specs::Fields::BodyBlocks
     }
   end
 
-  def view_file
-    "_collection.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/_collection.html.erb"
+    else
+      "#{DirMap.html_views}/fields/_collection.html.erb"
+    end
   end
 end

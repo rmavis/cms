@@ -20,6 +20,8 @@ class CLI
     elsif (cmd == 'group')
       self.group_to_html('ok')
       # self.for_each_file(:group_to_html, args.slice(1, args.length - 1))
+    elsif (match = cmd.match(/view:([a-z]+)/))
+      self.make_view(match, args.slice(1, args.length - 1))
     else
     end
   end
@@ -31,7 +33,7 @@ class CLI
   end
 
   def self.yaml_to_html(file)
-    puts ::Base::Template.from_yaml(file).to_view
+    puts ::Base::Template.from_yaml(file).to_view(:html)
   end
 
   def self.yaml_to_yaml(file)
@@ -39,7 +41,13 @@ class CLI
   end
 
   def self.group_to_html(file)
-    puts ::Base::Group.from_spec(::Local::Specs::Groups::PagesByTags).to_view
+    puts ::Base::Group.from_spec(::Local::Specs::Groups::PagesByTags).to_view(:html)
+  end
+
+  def self.make_view(type, files)
+    files.each do |file|
+      puts ::Base::Template.from_yaml(file).to_view(type[1].to_sym)
+    end
   end
 
 end
@@ -47,3 +55,4 @@ end
 CLI.run(ARGV)
 
 # example: ruby cms.rb html local/content/index.yaml
+# example: ruby cms.rb view:html local/content/index.yaml

@@ -99,13 +99,13 @@ module Base::Fields
       end
     end
 
-    # to_view :: void -> string
-    def to_view
+    # to_view :: symbol -> string
+    def to_view(type)
       template = self.resolve
       if (template.is_a?(Array))
-        (template.collect { |_t| _t.to_view }).join("\n")
+        (template.collect { |_t| _t.to_view(type) }).join("\n")
       else
-        return template.to_view
+        return template.to_view(type)
       end
     end
 

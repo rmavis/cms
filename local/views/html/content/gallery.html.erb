@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <%= self.render("#{DirMap.snippet_views}/generic-head.html.erb") %>
+    <%= self.render("#{DirMap.html_views}/snippets/generic-head.html.erb") %>
 
     <body>
         <% self.body_fields.each do |field| %>
-            <%= field.to_view %>
+            <%= field.to_view(:html) %>
         <% end %>
 
         <%
@@ -22,7 +22,7 @@
             end
         ).items.each do |item|
         %>
-            <%= item.to_view %>
+            <%= item.to_view(:html) %>
         <% end %>
     </body>
 </html>

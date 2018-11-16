@@ -3,9 +3,13 @@ module Local::Specs::Fields::Date
     :PlainText
   end
 
-  # view_file :: void -> string
-  def view_file
-    "date.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/date.html.erb"
+    else
+      "#{DirMap.html_views}/fields/date.html.erb"
+    end
   end
 
   # input_view_file :: void -> string

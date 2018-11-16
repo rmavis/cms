@@ -3,10 +3,10 @@
 module Base
   module Renderable
 
-    # to_view :: void -> string
+    # to_view :: symbol -> string
     # to_view renders the Template through its `view_file`.
-    def to_view
-      return Render.template(binding(), "#{self.class.render_dir}/#{self.view_file}")
+    def to_view(type)
+      return Render.template(binding(), self.view_file(type))
     end
 
     # render :: string -> string

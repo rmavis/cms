@@ -27,6 +27,12 @@ module Local::Specs::Fields::MarkdownFile
         :dateUpdated => {
           :required => true,
         },
+        :index => {
+          :required => true,
+        },
+        :toc => {
+          :required => true,
+        },
       },
       :body => {
         :required => true,
@@ -68,7 +74,10 @@ module Local::Specs::Fields::MarkdownFile
     end
 
     return {
-      :meta => YAML.load(meta.join).transform_keys(lambda {|s| s.to_sym}),
+      # Will need to parse the meta lines separately. The keys in the
+      # file don't match the keys in the spec, but they can be transformed.
+      # Could just change the function passed to `transform_keys`?
+      :meta => YAML.load(meta.join).transform_keys(lambda {|s| s.to_camel_case.to_sym}),
       :body => body
     }
   end

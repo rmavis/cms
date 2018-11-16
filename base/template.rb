@@ -36,7 +36,11 @@ module Base
         raise "Error: no `spec` specified in content file `#{filename}`."
       end
 
-      template_spec = "#{self.content_specs_prefix}::#{content[:spec]}".to_const
+      # If the spec is a string, assume it was read from the content
+      # file and is shorthand, meaning it has only the final part of
+      # the name. This isn't ideal behavior -- maybe check for the
+      # leading `::`?  #TODO
+      template_spec = (content[:spec].is_a?(String)) ? "#{self.content_specs_prefix}::#{content[:spec]}".to_const : content[:spec]
       template = "#{self.base_templates_prefix}::#{template_spec.type}".to_const.make(
         template_spec,
         content

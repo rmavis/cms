@@ -82,4 +82,17 @@ class String
   def last(div)
     self.split(div).last
   end
+
+  # to_camel_case :: str? -> str
+  def to_camel_case(splitter = ' ')
+    words = self.split(splitter).reduce([ ]) do |parts, word|
+      if (parts.empty?)
+        parts.push(word.downcase)
+      else
+        parts.push(word.capitlize)
+      end
+      return parts
+    end
+    return words.join
+  end
 end

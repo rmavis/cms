@@ -6,6 +6,9 @@ module Local::Specs::Fields::ArticleMeta
   # Meta.fields :: hash -> hash
   def self.fields(attrs = { })
     _attrs = {
+      :slug => {
+        :required => nil,
+      },
       :title => {
         :required => true,
       },
@@ -24,18 +27,27 @@ module Local::Specs::Fields::ArticleMeta
       :dateUpdated => {
         :required => nil,
       },
+      :index => {
+        :required => nil,
+      },
+      :toc => {
+        :required => nil,
+      },
       :live => {
         :required => nil,
       },
     }.deep_merge(attrs)
 
     return {
+      :slug => {:PlainText => _attrs[:slug]},
       :title => {:PlainText => _attrs[:title]},
       :author => {:PlainText => _attrs[:author]},
       :blurb => {:PlainText => _attrs[:blurb]},
       :tags => {:Tags => _attrs[:tags]},
       :datePosted => {:Date => _attrs[:datePosted]},
       :dateUpdated => {:Date => _attrs[:dateUpdated]},
+      :index => {:PlainText => _attrs[:index]},
+      :toc => {:PlainText => _attrs[:toc]},
       :live => {:Bool => _attrs[:live]},
     }
   end

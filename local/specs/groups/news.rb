@@ -4,10 +4,19 @@ module Local::Specs::Groups::News
     "local/content/news"
   end
 
-  def self.filter(item)
-    return ((item.has_key?(:meta)) &&
-            (item[:meta].has_key?(:live)) &&
-            (item[:meta][:live]))
+  def self.filter(file)
+    if (File.extname(file) == ".yaml")
+      content = YAML.load(File.read(file)).transform_keys(lambda {|s| s.to_sym})
+      if ((item.has_key?(:meta)) &&
+          (item[:meta].has_key?(:live)) &&
+          (item[:meta][:live]))
+        return content
+      else
+        return nil
+      end
+    else
+      return nil
+    end
   end
 
   def self.prepare(items)

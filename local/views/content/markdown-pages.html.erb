@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <!-- will want to change this to a <head> that includes article-related fields, etc. -->
+    <%= self.render("#{DirMap.snippet_views}/generic-head.html.erb") %>
+
+    <body>
+        <%= self.render("#{DirMap.snippet_views}/common-page-header.html.erb") %>
+        <%= self.fields[:body].to_view %>
+        <%= self.render("#{DirMap.snippet_views}/common-page-footer.html.erb") %>
+    </body>
+</html>

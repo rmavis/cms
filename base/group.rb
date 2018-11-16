@@ -31,11 +31,10 @@ module Base
 
       items = [ ]
       Dir.foreach(full_path) do |file|
-        if ((!File.directory?(File.expand_path(file, full_path))) &&
-            (File.extname(file) == ".yaml"))  # This will need to expand.  #TODO
-          content = YAML.load(File.read(File.expand_path(file, full_path))).transform_keys(lambda {|s| s.to_sym})
-          check = filter.call(content)
-          if (check)
+        path = File.expand_path(file, full_path)
+        if (!File.directory?(path))
+          content = filter.call(path)
+          if (content)
             items.push(Template.from_content(content))
           end
         end

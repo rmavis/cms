@@ -24,9 +24,13 @@ module Local::Specs::Fields::ImageAndText
     "ImageAndText"
   end
 
-  # view_file :: void -> string
-  def view_file
-    "image-and-text.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/image-and-text.html.erb"
+    else
+      "#{DirMap.html_views}/fields/image-and-text.html.erb"
+    end
   end
 
   # ImageAndText.form_file :: void -> string

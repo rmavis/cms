@@ -11,14 +11,16 @@ module Base::Fields
       "#{DirMap.public}/#{self.output_field.value}"
     end
 
-    def to_view
-      self.make_output!
+    # to_view :: symbol -> string
+    def to_view(type)
+      self.make_output!(type)
       return self.output
     end
 
-    def make_output!
+    # make_output! :: symbol -> void
+    def make_output!(type)
       file = File.open(self.output_file, 'w')
-      file.write(self.input_field.to_view)
+      file.write(self.input_field.to_view(type))
       file.close
     end
 

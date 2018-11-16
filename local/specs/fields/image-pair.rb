@@ -25,9 +25,13 @@ module Local::Specs::Fields::ImagePair
     }
   end
 
-  # view_file :: void -> string
-  def view_file
-    "image-pair.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/image-pair.html.erb"
+    else
+      "#{DirMap.html_views}/fields/image-pair.html.erb"
+    end
   end
 
   # ImagePair.form_file :: void -> string

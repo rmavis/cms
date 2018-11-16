@@ -71,23 +71,23 @@ module Base::Fields
       return val
     end
 
-    # to_view :: void -> string
-    def to_view
+    # to_view :: symbol -> string
+    def to_view(type)
       if (self.respond_to?(:view_file))
-        return ::Base::Render.template(binding(), "#{DirMap.field_views}/#{self.view_file}")
+        return ::Base::Render.template(binding(), self.view_file(type))
       else
-        return self.render_fields(:to_view)
+        return self.render_fields(:to_view, type)
       end
     end
 
-    # render_fields :: symbol -> string
+    # render_fields :: (symbol, symbol) -> string
     # render_fields receives a symbol naming a Field class's render
-    # method. It returns the result of rendering and collecting each
-    # subfield with that method.
+    # method and the type of view to render. It returns the result
+    # of rendering and collecting each subfield with that method.
     def render_fields(meth)
       parts = [ ]
       self.fields.each do |k,f|
-        parts.push(f.send(meth))
+        parts.push(f.send(meth, type))
       end
       return parts.join('')
     end

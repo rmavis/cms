@@ -1,5 +1,5 @@
 <div class="news-posts__wrap">
     <% self.items.each do |item| %>
-        <%= item.to_view %>
+        <%= item.to_view(:html) %>
     <% end %>
 </div>

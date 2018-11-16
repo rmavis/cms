@@ -11,8 +11,13 @@ module Local::Specs::Fields::Image
     "#{DirMap.public}/img"
   end
 
-  def view_file
-    "image.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/image.html.erb"
+    else
+      "#{DirMap.html_views}/fields/image.html.erb"
+    end
   end
 
   def get_out_val

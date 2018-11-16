@@ -3,9 +3,13 @@ module Local::Specs::Fields::Bool
     :Bool
   end
 
-  # view_file :: void -> string
-  def view_file
-    "bool.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/bool.html.erb"
+    else
+      "#{DirMap.html_views}/fields/bool.html.erb"
+    end
   end
 
   # input_view_file :: void -> string

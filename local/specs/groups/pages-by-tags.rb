@@ -32,8 +32,13 @@ module Local::Specs::Groups::PagesByTags
     return groups
   end
 
-  def view_file
-    "pages-by-tags.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/pages-by-tags.html.erb"
+    else
+      "#{DirMap.html_views}/content/pages-by-tags.html.erb"
+    end
   end
 
 end

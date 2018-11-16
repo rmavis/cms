@@ -32,7 +32,12 @@ module Local::Specs::Fields::Meta
     }
   end
 
-  def view_file
-    "_compound.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/fields/_compound.html.erb"
+    else
+      "#{DirMap.html_views}/fields/_compound.html.erb"
+    end
   end
 end

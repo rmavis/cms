@@ -42,7 +42,12 @@ module Local::Specs::Content::News
     "#{DirMap.public}/news"
   end
 
-  def self.view_file
-    "post-news.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/post-news.html.erb"
+    else
+      "#{DirMap.html_views}/content/post-news.html.erb"
+    end
   end
 end

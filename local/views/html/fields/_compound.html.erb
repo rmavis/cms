@@ -1,5 +1,5 @@
 <div class="field-wrap field-wrap--compound">
     <% self.fields.each do |key,field| %>
-        <%= field.to_view %>
+        <%= field.to_view(:html) %>
     <% end %>
 </div>

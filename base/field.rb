@@ -6,10 +6,6 @@ module Base
     include Extendable
     include Renderable
 
-    def self.render_dir
-      DirMap.field_views
-    end
-
     def self.specs_prefix
       ::Local::Specs::Fields
     end

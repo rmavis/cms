@@ -39,7 +39,7 @@ module Local::Specs::Content::News
   end
 
   def self.public_path
-    "#{DirMap.public}/news"
+    "/news"
   end
 
   # view_file :: symbol -> string

@@ -4,11 +4,11 @@ module Local::Specs::Fields::Image
   end
 
   def self.content_path
-    self.public_path
+    "#{DirMap.public}/#{self.public_path}"
   end
 
   def self.public_path
-    "#{DirMap.public}/img"
+    "/img"
   end
 
   # view_file :: symbol -> string
@@ -21,7 +21,7 @@ module Local::Specs::Fields::Image
   end
 
   def get_out_val
-    "/#{self.public_path}/#{self.value}"
+    "#{self.public_path}/#{self.value}"
   end
 
   # Image.form_file :: void -> string

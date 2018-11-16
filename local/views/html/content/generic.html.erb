@@ -3,7 +3,7 @@
     <%= self.render("#{DirMap.html_views}/snippets/generic-head.html.erb") %>
 
     <body>
-        <% self.body_fields.each do |field| %>
+        <% self.view_fields(:html).each do |field| %>
             <%= field.to_view(:html) %>
         <% end %>
     </body>

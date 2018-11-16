@@ -40,15 +40,17 @@ module Local::Specs::Content::Gallery
     end
   end
 
-  # body_fields :: void -> [Field]
-  # body_fields returns an array of Fields to be included in an
-  # HTML page's `body` element. This is called in the template.
-  def body_fields
-    self.make_fields(
-      [
-        :body,
-        :news,
-      ]
-    )
+  # view_fields :: void -> [Field]
+  def view_fields(type)
+    if (type == :html)
+      self.make_fields(
+        [
+          :body,
+          :news,
+        ]
+      )
+    else
+      self.fields
+    end
   end
 end

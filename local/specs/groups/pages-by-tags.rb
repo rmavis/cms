@@ -1,7 +1,7 @@
 module Local::Specs::Groups::PagesByTags
 
-  def self.path
-    "local/content/news"
+  def self.content_path
+    "#{DirMap.content}/news"
   end
 
   def self.filter(item)

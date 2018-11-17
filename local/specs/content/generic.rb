@@ -1,4 +1,5 @@
 module Local::Specs::Content::Generic
+
   # This is the Template type.
   def self.type
     :View
@@ -31,15 +32,6 @@ module Local::Specs::Content::Generic
     }
   end
 
-  # view_file :: symbol -> string
-  def view_file(type)
-    if (type == :html)
-      "#{DirMap.html_views}/content/generic.html.erb"
-    else
-      "#{DirMap.html_views}/content/generic.html.erb"
-    end
-  end
-
   # view_fields :: void -> [Field]
   def view_fields(type)
     if (type == :html)
@@ -55,4 +47,23 @@ module Local::Specs::Content::Generic
       self.fields
     end
   end
+
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/generic.html.erb"
+    else
+      "#{DirMap.html_views}/content/generic.html.erb"
+    end
+  end
+
+  # output_file :: symbol -> string
+  def output_file(type)
+    if (type == :html)
+      "#{DirMap.public}/#{self.file_basename}.html"
+    else
+      "#{DirMap.public}/#{self.file_basename}.html"
+    end
+  end
+
 end

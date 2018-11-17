@@ -1,4 +1,5 @@
 module Local::Specs::Fields::MarkdownFile
+
   def self.type
     :ReadableFile
   end
@@ -90,4 +91,14 @@ module Local::Specs::Fields::MarkdownFile
       "#{DirMap.html_views}/fields/markdown-file.html.erb"
     end
   end
+
+  # output_file :: symbol -> string
+  def output_file(type)
+    if (type == :html)
+      "#{DirMap.public}/#{self.file_basename}.html"
+    else
+      "#{DirMap.public}/#{self.file_basename}.html"
+    end
+  end
+
 end

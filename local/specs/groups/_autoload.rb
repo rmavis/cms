@@ -3,6 +3,7 @@ end
 
 
 {
+  :MarkdownPages => 'markdown-pages.rb',
   :News => 'news.rb',
   :PagesByTags => 'pages-by-tags.rb',
 }.each do |mod,file|

@@ -128,7 +128,7 @@ module Base
       self.class.name.split('::').last
     end
 
-    # to_view :: void -> string
+    # to_view :: symbol -> string
     # Each Field can be rendered as (read-only) HTML, intended for a
     # web page. The subclass should specify the filename of the template
     # snippet in its class' `view_file` method.

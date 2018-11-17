@@ -1,4 +1,5 @@
 module Local::Specs::Content::MarkdownArticle
+
   def self.type
     :View
   end
@@ -14,4 +15,5 @@ module Local::Specs::Content::MarkdownArticle
   def to_view(type)
     self.fields[:files].to_view(type)
   end
+
 end

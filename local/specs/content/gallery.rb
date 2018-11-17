@@ -1,4 +1,5 @@
 module Local::Specs::Content::Gallery
+
   # This is the Template type.
   def self.type
     :View
@@ -31,15 +32,6 @@ module Local::Specs::Content::Gallery
     }
   end
 
-  # view_file :: symbol -> string
-  def view_file(type)
-    if (type == :html)
-      "#{DirMap.html_views}/content/gallery.html.erb"
-    else
-      "#{DirMap.html_views}/content/gallery.html.erb"
-    end
-  end
-
   # view_fields :: void -> [Field]
   def view_fields(type)
     if (type == :html)
@@ -53,4 +45,23 @@ module Local::Specs::Content::Gallery
       self.fields
     end
   end
+
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/gallery.html.erb"
+    else
+      "#{DirMap.html_views}/content/gallery.html.erb"
+    end
+  end
+
+  # output_file :: symbol -> string
+  def output_file(type)
+    if (type == :html)
+      "#{DirMap.public}/#{self.file_basename}.html"
+    else
+      "#{DirMap.public}/#{self.file_basename}.html"
+    end
+  end
+
 end

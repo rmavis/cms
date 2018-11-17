@@ -1,4 +1,5 @@
 module Local::Specs::Fields::ArticleMeta
+
   def self.type
     :Compound
   end
@@ -60,4 +61,5 @@ module Local::Specs::Fields::ArticleMeta
       "#{DirMap.html_views}/fields/_compound.html.erb"
     end
   end
+
 end

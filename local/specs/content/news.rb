@@ -1,4 +1,5 @@
 module Local::Specs::Content::News
+
   def self.type
     :View
   end
@@ -50,4 +51,14 @@ module Local::Specs::Content::News
       "#{DirMap.html_views}/content/post-news.html.erb"
     end
   end
+
+  # output_file :: symbol -> string
+  def output_file(type)
+    if (type == :html)
+      "#{DirMap.public}/#{self.file_basename}.html"
+    else
+      "#{DirMap.public}/#{self.file_basename}.html"
+    end
+  end
+
 end

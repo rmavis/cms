@@ -21,16 +21,34 @@ module Base
       ::Base::Templates
     end
 
+    # Template.make_slug :: string -> hash
+    def self.make_slug(filename)
+      {
+        :slug => File.basename(filename, ".*")
+      }
+    end
+
+    # Template.check_content_keys!? :: (hash, string?) -> bool
+    def self.check_content_keys!(content, source = nil)
+      [:spec, :slug].each do |key|
+        if (!content.has_key?(key))
+          if (source.nil?)
+            raise "Error: no `#{key}` specified in content: `#{content.to_s}`."
+          else
+            raise "Error: no `#{key}` specified for content in `#{source}`."
+          end
+        end
+      end
+    end
+
     # Template.from_yaml :: string -> Template
     def self.from_yaml(filename)
-      return self.from_content(YAML.load(File.read(filename)).transform_keys(lambda {|s| s.to_sym}))
+      return self.from_content(self.make_slug(filename).merge(YAML.load(File.read(filename)).transform_keys(lambda {|s| s.to_sym})), filename)
     end
 
     # Template.from_content :: hash -> Template
-    def self.from_content(content)
-      if (!content.has_key?(:spec))
-        raise "Error: no `spec` specified in content file `#{filename}`."
-      end
+    def self.from_content(content, source = nil)
+      self.check_content_keys!(content, source)
 
       # If the spec is a string, assume it was read from the content
       # file and is shorthand, meaning it has only the final part of
@@ -99,12 +117,16 @@ module Base
 
     attr_reader :spec, :fields
 
+    def set_fields!(fields)
+      @fields = fields
+    end
+
     def set_spec!(spec)
       @spec = spec
     end
 
-    def set_fields!(fields)
-      @fields = fields
+    def spec_short_name
+      return self.spec.to_s.sub("#{Template.specs_prefix}::", '')
     end
 
     def content_path
@@ -113,6 +135,10 @@ module Base
 
     def public_path
       DirMap.public
+    end
+
+    def file_basename
+      self.fields[:slug]
     end
 
     # to_yaml :: void -> string
@@ -140,10 +166,6 @@ module Base
         end
       end
       return fields
-    end
-
-    def spec_short_name
-      return self.spec.to_s.sub("#{Template.specs_prefix}::", '')
     end
 
   end

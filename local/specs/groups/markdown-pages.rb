@@ -1,7 +1,7 @@
 module Local::Specs::Groups::MarkdownPages
 
-  def self.path
-    "local/content/posts"
+  def self.content_path
+    "#{DirMap.content}/posts"
   end
 
   def self.page_spec
@@ -41,8 +41,13 @@ module Local::Specs::Groups::MarkdownPages
     end
   end
 
-  def view_file
-    "markdown-pages.html.erb"
+  # view_file :: symbol -> string
+  def view_file(type)
+    if (type == :html)
+      "#{DirMap.html_views}/content/markdown-pages.html.erb"
+    else
+      "#{DirMap.html_views}/content/markdown-pages.html.erb"
+    end
   end
 
 end

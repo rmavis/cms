@@ -43,7 +43,13 @@ module Base
 
     # Template.from_yaml :: string -> Template
     def self.from_yaml(filename)
-      return self.from_content(self.make_slug(filename).merge(YAML.load(File.read(filename)).transform_keys(lambda {|s| s.to_sym})), filename)
+      return self.from_content(
+               # If the `slug` is specified in the content, it will
+               # take precedence
+               self.make_slug(filename).merge(
+                 YAML.load(File.read(filename)).transform_keys(lambda {|s| s.to_sym})
+               ), filename
+             )
     end
 
     # Template.from_content :: hash -> Template
@@ -137,8 +143,12 @@ module Base
       DirMap.public
     end
 
-    def file_basename
-      self.fields[:slug]
+    def filename(type = nil)
+      if (type.nil?)
+        self.fields[:slug]
+      else
+        "#{self.fields[:slug]}.#{type}"
+      end
     end
 
     # to_yaml :: void -> string

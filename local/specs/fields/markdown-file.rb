@@ -95,9 +95,9 @@ module Local::Specs::Fields::MarkdownFile
   # output_file :: symbol -> string
   def output_file(type)
     if (type == :html)
-      "#{DirMap.public}/#{self.file_basename}.html"
+      "#{DirMap.public}/#{self.filename}.html"
     else
-      "#{DirMap.public}/#{self.file_basename}.html"
+      "#{DirMap.public}/#{self.filename}.html"
     end
   end
 

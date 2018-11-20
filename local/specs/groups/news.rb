@@ -7,9 +7,9 @@ module Local::Specs::Groups::News
   def self.filter(file)
     if (File.extname(file) == ".yaml")
       content = YAML.load(File.read(file)).transform_keys(lambda {|s| s.to_sym})
-      if ((item.has_key?(:meta)) &&
-          (item[:meta].has_key?(:live)) &&
-          (item[:meta][:live]))
+      if ((content.has_key?(:meta)) &&
+          (content[:meta].has_key?(:live)) &&
+          (content[:meta][:live]))
         return content
       else
         return nil
@@ -35,6 +35,15 @@ module Local::Specs::Groups::News
       "#{DirMap.html_views}/content/news-posts.html.erb"
     else
       "#{DirMap.html_views}/content/news-posts.html.erb"
+    end
+  end
+
+  # output_file :: symbol -> string
+  def output_file(type)
+    if (type == :html)
+      "#{DirMap.public}/news.html"
+    else
+      "#{DirMap.public}/news.html"
     end
   end
 

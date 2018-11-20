@@ -21,6 +21,12 @@ module Base
       ::Base::Templates
     end
 
+    def self.default_fields
+      {
+        :slug => nil,
+      }
+    end
+
     # Template.make_slug :: string -> hash
     def self.make_slug(filename)
       {
@@ -52,7 +58,7 @@ module Base
              )
     end
 
-    # Template.from_content :: hash -> Template
+    # Template.from_content :: (hash, string?) -> Template
     def self.from_content(content, source = nil)
       self.check_content_keys!(content, source)
 
@@ -88,7 +94,7 @@ module Base
     #     the content hash, and the values will be Field objects, the
     #     values of which will be the values given by the content hash
     def self.make_fields(template_spec, content = { })
-      fields = { }
+      fields = self.get_default_fields(content)
 
       template_spec.fields.each do |key,val|
         if (val.is_a?(Symbol))
@@ -109,6 +115,19 @@ module Base
         end
       end
 
+      return fields
+    end
+
+    # Template.get_default_fields :: (hash) -> hash
+    def self.get_default_fields(content)
+      fields = { }
+      self.default_fields.each_pair do |key,val|
+        if (content.has_key?(key))
+          fields[key] = content[key]
+        else
+          fields[key] = val
+        end
+      end
       return fields
     end
 

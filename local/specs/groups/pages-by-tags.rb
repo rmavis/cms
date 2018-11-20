@@ -4,10 +4,22 @@ module Local::Specs::Groups::PagesByTags
     "#{DirMap.content}/news"
   end
 
-  def self.filter(item)
-    return ((item.has_key?(:meta)) &&
-            (item[:meta].has_key?(:tags)) &&
-            (item[:meta][:tags].include?('news')))
+  def self.filter(file)
+    if (File.extname(file) == ".yaml")
+      content = YAML.load(File.read(file)).transform_keys(lambda {|s| s.to_sym})
+      if ((content.has_key?(:meta)) &&
+          (content[:meta].has_key?(:live)) &&
+          (content[:meta][:live]) &&
+          (content[:meta].has_key?(:tags)) &&
+          (content[:meta][:tags].is_a?(Array)) &&
+          (content[:meta][:tags].include?('news')))
+        return content
+      else
+        return nil
+      end
+    else
+      return nil
+    end
   end
 
   def self.prepare(items)

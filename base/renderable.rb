@@ -3,18 +3,26 @@
 module Base
   module Renderable
 
-    # to_view :: symbol -> string
-    # to_view renders the Template through its `view_file`.
-    def to_view(type)
-      return Render.template(binding(), self.view_file(type))
-    end
-
     # render :: string -> string
     # render is a convenience method. It receives a filename and
     # passes that and a binding to the current Group to
     # `Render.template`.
     def render(filename)
       Render.template(binding(), filename)
+    end
+
+    # to_view :: symbol -> string
+    # to_view renders the Template through its `view_file`.
+    def to_view(type)
+      return Render.template(binding(), self.view_file(type))
+    end
+
+    # to_file! :: symbol -> void
+    # to_file! renders the Template to its `output_file`.
+    def to_file!(type)
+      handle = File.open(self.output_file(type), 'w')
+      handle.write(self.to_view(type))
+      handle.close
     end
 
   end

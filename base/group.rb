@@ -31,7 +31,7 @@ module Base
         if (!File.directory?(path))
           content = filter.call(path)
           if (content)
-            items.push(Template.from_content(content))
+            items.push(Template.from_content(Template.make_slug(path).merge(content), path))
           end
         end
       end
@@ -53,5 +53,14 @@ module Base
     def set_items!(items)
       @items = items
     end
+
+    def to_views!(type)
+      self.items.each { |item| puts item.to_view(type) }
+    end
+
+    def to_files!(type)
+      self.items.each { |item| item.to_file!(type) }
+    end
+
   end
 end

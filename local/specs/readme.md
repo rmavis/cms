@@ -78,7 +78,7 @@ All groups need a couple module methods:
 - content_path: which returns a (string) path to the directory to read through
 - filter, which receives a hash and returns a boolean indicating whether the object represented by that hash should be built and included in the group
 
-A group spec can also include a `prepare` method. If it does, the method must receive an array (of Templates) and return pretty much whatever. The purpose of the `prepare` method is to enable arbitrary transformation of the Templates that comprise the Group. If the spec defines this method, it will be called just before creating the Group. Else, not.
+A group spec can also include a `prepare` method. If it does, the method must receive an array of Templates and return an array of Templates. The purpose of the `prepare` method is to enable arbitrary transformation of the Templates that comprise the Group. If the spec defines this method, it will be called just before creating the Group. Else, not.
 
 A group spec should also define a `view_file` method. This will work as it does for Pages, etc.
 

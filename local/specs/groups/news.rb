@@ -6,7 +6,7 @@ module Local::Specs::Groups::News
 
   def self.filter(file)
     if (File.extname(file) == ".yaml")
-      content = YAML.load(File.read(file)).transform_keys(lambda {|s| s.to_sym})
+      content = ::Base::Content.from_file(file)
       if ((content.has_key?(:meta)) &&
           (content[:meta].has_key?(:live)) &&
           (content[:meta][:live]))

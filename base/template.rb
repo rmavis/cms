@@ -51,14 +51,12 @@ module Base
       end
     end
 
-    # Template.from_yaml :: string -> Template
-    def self.from_yaml(filename)
+    # Template.from_file :: string -> Template
+    def self.from_file(filename)
       return self.from_content(
                # If the `slug` is specified in the content, it will
                # take precedence
-               self.make_slug(filename).merge(
-                 YAML.load(File.read(filename)).transform_keys(lambda {|s| s.to_sym})
-               ), filename
+               self.make_slug(filename).merge(Content::from_file(filename)), filename
              )
     end
 

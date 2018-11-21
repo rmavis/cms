@@ -8,6 +8,20 @@ module Local::Specs::Content::MarkdownArticle
     ::Local::Specs::Fields::MarkdownFile.fields
   end
 
+  # MarkdownArticle::prepare_content! :: (hash, string) -> hash
+  # The content paramater will be altered in-place.
+  def self.prepare_content!(content, file)
+    # This is necessary.
+    content[:spec] = ::Local::Specs::Content::MarkdownArticle
+
+    # This seems a reasonable default.
+    if (!content[:meta].has_key?(:slug))
+      content[:meta][:slug] = File.basename(file, File.extname(file))
+    end
+
+    return content
+  end
+
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)

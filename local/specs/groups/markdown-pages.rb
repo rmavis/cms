@@ -17,22 +17,10 @@ module Local::Specs::Groups::MarkdownPages
     if ((content.has_key?(:meta)) &&
         (content[:meta].has_key?(:live)) &&
         (content[:meta][:live]))
-      return self.prepare_content!(content, file)
+      return self.view_spec.prepare_content!(content, file)
     else
       return nil
     end
-  end
-
-  def self.prepare_content!(item, file)
-    # This is necessary.
-    item[:spec] = self.view_spec
-
-    # This seems a reasonable default.
-    if (!item[:meta].has_key?(:slug))
-      item[:meta][:slug] = File.basename(file, File.extname(file))
-    end
-
-    return item
   end
 
   def self.prepare(items)

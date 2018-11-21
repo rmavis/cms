@@ -12,6 +12,7 @@ end
 
 {
   :CLI => 'cli.rb',
+  :Content => 'content.rb',
   :Extendable => 'extendable.rb',
   :Field => 'field.rb',
   :Group => 'group.rb',

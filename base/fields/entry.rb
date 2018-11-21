@@ -91,9 +91,9 @@ module Base::Fields
     # resolve :: void -> Template|[Template]
     def resolve
       if (self.value.is_a?(String))
-        return ::Base::Template.from_yaml(self.path)
+        return ::Base::Template.from_file(self.path)
       elsif (self.value.is_a?(Array))
-        return self.path.collect { |path| ::Base::Template.from_yaml(path) }
+        return self.path.collect { |path| ::Base::Template.from_file(path) }
       else
         raise "Can't resolve Entry: `value` must be a String or an Array."
       end

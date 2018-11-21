@@ -78,10 +78,7 @@ module Local::Specs::Fields::MarkdownFile
     end
 
     return {
-      # Will need to parse the meta lines separately. The keys in the
-      # file don't match the keys in the spec, but they can be transformed.
-      # Could just change the function passed to `transform_keys`?
-      :meta => YAML.load(meta.join).transform_keys(lambda {|s| s.to_camel_case.to_sym}),
+      :meta => ::Base::Content.from_yaml(meta.join),
       :body => body
     }
   end

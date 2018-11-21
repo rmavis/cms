@@ -78,9 +78,9 @@ module Base
         elsif (arg == '-f')  # f = file
           print_file = true
         elsif (print_file)
-          ::Base::Template.from_yaml(arg).to_file!(type)
+          ::Base::Template.from_file(arg).to_file!(type)
         else
-          puts ::Base::Template.from_yaml(arg).to_view(type)
+          puts ::Base::Template.from_file(arg).to_view(type)
         end
       end
     end

@@ -34,6 +34,9 @@ module Local::Specs::Fields::MarkdownFile
         :toc => {
           :required => true,
         },
+        :live => {
+          :required => true,
+        },
       },
       :body => {
         :required => true,

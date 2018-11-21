@@ -8,5 +8,6 @@ content_specs: 'local/specs/content'
 group_specs: 'local/specs/groups'
 views: 'local/views'
 html_views: 'local/views/html'
+html_snippets: 'local/views/html/snippets'
 public: 'public'
 ...

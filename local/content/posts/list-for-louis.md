@@ -1,17 +1,17 @@
 ---
 Slug: a-decades-favorites-for-louis
 Title: A Decade's Favorites (for Louis)
-Blurb: Mostly Music
 Author: Richard Mavis
+Blurb: Mostly Music
 Tags:
-    music,
-    personal
-Post date: 20180417
-Last updated: 20180417
-Index: no
-TOC: no
+    - music
+    - personal
+Date posted: 2018-04-17
+Date updated: 2018-04-17
+Index: true
+TOC: true
 Live: true
----
+...
 
 
 

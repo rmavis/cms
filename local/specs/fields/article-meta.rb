@@ -47,8 +47,8 @@ module Local::Specs::Fields::ArticleMeta
       :tags => {:Tags => _attrs[:tags]},
       :datePosted => {:Date => _attrs[:datePosted]},
       :dateUpdated => {:Date => _attrs[:dateUpdated]},
-      :index => {:PlainText => _attrs[:index]},
-      :toc => {:PlainText => _attrs[:toc]},
+      :index => {:Bool => _attrs[:index]},
+      :toc => {:Bool => _attrs[:toc]},
       :live => {:Bool => _attrs[:live]},
     }
   end

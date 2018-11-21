@@ -92,9 +92,9 @@ class String
       if (parts.empty?)
         parts.push(word.downcase)
       else
-        parts.push(word.capitlize)
+        parts.push(word.capitalize)
       end
-      return parts
+      parts
     end
     return words.join
   end

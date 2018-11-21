@@ -2,6 +2,7 @@ module Base::Fields
   class ReadableFile < Compound
 
     def self.make(spec, attrs, filename)
+puts "MAKING READABLE FILE (#{spec}) (#{attrs}) (#{filename})"
       path = "#{DirMap.root}/#{filename}"
       if (!File.exist?(path))
         raise "Can't read from readable file `#{path}`: it doesn't exist."

@@ -1,3 +1,5 @@
+# Is this class even necessary anymore?
+
 module Base::Fields
   class FileTransform < Compound
 

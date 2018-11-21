@@ -1,17 +1,17 @@
 ---
 Title: A Couple Art Projects
-Blurb: Revised and expanded edition!
 Author: Richard Mavis
+Blurb: Revised and expanded edition!
 Tags:
-    art,
-    development,
-    personal
-Date posted: 20170726
-Date updated: 20171109
+    - art
+    - development
+    - personal
+Date posted: 2017-07-26
+Date updated: 2017-11-09
 Index: true
 TOC: true
 Live: false
----
+...
 
 
 

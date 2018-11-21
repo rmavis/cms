@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <!-- will want to change this to a <head> that includes article-related fields, etc. -->
+
+
+    <body>
+        <% self.items.each do |item| %>
+            <h2><%= item.fields[:meta].fields[:title].value %></h2>
+            <p><%= item.fields[:meta].fields[:blurb].value %></p>
+        <% end %>
+    </body>
+</html>

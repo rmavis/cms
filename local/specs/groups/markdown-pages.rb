@@ -4,16 +4,20 @@ module Local::Specs::Groups::MarkdownPages
     "#{DirMap.content}/posts"
   end
 
-  def self.page_spec
+  def self.field_spec
     ::Local::Specs::Fields::MarkdownFile
   end
 
+  def self.view_spec
+    ::Local::Specs::Content::MarkdownArticle
+  end
+
   def self.filter(file)
-    content = self.page_spec.read(file)
+    content = self.field_spec.read(file)
     if ((content.has_key?(:meta)) &&
         (content[:meta].has_key?(:live)) &&
         (content[:meta][:live]))
-      return self.prepare_content(content, file)
+      return self.prepare_content!(content, file)
     else
       return nil
     end
@@ -21,7 +25,7 @@ module Local::Specs::Groups::MarkdownPages
 
   def self.prepare_content!(item, file)
     # This is necessary.
-    item[:spec] = self.page_spec
+    item[:spec] = self.view_spec
 
     # This seems a reasonable default.
     if (!item[:meta].has_key?(:slug))
@@ -44,9 +48,9 @@ module Local::Specs::Groups::MarkdownPages
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/markdown-pages.html.erb"
+      "#{DirMap.html_views}/content/markdown-posts.html.erb"
     else
-      "#{DirMap.html_views}/content/markdown-pages.html.erb"
+      "#{DirMap.html_views}/content/markdown-posts.html.erb"
     end
   end
 

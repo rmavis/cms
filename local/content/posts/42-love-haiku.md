@@ -3,16 +3,16 @@ Title: 42 Love Haiku
 Author: Richard Mavis
 Blurb: Poetry in a box.
 Tags:
-    art,
-    poetry,
-    development,
-    php
-Post date: 20140406
-Last updated: 20150203
-Index: yes
-TOC: yes
+    - art
+    - poetry
+    - development
+    - php
+Date posted: 2014-04-06
+Date updated: 2015-02-03
+Index: true
+TOC: true
 Live: true
----
+...
 
 
 

@@ -21,10 +21,6 @@ module Local::Specs::Fields::ImageAndText
     }
   end
 
-  def type
-    "ImageAndText"
-  end
-
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)

@@ -58,6 +58,8 @@ Specs for simple fields should contain a couple instance methods:
 
 Specs for compound fields don't need those methods -- they will call them on their member fields.
 
+Both types of Fields will have a property, `type`, which will be a string matching the final segment of the Field Spec's `module` name. So the `Local::Specs::Fields::ImagePair` Field will have the `type` 'ImagePair'.
+
 
 ## Content
 

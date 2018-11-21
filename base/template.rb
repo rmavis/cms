@@ -9,18 +9,22 @@ module Base
     include Extendable
     include Renderable
 
+    # Template.specs_prefix :: void -> symbol
     def self.specs_prefix
       ::Local::Specs
     end
 
+    # Template.content_specs_prefix :: void -> string
     def self.content_specs_prefix
       "#{self.specs_prefix}::Content"
     end
 
+    # Template.base_templates_prefix :: void -> symbol
     def self.base_templates_prefix
       ::Base::Templates
     end
 
+    # Template.default_fields :: void -> hash
     def self.default_fields
       {
         :slug => nil,
@@ -34,7 +38,7 @@ module Base
       }
     end
 
-    # Template.check_content_keys!? :: (hash, string?) -> bool
+    # Template.check_content_keys! :: (hash, string?) -> bool
     def self.check_content_keys!(content, source = nil)
       [:spec, :slug].each do |key|
         if (!content.has_key?(key))
@@ -132,7 +136,8 @@ module Base
     end
 
 
-    # new :: (const, {Field}) -> Template
+    # new :: (const, fields) -> Template
+    # fields = a hash mapping symbols to Fields
     def initialize(spec, fields)
       @spec = spec
       @fields = fields
@@ -142,26 +147,32 @@ module Base
 
     attr_reader :spec, :fields
 
+    # set_fields! :: fields -> void
     def set_fields!(fields)
       @fields = fields
     end
 
+    # set_spec! :: symbol -> void
     def set_spec!(spec)
       @spec = spec
     end
 
+    # spec_short_name :: void -> string
     def spec_short_name
       return self.spec.to_s.sub("#{Template.specs_prefix}::", '')
     end
 
+    # content_path :: void -> string
     def content_path
       DirMap.content
     end
 
+    # public_path :: void -> string
     def public_path
       DirMap.public
     end
 
+    # filename :: symbol? -> string
     def filename(type = nil)
       if (type.nil?)
         self.fields[:slug]

@@ -14,7 +14,6 @@
 
     <div class="news-post-body__wrap">
         <% self.fields[:body].fields.each do |field| %>
-<%= field.type %>
             <% if (field.type == 'PlainText') %>
                 <div class="news-post-body-copy__wrap">
                     <%= field.get_out_val %>

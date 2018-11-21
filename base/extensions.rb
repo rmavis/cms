@@ -1,4 +1,5 @@
 class Hash
+
   # transform_keys :: lambda -> hash
   def transform_keys(trans)
     hsh = { }
@@ -65,11 +66,13 @@ class Hash
     end
     return attrs.join(' ')
   end
+
 end
 
 
 
 class String
+
   # to_const :: void -> constant
   # to_const returns the current string as a constant.
   def to_const
@@ -95,4 +98,5 @@ class String
     end
     return words.join
   end
+
 end

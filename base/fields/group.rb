@@ -4,6 +4,7 @@
 module Base::Fields
   class Group < ::Base::Field
 
+    # validate :: a -> a?
     def validate(val)
       if (!val.is_a?(::Base::Group))
         return nil

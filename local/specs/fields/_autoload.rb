@@ -8,6 +8,7 @@ end
   :Bool => 'bool.rb',
   :Date => 'date.rb',
   :Entry => 'entry.rb',
+  :Group => 'group.rb',
   :ImageAndText => 'image-and-text.rb',
   :ImagePair => 'image-pair.rb',
   :Image => 'image.rb',

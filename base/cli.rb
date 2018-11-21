@@ -1,6 +1,37 @@
+# This class interfaces between the command line and the program. It
+# receives the command line arguments and routes control accordingly.
+
+# Commands follow this pattern:
+# subject verb [adjective(s)] object(s)
+# The `subject` specifies the thing/action/function that will be run.
+# For example, to render a view, the subject will be `view`, or to
+# render a group, the subject will be `group`.
+# The `verb` specifies the way to render the `subject`'s `object`s.
+# For example, when rendering HTML views, the `verb` will be `html`.
+# The `adjective`(s) modify how the verb should function.
+# For example, a view can be output to stdout (`-o`) or a file (`-f`).
+# The `object`(s) specify the thing(s) to act on. In the case of views,
+# a content file should be specified. In the case of groups, the last
+# part of its module name (for `Local::Specs::Groups::News`, it will
+# be `News`).
+
+# Examples:
+# Generate a content file's view, writing to the file specified by
+# the spec:
+# $ ruby cms.rb view html local/content/index.yaml
+# Generate a content file's view, writing to stdout (and redirecting
+# to a file):
+# $ ruby cms.rb view html -o local/content/index.yaml > public/index.html
+# Generate a group's views, writing the group to the file the spec
+# specifies:
+# $ ruby cms.rb group html News
+# Generate a group's views, writing each item's view to stdout:
+# $ ruby cms.rb group html -i -o News
+
 module Base
   class CLI
 
+    # CLI.parse_args :: [string] -> void
     def self.parse_args(args)
       if (args.length == 0)
         self.print_help
@@ -11,6 +42,8 @@ module Base
         self.send(cmd, args.slice(1, args.length - 1))
       end
     end
+
+    protected
 
     # CLI.get_command :: string -> symbol?
     # If the return is nil, then the argument is invalid, meaning it
@@ -27,10 +60,15 @@ module Base
       end
     end
 
+    # CLI.print_help :: void -> void
     def self.print_help
       puts "A helpful list of commands and such will be printed."
     end
 
+    # CLI.content_to_view :: [string] -> void
+    # CLI.content_to_view receives an array of arguments (excluding
+    # the one that specifies that this is the intended function to
+    # run).
     def self.content_to_view(args)
       print_file = true
       type = args[0].to_sym
@@ -47,6 +85,8 @@ module Base
       end
     end
 
+    # CLI.groups_to_view :: [string] -> void
+    # For more, see `content_to_view`.
     def self.groups_to_view(args)
       print_file = true
       print_act = :to_file!
@@ -72,12 +112,3 @@ module Base
 
   end
 end
-
-# Generate a content file's view, writing to the file specified by the spec.
-# ruby cms.rb view html local/content/index.yaml
-# Generate a content file's view, writing to stdout (and redirecting to a file).
-# ruby cms.rb view html -o local/content/index.yaml > public/pages/index.html
-# Generate a group's views, writing the group to the file the spec specifies.
-# ruby cms.rb group html News
-# Generte a group's views, writing each item's view to stdout.
-# ruby cms.rb group html -i -o News

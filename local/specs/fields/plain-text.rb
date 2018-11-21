@@ -1,4 +1,5 @@
 module Local::Specs::Fields::PlainText
+
   def self.type
     :PlainText
   end
@@ -28,4 +29,5 @@ module Local::Specs::Fields::PlainText
       return nil
     end
   end
+
 end

@@ -35,10 +35,22 @@ module Local::Specs::Groups::PagesByTags
 
     groups = [ ]
     tags.keys.sort!.each do |tag|
-      groups.push({
-                    :tag => tag,
-                    :items => tags[tag].sort! { |a,b| a.fields[:meta].fields[:title].value <=> b.fields[:meta].fields[:title].value },
-                  })
+      groups.push(
+        ::Base::Template.from_content(
+          {
+            :spec => ::Local::Specs::Content::TaggedGroup,
+            :slug => "tag-group-#{tag.downcase.gsub(/[^-0-9a-z_]/, '-')}",
+            :meta => {
+              :title => tag,
+            },
+            :group => ::Base::Group.new(
+              tags[tag].sort! do |a,b|
+                a.fields[:meta].fields[:title].value <=> b.fields[:meta].fields[:title].value
+              end
+            ),
+          }
+        )
+      )
     end
 
     return groups
@@ -47,9 +59,18 @@ module Local::Specs::Groups::PagesByTags
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/pages-by-tags.html.erb"
+      "#{DirMap.html_views}/content/tag-index.html.erb"
     else
-      "#{DirMap.html_views}/content/pages-by-tags.html.erb"
+      "#{DirMap.html_views}/content/tag-index.html.erb"
+    end
+  end
+
+  # output_file :: symbol -> string
+  def output_file(type)
+    if (type == :html)
+      "#{DirMap.public}/#{self.filename}.html"
+    else
+      "#{DirMap.public}/#{self.filename}.html"
     end
   end
 

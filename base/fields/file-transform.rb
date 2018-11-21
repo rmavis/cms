@@ -7,25 +7,25 @@ module Base::Fields
       return field
     end
 
-    def output_file
+    def output_file(type)
       "#{DirMap.public}/#{self.output_field.value}"
     end
 
     # to_view :: symbol -> string
     def to_view(type)
       self.make_output!(type)
-      return self.output
+      return self.output(type)
     end
 
     # make_output! :: symbol -> void
     def make_output!(type)
-      file = File.open(self.output_file, 'w')
+      file = File.open(self.output_file(type), 'w')
       file.write(self.input_field.to_view(type))
       file.close
     end
 
-    def output
-      return File.read(self.output_file)
+    def output(type)
+      return File.read(self.output_file(type))
     end
 
   end

@@ -50,4 +50,13 @@ module Local::Specs::Groups::MarkdownPages
     end
   end
 
+  # output_file :: symbol -> string
+  def output_file(type)
+    if (type == :html)
+      "#{DirMap.public}/markdown-pages.html"
+    else
+      "#{DirMap.public}/markdown-pages.html"
+    end
+  end
+
 end

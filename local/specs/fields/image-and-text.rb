@@ -1,4 +1,5 @@
 module Local::Specs::Fields::ImageAndText
+
   def self.type
     :Compound
   end
@@ -37,4 +38,5 @@ module Local::Specs::Fields::ImageAndText
   def self.form_file
     "#{self.form_files_dir}/image-and-text.html.erb"
   end
+
 end

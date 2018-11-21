@@ -1,4 +1,5 @@
 module Local::Specs::Fields::Meta
+
   def self.type
     :Compound
   end
@@ -7,7 +8,7 @@ module Local::Specs::Fields::Meta
   def self.fields(attrs = { })
     _attrs = {
       :title => {
-        :required => true,
+        :required => nil,
       },
       :date => {
         :required => nil,
@@ -40,4 +41,5 @@ module Local::Specs::Fields::Meta
       "#{DirMap.html_views}/fields/_compound.html.erb"
     end
   end
+
 end

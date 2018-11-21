@@ -1,4 +1,5 @@
 module Local::Specs::Fields::Image
+
   def self.type
     :StaticFile
   end
@@ -28,4 +29,5 @@ module Local::Specs::Fields::Image
   # def self.form_file
   #   "#{self.form_files_dir}/image.html.erb"
   # end
+
 end

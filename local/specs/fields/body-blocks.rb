@@ -1,4 +1,5 @@
 module Local::Specs::Fields::BodyBlocks
+
   def self.type
     :Collection
   end
@@ -28,4 +29,5 @@ module Local::Specs::Fields::BodyBlocks
       "#{DirMap.html_views}/fields/_collection.html.erb"
     end
   end
+
 end

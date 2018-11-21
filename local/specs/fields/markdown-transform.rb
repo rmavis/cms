@@ -1,4 +1,5 @@
 module Local::Specs::Fields::MarkdownTransform
+
   def self.type
     :FileTransform
   end
@@ -30,4 +31,5 @@ module Local::Specs::Fields::MarkdownTransform
   def output_field
     self.fields[:out]
   end
+
 end

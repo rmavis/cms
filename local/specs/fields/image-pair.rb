@@ -1,4 +1,5 @@
 module Local::Specs::Fields::ImagePair
+
   # This is the Field type.
   def self.type
     :Compound
@@ -38,4 +39,5 @@ module Local::Specs::Fields::ImagePair
   def self.form_file
     "#{self.form_files_dir}/image-pair.html.erb"
   end
+
 end

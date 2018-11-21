@@ -1,4 +1,5 @@
 module Local::Specs::Fields::Tags
+
   def self.type
     :Tags
   end
@@ -27,4 +28,5 @@ module Local::Specs::Fields::Tags
       return nil
     end
   end
+
 end

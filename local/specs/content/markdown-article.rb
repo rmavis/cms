@@ -8,6 +8,10 @@ module Local::Specs::Content::MarkdownArticle
     ::Local::Specs::Fields::MarkdownFile.fields
   end
 
+  def self.content_from_file(filename)
+    ::Local::Specs::Fields::MarkdownFile.content_from_file(filename)
+  end
+
   # MarkdownArticle::prepare_content! :: (hash, string) -> hash
   # The content paramater will be altered in-place.
   def self.prepare_content!(content, file)

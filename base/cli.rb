@@ -70,18 +70,34 @@ module Base
     # the one that specifies that this is the intended function to
     # run).
     def self.content_to_view(args)
+      spec = nil
       print_file = true
       type = args[0].to_sym
-      args.slice(1, args.length - 1).each do |arg|
-        if (arg == '-o')  # o = output
+      i = 1
+      while (i < args.length) do
+        if (args[i] == '-o')  # o = output
           print_file = nil
-        elsif (arg == '-f')  # f = file
+        elsif (args[i] == '-f')  # f = file
           print_file = true
+        elsif (args[i] == '-s')  # s = spec
+          spec = args[(i + 1)]
+          i += 1
+        elsif (args[i] == '-sx')  # sx = cancel spec
+          spec = nil
         elsif (print_file)
-          ::Base::Template.from_file(arg).to_file!(type)
+          if (spec)
+            ::Base::Template.from_file_with_spec(spec, args[i]).to_file!(type)
+          else
+            ::Base::Template.from_file(args[i]).to_file!(type)
+          end
         else
-          puts ::Base::Template.from_file(arg).to_view(type)
+          if (spec)
+            puts ::Base::Template.from_file_with_spec(spec, args[i]).to_view(type)
+          else
+            puts ::Base::Template.from_file(args[i]).to_view(type)
+          end
         end
+        i += 1
       end
     end
 
@@ -100,6 +116,11 @@ module Base
           print_act = :to_file!
         elsif (arg == '-i')  # i = items
           print_act = :to_files!
+        elsif (args[i] == '-s')  # s = spec
+          spec = args[(i + 1)]
+          i += 1
+        elsif (args[i] == '-sx')  # sx = cancel spec
+          spec = nil
         elsif (print_file)
           ::Base::Group.from_spec("::Local::Specs::Groups::#{arg}".to_const).send(print_act, type)
         elsif (print_act == :to_file!)

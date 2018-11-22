@@ -49,12 +49,12 @@ module Local::Specs::Fields::MarkdownFile
     }
   end
 
-  def self.read(file)
+  def self.content_from_file(filename)
     meta = [ ]
     more_meta = false
     body = IO.popen("multimarkdown -s --nolabels", 'r+') do |mmd_io|
       n = 0
-      IO.foreach(file) do |line|
+      IO.foreach(filename) do |line|
         if (n == 0)
           if (line.match(/^-{3,}$/))
             more_meta = true
@@ -77,10 +77,12 @@ module Local::Specs::Fields::MarkdownFile
       mmd_io.readlines.join
     end
 
-    return {
-      :meta => ::Base::Content.from_yaml(meta.join),
-      :body => body
-    }
+    return ::Base::Template.slug_from_filename(filename).merge(
+      {
+        :meta => ::Base::Content.from_yaml(meta.join),
+        :body => body
+      }
+    )
   end
 
   # view_file :: symbol -> string

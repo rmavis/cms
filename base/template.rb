@@ -32,10 +32,30 @@ module Base
     end
 
     # Template.make_slug :: string -> hash
-    def self.make_slug(filename)
+    def self.make_slug(name)
       {
-        :slug => File.basename(filename, ".*")
+        :slug => name
       }
+    end
+
+    # Template.slug_from_filename :: string -> hash
+    def self.slug_from_filename(filename)
+      return self.make_slug(File.basename(filename, ".*"))
+    end
+
+    # Template::get_full_spec :: a -> constant?
+    def self.get_full_spec(spec)
+      # If the spec is a string, assume it was read from the content
+      # file and is shorthand, meaning it has only the final part of
+      # the name. This isn't ideal behavior -- maybe check for the
+      # leading `::`?  #TODO
+      if (spec.is_a?(String))
+        "#{self.content_specs_prefix}::#{spec}".to_const
+      elsif (spec.is_a?(Symbol))
+        spec.to_s.to_const
+      else
+        nil
+      end
     end
 
     # Template.check_content_keys! :: (hash, string?) -> bool
@@ -51,30 +71,37 @@ module Base
       end
     end
 
+    # Template.from_file_with_spec :: (symbol|string, string) -> Template
+    def self.from_file_with_spec(spec, filename)
+      template_spec = self.get_full_spec(spec)
+      if (template_spec.respond_to?(:content_from_file))
+        content = Content.from_reader(
+          lambda { |f| template_spec.content_from_file(f) },
+          filename
+        )
+      else
+        content = Content.from_file(filename)
+      end
+      return self.from_content({:spec => spec}.merge(content), filename)
+    end
+
     # Template.from_file :: string -> Template
     def self.from_file(filename)
       return self.from_content(
                # If the `slug` is specified in the content, it will
                # take precedence
-               self.make_slug(filename).merge(Content::from_file(filename)), filename
+               self.slug_from_filename(filename).merge(Content::from_file(filename)), filename
              )
     end
 
     # Template.from_content :: (hash, string?) -> Template
     def self.from_content(content, source = nil)
       self.check_content_keys!(content, source)
-
-      # If the spec is a string, assume it was read from the content
-      # file and is shorthand, meaning it has only the final part of
-      # the name. This isn't ideal behavior -- maybe check for the
-      # leading `::`?  #TODO
-      template_spec = (content[:spec].is_a?(String)) ? "#{self.content_specs_prefix}::#{content[:spec]}".to_const : content[:spec]
-      template = "#{self.base_templates_prefix}::#{template_spec.type}".to_const.make(
+      template_spec = self.get_full_spec(content[:spec])
+      return "#{self.base_templates_prefix}::#{template_spec.type}".to_const.make(
         template_spec,
         content
       )
-
-      return template
     end
 
     # Template.make :: (spec, content) -> Template

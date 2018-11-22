@@ -13,7 +13,7 @@ module Local::Specs::Groups::MarkdownPages
   end
 
   def self.filter(file)
-    content = self.field_spec.read(file)
+    content = self.field_spec.content_from_file(file)
     if ((content.has_key?(:meta)) &&
         (content[:meta].has_key?(:live)) &&
         (content[:meta][:live]))

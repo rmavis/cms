@@ -9,7 +9,7 @@ puts "MAKING READABLE FILE (#{spec}) (#{attrs}) (#{filename})"
       end
 
       field = (attrs.has_key?(:_self)) ? self.new(spec, attrs[:_self]) : self.new(spec)
-      field.set_fields!(self.make_subfields(spec, attrs.select { |k,v| k != :_self }, spec.read(path)))
+      field.set_fields!(self.make_subfields(spec, attrs.select { |k,v| k != :_self }, spec.content_from_file(path)))
       return field
     end
 

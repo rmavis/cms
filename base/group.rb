@@ -40,7 +40,7 @@ module Base
         if (!File.directory?(path))
           content = filter.call(path)
           if (content)
-            items.push(Template.from_content(Template.make_slug(path).merge(content), path))
+            items.push(Template.from_content(Template.slug_from_filename(path).merge(content), path))
           end
         end
       end

@@ -1,5 +1,5 @@
 * Todo
-** Base [15/23]
+** Base [19/23]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -28,8 +28,19 @@
   - Use the `reference`/`entry` type to point to a markdown file, which will be parsed.
   - Use the metadate in the markdown file as the Template's metadata.
 - [X] Build groups
-- [ ] How to specify Groups in Content files?
+- [X] How to specify Groups in Content files?
   What about a Group (base) field type?
+- [X] Improve organization of view templates
+- [X] Need a way to easily identify a field's `type`
+  Particularly for the templates, so can check `field.type` and react accordingly.
+  Could add a `type` method in field specs.
+  Could get it programmatically in Base::Field.
+  Could set it in Base::Field.make when the the field is `extend`ed, say to (some part of) the spec's name.
+- [X] Class to manage CLI
+- [ ] Need a way to specify build procedures.
+  And run them.
+  To process/produce views from content files and pipe those into public files.
+- [ ] Router
 - [ ] How to specify a group of related objects in a specific order and by a specific key?
   If a Group is an array, then this type is a hash.
   Can call it a Set.
@@ -43,17 +54,6 @@
   - benny
   - charles
   And then reference the full objects referenced by those slugs.
-- [ ] Need a way to specify build procedures.
-  And run them.
-  To process/produce views from content files and pipe those into public files.
-- [ ] Improve organization of view templates
-- [ ] Need a way to easily identify a field's `type`
-  Particularly for the templates, so can check `field.type` and react accordingly.
-  Could add a `type` method in field specs.
-  Could get it programmatically in Base::Field.
-  Could set it in Base::Field.make when the the field is `extend`ed, say to (some part of) the spec's name.
-- [ ] Class to manage CLI
-- [ ] Router
 - [ ] Address all TODOs
 
 ** Admin panel [0/4]

@@ -68,8 +68,8 @@ module Base
       @items = items
     end
 
-    # to_views! :: symbol -> void
-    def to_views!(type)
+    # to_views :: symbol -> void
+    def to_views(type)
       self.items.each { |item| puts item.to_view(type) }
     end
 

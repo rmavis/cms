@@ -33,13 +33,15 @@ module Base
 
     # CLI.parse_args :: [string] -> void
     def self.parse_args(args)
-      if (args.length == 0)
+      if (args.length > 2)
+        cmd = self.get_command(args[0].downcase)
+        if (cmd)
+          self.call_with_args(args.slice(1, args.length - 1), self.default_conf, cmd)
+        else
+          puts "The given command (#{args[0].downcase}) is invalid."
+        end
+      else
         self.print_help
-      end
-
-      cmd = self.get_command(args[0].downcase)
-      if (cmd)
-        self.send(cmd, args.slice(1, args.length - 1))
       end
     end
 
@@ -49,12 +51,10 @@ module Base
     # If the return is nil, then the argument is invalid, meaning it
     # doesn't map to an inner function.
     def self.get_command(arg)
-      if (arg == 'html')
-        return :content_to_html
-      elsif (arg == 'group')
-        return :groups_to_view
+      if (arg == 'group')
+        return :make_group
       elsif (arg == 'view')
-        return :content_to_view
+        return :make_content
       else
         return nil
       end
@@ -65,68 +65,85 @@ module Base
       puts "A helpful list of commands and such will be printed."
     end
 
-    # CLI.content_to_view :: [string] -> void
-    # CLI.content_to_view receives an array of arguments (excluding
-    # the one that specifies that this is the intended function to
-    # run).
-    def self.content_to_view(args)
-      spec = nil
-      print_file = true
-      type = args[0].to_sym
+    # CLI.default_conf :: void -> hash
+    def self.default_conf
+      self.common_conf.merge(self.group_conf)
+    end
+
+    # CLI.common_conf :: void -> hash
+    def self.common_conf
+      {
+        :spec => nil,
+        :to_file => true,
+        :type => nil,
+      }
+    end
+
+    # CLI.group_conf :: void -> hash
+    def self.group_conf
+      {
+        :print_act => :to_file!,
+      }
+    end
+
+    # CLI.call_with_args :: ([string], conf, symbol) -> void
+    # conf = a hash from one of the `self.*_conf` methods. It might
+    #   be mutated in place.
+    def self.call_with_args(args, conf, func)
       i = 1
       while (i < args.length) do
         if (args[i] == '-o')  # o = output
-          print_file = nil
+          conf[:to_file] = nil
         elsif (args[i] == '-f')  # f = file
-          print_file = true
+          conf[:to_file] = true
+        elsif (args[i] == '-g')  # g = group
+          conf[:as_group] = true
+        elsif (args[i] == '-i')  # i = items
+          conf[:as_group] = nil
         elsif (args[i] == '-s')  # s = spec
-          spec = args[(i + 1)]
+          conf[:spec] = args[(i + 1)]
           i += 1
         elsif (args[i] == '-sx')  # sx = cancel spec
-          spec = nil
-        elsif (print_file)
-          if (spec)
-            ::Base::Template.from_file_with_spec(spec, args[i]).to_file!(type)
-          else
-            ::Base::Template.from_file(args[i]).to_file!(type)
-          end
+          conf[:spec] = nil
         else
-          if (spec)
-            puts ::Base::Template.from_file_with_spec(spec, args[i]).to_view(type)
-          else
-            puts ::Base::Template.from_file(args[i]).to_view(type)
-          end
+          self.send(func, conf, args[i])
         end
         i += 1
       end
     end
 
-    # CLI.groups_to_view :: [string] -> void
-    # For more, see `content_to_view`.
-    def self.groups_to_view(args)
-      print_file = true
-      print_act = :to_file!
-      type = args[0].to_sym
-      args.slice(1, args.length - 1).each do |arg|
-        if (arg == '-o')  # o = output
-          print_file = nil
-        elsif (arg == '-f')  # f = file
-          print_file = true
-        elsif (arg == '-g')  # g = group
-          print_act = :to_file!
-        elsif (arg == '-i')  # i = items
-          print_act = :to_files!
-        elsif (args[i] == '-s')  # s = spec
-          spec = args[(i + 1)]
-          i += 1
-        elsif (args[i] == '-sx')  # sx = cancel spec
-          spec = nil
-        elsif (print_file)
-          ::Base::Group.from_spec("::Local::Specs::Groups::#{arg}".to_const).send(print_act, type)
-        elsif (print_act == :to_file!)
-          puts ::Base::Group.from_spec("::Local::Specs::Groups::#{arg}".to_const).to_view(type)
+    # CLI.make_content :: (conf, string) -> void
+    # conf = see `call_with_args`
+    def self.make_content(conf, ref)
+      if (conf[:to_file])
+        if (conf[:spec])
+          ::Base::Template.from_file_with_spec(conf[:spec], ref).to_file!(conf[:type])
         else
-          ::Base::Group.from_spec("::Local::Specs::Groups::#{arg}".to_const).to_views!(type)
+          ::Base::Template.from_file(ref).to_file!(conf[:type])
+        end
+      else
+        if (conf[:spec])
+          puts ::Base::Template.from_file_with_spec(conf[:spec], ref).to_view(conf[:type])
+        else
+          puts ::Base::Template.from_file(ref).to_view(conf[:type])
+        end
+      end
+    end
+
+    # CLI.make_group :: (conf, string) -> void
+    # conf = see `call_with_args`
+    def self.make_group(conf, ref)
+      if (conf[:to_file])
+        if (conf[:as_group])
+          ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_file!(conf[:type])
+        else
+          ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_files!(conf[:type])
+        end
+      else
+        if (conf[:as_group])
+          puts ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_view(conf[:type])
+        else
+          ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_views(conf[:type])
         end
       end
     end

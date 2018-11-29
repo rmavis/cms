@@ -53,6 +53,8 @@ module Base
         "#{self.content_specs_prefix}::#{spec}".to_const
       elsif (spec.is_a?(Symbol))
         spec.to_s.to_const
+      elsif (spec.is_a?(Module))
+        spec
       else
         nil
       end

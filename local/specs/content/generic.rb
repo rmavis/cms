@@ -18,6 +18,7 @@ module Local::Specs::Content::Generic
           },
         },
       },
+      :news => :Group,
       :cover_image => :ImageAndText,
       :image_pair => :ImagePair,
       :body => {
@@ -40,6 +41,7 @@ module Local::Specs::Content::Generic
           :cover_image,
           :image_pair,
           :body,
+          :news,
           :this_year,
         ]
       )

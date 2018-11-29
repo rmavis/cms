@@ -34,3 +34,4 @@ body:
     text: this is more text
 this_year: true
 make_md5: make a hash of this
+news: RecentNews

@@ -1,5 +1,5 @@
 * Todo
-** Base [14/23]
+** Base [15/23]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -27,7 +27,7 @@
   So two things:
   - Use the `reference`/`entry` type to point to a markdown file, which will be parsed.
   - Use the metadate in the markdown file as the Template's metadata.
-- [ ] Build groups
+- [X] Build groups
 - [ ] How to specify Groups in Content files?
   What about a Group (base) field type?
 - [ ] How to specify a group of related objects in a specific order and by a specific key?

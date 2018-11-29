@@ -2,6 +2,26 @@ module Base
   class Group
     include Renderable
 
+    # Group.specs_prefix :: void -> symbol
+    def self.specs_prefix
+      ::Local::Specs::Groups
+    end
+
+    # Group::get_full_spec :: a -> constant?
+    # This method was copied from Template and should probably be
+    # improved in similar ways.  @TODO
+    def self.get_full_spec(spec)
+      if (spec.is_a?(String))
+        "#{self.specs_prefix}::#{spec}".to_const
+      elsif (spec.is_a?(Symbol))
+        spec.to_s.to_const
+      elsif (spec.is_a?(Module))
+        spec
+      else
+        nil
+      end
+    end
+
     # Group.from_spec :: spec -> Group
     # spec = a constant that names a module that conforms to the
     #   Group requisites.
@@ -9,20 +29,20 @@ module Base
       if (spec.respond_to?(:prepare))
         group = self.make(
           File.expand_path(spec.content_path),
-          lambda { |item| spec.filter(item) },
+          lambda { |item, items| spec.filter(item, items) },
           lambda { |items| spec.prepare(items) }
         )
       else
         group = self.make(
           File.expand_path(spec.content_path),
-          lambda { |item| spec.filter(item) }
+          lambda { |item, items| spec.filter(item, items) }
         )
       end
       group.extend(spec)
       return group
     end
 
-    # Group.make :: (path, (path -> hash?), ([Template] -> [Template])?) -> Group
+    # Group.make :: (path, ((path, [hash]) -> hash?), ([Template] -> [Template])?) -> Group
     # path = (string) The directory that contains the content files.
     # The purpose of the `filter` function is to determine which
     # files in the `path` should be used in this Group.
@@ -38,7 +58,7 @@ module Base
       Dir.foreach(full_path) do |file|
         path = File.expand_path(file, full_path)
         if (!File.directory?(path))
-          content = filter.call(path)
+          content = filter.call(path, items)
           if (content)
             items.push(Template.from_content(Template.slug_from_filename(path).merge(content), path))
           end

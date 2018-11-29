@@ -12,7 +12,7 @@ module Local::Specs::Groups::MarkdownPages
     ::Local::Specs::Content::MarkdownArticle
   end
 
-  def self.filter(file)
+  def self.filter(file, items)
     content = self.field_spec.content_from_file(file)
     if ((content.has_key?(:meta)) &&
         (content[:meta].has_key?(:live)) &&

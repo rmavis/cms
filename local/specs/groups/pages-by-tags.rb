@@ -4,7 +4,7 @@ module Local::Specs::Groups::PagesByTags
     "#{DirMap.content}/news"
   end
 
-  def self.filter(file)
+  def self.filter(file, items)
     if (File.extname(file) == ".yaml")
       content = ::Base::Content.from_file(file)
       if ((content.has_key?(:meta)) &&

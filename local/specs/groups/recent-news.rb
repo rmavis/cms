@@ -1,11 +1,12 @@
-module Local::Specs::Groups::News
+module Local::Specs::Groups::RecentNews
 
   def self.content_path
     "#{DirMap.content}/news"
   end
 
   def self.filter(file, items)
-    if (File.extname(file) == ".yaml")
+    if ((items.length < 6) &&
+        (File.extname(file) == ".yaml"))
       content = ::Base::Content.from_file(file)
       if ((content.has_key?(:meta)) &&
           (content[:meta].has_key?(:live)) &&

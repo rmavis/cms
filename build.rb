@@ -16,7 +16,9 @@ class Build
     Dir.foreach(DirMap.content) do |entry|
       file = "#{DirMap.content}/#{entry}"
       if ((!File.directory?(file)) &&
-          (File.readable?(file)))
+          (File.readable?(file)) &&
+          (file != '..') &&
+          (file != '.'))
         #puts "./cms.rb view html #{args.join(' ')} #{file}"
         system("./cms.rb view html #{args.join(' ')} #{file}")
       else

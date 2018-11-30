@@ -38,7 +38,7 @@ module Local::Specs::Content::Gallery
       self.make_fields(
         [
           :body,
-          :news,
+          # :news,
         ]
       )
     else

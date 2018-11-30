@@ -1,5 +1,5 @@
 * Todo
-** Base [19/23]
+** Base [20/23]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -37,7 +37,7 @@
   Could get it programmatically in Base::Field.
   Could set it in Base::Field.make when the the field is `extend`ed, say to (some part of) the spec's name.
 - [X] Class to manage CLI
-- [ ] Need a way to specify build procedures.
+- [X] Need a way to specify build procedures.
   And run them.
   To process/produce views from content files and pipe those into public files.
 - [ ] Router

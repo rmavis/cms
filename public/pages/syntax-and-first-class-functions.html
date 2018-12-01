@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/favicon.png" />
+<meta name="viewport" content="initial-scale=1, width=device-width" />
+
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<script type="text/javascript" src="/js/visitor.js"></script>
+<script type="text/javascript" src="/js/bg-squares.js"></script>
+<script type="text/javascript" src="/js/bg-circles.js"></script>
+<script type="text/javascript" src="/js/bg-stars.js"></script>
+<script type="text/javascript" src="/js/malevich.js"></script>
+<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
+<script type="text/javascript" src="/js/bg-loader.js"></script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>~/Syntax and First-Class Functions</title>
+<meta name="author" content="Richard Mavis" />
+<meta name="description" content="A short survey." />
+<meta name="keywords" content="development, javascript, lisp, php, python, ruby" />
+<meta name="post_date" content="20150817" />
+<meta name="last_updated" content="20150817" />
+<meta name="index" content="yes" />
+<meta name="toc" content="yes" />
+
+  </head>
+
+  <body>
+    <div id="carapace">
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+
+      <div class="body-wrap">
+        <h1 id="syntaxandfirst-classfunctions">Syntax and First-Class Functions</h1>
+
+<p>For a few years Ruby has been my language of choice for web and CLI projects. Its conceptual and syntactic integrity (every value is an object, every function is a member of a class, every class is a descendant of the Object class) simplifies the work both of thinking through a problem and of expressing your solution. The simplicity and consistency of its design make thinking and writing in The Ruby Way very easy.</p>
+
+<p>But that way is not quite ideal. In particular, the way Ruby handles first-class functions feels relatively clumsy. Here&#8217;s a contrived situation in which you might want to use first-class functions:</p>
+
+<pre><code>def formal(name)
+  &quot;Hello, #{name}.&quot;
+end
+
+def informal(name)
+  &quot;Howdy, #{name}.&quot;
+end
+
+style = (person.familiar?) ? :informal : :formal
+Object.send(style, &quot;neighbor&quot;)
+</code></pre>
+
+<p>And if <code>formal</code> and <code>informal</code> were members of a <code>Greet</code> class:</p>
+
+<pre><code>Greet.send(style, &quot;neighbor&quot;)
+</code></pre>
+
+<p>Ruby requires you to notate the function name that you want to call as a symbol, and then to <code>send</code> that symbol to the object for execution. This adds bad funk to the flow, a small brainfart to the mental model of function-as-variable, by introducing a sort of referent-translation step. You cannot call the variable function directly, as with something like this:</p>
+
+<pre><code>style = informal
+Greet.style(&quot;neighbor&quot;)
+</code></pre>
+
+<p>Instead, you pass an encoded version of the function&#8217;s name to a function that decodes that name and then calls that named function for you.</p>
+
+<p>So on one hand, Ruby&#8217;s style is consistent&#8212;every method called on an object must be named directly&#8212;and its consistency is one of Ruby&#8217;s virtues. On the other hand, the process of symbolizing the method name and invoking it with <code>send</code> is less elegant than it could be.</p>
+
+<p>This process of calling a function by a representation of its name is similar to PHP&#8217;s <code>call_user_func</code>.</p>
+
+<pre><code>function formal($name) {
+    return &quot;Hello, $name.&quot;;
+}
+
+function informal($name) {
+    return &quot;Howdy, $name.&quot;;
+}
+
+$style = (is_familiar($person)) ? &quot;informal&quot; : &quot;formal&quot;;
+call_user_func($style, &quot;neighbor&quot;);
+</code></pre>
+
+<p>Calling class methods is similar:</p>
+
+<pre><code>call_user_method(&quot;Greet&quot;, $style, &quot;neighbor&quot;);
+</code></pre>
+
+<p>But, at least as of version <sub>5</sub>.4, PHP allows a different syntax:</p>
+
+<pre><code>$style = &quot;informal&quot;;
+$style(&quot;neighbor&quot;);
+</code></pre>
+
+<p>And:</p>
+
+<pre><code>Greet-&gt;$style(&quot;neighbor&quot;);
+</code></pre>
+
+<p>Appending parentheses to a variable name is a fine way of calling a variable function. It looks just like an ordinary function call&#8212;there&#8217;s no need to call a global function or to prepend a symbolized function name to the parameter list&#8212;and it introduces no referent-translation step. And there&#8217;s the additional bonus of explicitly indicating an absence of arguments.</p>
+
+<p>This is how first-class functions are called both in JavaScript:</p>
+
+<pre><code>function informal(name) {
+    return &quot;Howdy, &quot; + name + &quot;.&quot;;
+}
+
+var style = informal;
+style(&quot;neighbor&quot;);
+</code></pre>
+
+<p>And in Python:</p>
+
+<pre><code>def formal(name):
+    return &quot;Hello, &quot; + name + &quot;.&quot;
+
+style = formal
+style(&quot;stranger&quot;)
+</code></pre>
+
+<p>If parentheses triggered function calls in Ruby, rather than only designating parameter lists, then its first-class function-handling would be on par with JavaScript&#8217;s, which is great. Instead, it&#8217;s closer to PHP&#8217;s&#8212;and not even current PHP, but a deprecated version. It pains to me write that.</p>
+
+<p>But the gold standard of simplicity and consistency is Lisp&#8212;any Lisp, but Scheme in particular&#8212;where everything is either an atom or a list, and any atom at the start of a list is treated as a function and any others are arguments to that function.</p>
+
+<pre><code>(define (formal name)
+    (string-append &quot;Hello, &quot; name &quot;.&quot;))
+
+(define (informal name)
+    (string-append &quot;Howdy, &quot; name &quot;.&quot;))
+
+(define (greet style name)
+    (style name))
+
+(greet informal &quot;neighbor&quot;)
+</code></pre>
+
+        <div class="footer-wrap">
+  <div class="footer-date-line"><span class="footer-date-cell">Posted on 17 Aug 2015.</span> <span class="footer-date-cell">Last updated on 17 Aug 2015.</span></div>
+</div>
+
+      </div>
+
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+    </div>
+
+    <div id="bg-screen"></div>
+<script>
+new BackgroundLoader();
+new Visitor();
+</script>
+
+  </body>
+</html>

@@ -13,8 +13,9 @@ class Build
   end
 
   def self.pages(args)
-    Dir.foreach(DirMap.content) do |entry|
-      file = "#{DirMap.content}/#{entry}"
+    dir = "#{DirMap.content}/#{posts}"
+    Dir.foreach(dir) Do |entry|
+      file = "#{dir}/#{entry}"
       if ((!File.directory?(file)) &&
           (File.readable?(file)) &&
           (file != '..') &&

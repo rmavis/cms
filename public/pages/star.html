@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/favicon.png" />
+<meta name="viewport" content="initial-scale=1, width=device-width" />
+
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<script type="text/javascript" src="/js/visitor.js"></script>
+<script type="text/javascript" src="/js/bg-squares.js"></script>
+<script type="text/javascript" src="/js/bg-circles.js"></script>
+<script type="text/javascript" src="/js/bg-stars.js"></script>
+<script type="text/javascript" src="/js/malevich.js"></script>
+<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
+<script type="text/javascript" src="/js/bg-loader.js"></script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>~/STAR</title>
+<meta name="author" content="Richard Mavis" />
+<meta name="description" content="Simple Text Archiving and Retrieving." />
+<meta name="keywords" content="development, ruby" />
+<meta name="post_date" content="20140628" />
+<meta name="last_updated" content="20161130" />
+<meta name="index" content="yes" />
+<meta name="toc" content="yes" />
+
+  </head>
+
+  <body>
+    <div id="carapace">
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+
+      <div class="body-wrap">
+        <h1 id="star">STAR</h1>
+
+<p>STAR stands for Simple Text Archiving and Retrieving. There are two versions: an <a href="https://github.com/rmavis/star">old one written in Ruby</a>, and <a href="https://github.com/rmavis/go-STAR">a new one written in Go</a>. Their <code>readme</code>s are below.</p>
+
+<h2 id="ingo">In Go</h2>
+
+<p><code>star</code> is a simple tool for saving and retrieving bits of text. You could use it to save bookmarks, hard-to-remember commands, complex emoticons, stuff like that.</p>
+
+<h3 id="usage">Usage</h3>
+
+<p>I use <code>star</code> for all sorts of things.</p>
+
+<pre><code>$ star music listen
+1) https://www.youtube.com/watch?v=Aloryfd5ipw
+   analord, aphex twin, listen, music, music, afx
+2) http://modernarecords.com/releases
+   label, listen, music, contemporary classical
+3) https://soundcloud.com/terryurban/sets/fka-biggie
+   listen, music, terry urban, fka biggie
+4) http://prefuse73.bandcamp.com/album/travels-in-constants-vol-25
+   music, prefuse 73, temporary residence, travels in constants, listen
+
+$ star book readme
+1) http://www.squeakland.org/resources/books/readingList.jsp
+   alan kay, books, readme, syllabus
+2) http://www.gigamonkeys.com/book/
+   Practical Common Lisp, readme, lisp
+3) https://tachyonpublications.com/product/central-station/
+   books, readme, scifi
+4) https://en.wikipedia.org/wiki/The_World_as_Will_and_Representation
+   books, philosophy, readme, schopenhauer
+5) http://www.goodreads.com/book/show/18877915-the-lonely-astronaut-on-christmas-eve
+   blink-182, readme, space
+
+$ star emoticon
+1) ¯\_(ツ)_/¯
+   emoticon, shrug
+2) (╯°□°）╯︵ ┻━┻
+   emoticon, fliptable
+3) ⊙︿⊙
+   bugeye, emoticon
+4) (╯︵╰,)
+   emoticon, sadcry
+5) (*￣з￣)
+   emoticon, kissing
+</code></pre>
+
+<p>Never <a href="https://xkcd.com/1168/">let your friends down</a> again!</p>
+
+<pre><code>$ star unix tar
+1) tar -czvf DIR
+   unix, tar, zip
+2) tar -tzvf DIR.tar.gz
+   unix, tar, list
+3) tar -xzvf DIR.tar.gz
+   unix, tar, unzip
+</code></pre>
+
+<p>That&#8217;s the &#8220;Retrieving&#8221; part of <code>star</code>. Depending on your config (or command line flags) you can then pipe the string on the numbered line to <code>pbcopy</code>, <code>open</code>, or any other external tool you like.</p>
+
+<p>The &#8220;Archiving&#8221; part is done like this:</p>
+
+<pre><code>$ star -n value tag tag tag
+</code></pre>
+
+<p>So this:</p>
+
+<pre><code>$ star -n &quot;tar -czvf DIR&quot; unix tar zip
+</code></pre>
+
+<p>will create a new record in the store file. <code>star</code> stores records in a plain text file, by default at <code>~/.config/star/store</code> but that&#8217;s configurable via the config file at <code>~/.config/star/config.yaml</code>.</p>
+
+<p>You can edit records via a temp file in your <code>$EDITOR</code>:</p>
+
+<pre><code>$ star -e unix tar
+1) tar -czvf DIR
+   unix, tar, zip
+2) tar -tzvf DIR.tar.gz
+   unix, tar, list
+3) tar -xzvf DIR.tar.gz
+   unix, tar, unzip
+Edit these records: 1 3
+</code></pre>
+
+<p>Deleting records is also easy:</p>
+
+<pre><code>$ star -d todo
+1) shave
+   todo, today
+2) shower
+   todo, today
+3) wash dishes
+   todo, today
+Delete these records: all
+</code></pre>
+
+<p>So essentially <code>star</code> saves, interfaces with, and acts on text snippets that it stores in a plain text file.</p>
+
+<h3 id="installation">Installation</h3>
+
+<p>This version of <code>star</code> is written in Go. In <code>bin/</code> there are compiled executables for every combination of <code>[linux darwin windows]</code> and <code>[amd64 386]</code> in the format <code>star_[os]-[arch]</code>. So to install you could just download the executable you need, put it somewhere useful, and create a symlink somewhere in your <code>$PATH</code>:</p>
+
+<pre><code>$ cd wherever/you/keep/programs
+$ curl -O https://github.com/rmavis/go-STAR/raw/master/bin/star_[os]-[arch]
+$ ln -s [executable] /usr/local/bin/star
+</code></pre>
+
+<p>Or you can clone the repo and build it yourself. If you have a working Go setup, it&#8217;s very easy:</p>
+
+<pre><code>$ cd $GOPATH/src/where/ever
+$ git clone https://github.com/rmavis/go-STAR.git
+$ go get gopkg.in/yaml.v2  # This is star's only dependency.
+$ go install
+</code></pre>
+
+<p>There&#8217;s also <a href="https://github.com/rmavis/star">a version written in Ruby</a>, if you&#8217;re into that. They&#8217;re similar but I recommend this one&#8212;it&#8217;s faster and has better browsing options.</p>
+
+<h2 id="inruby">In Ruby</h2>
+
+<p><code>star</code> is a simple tool for saving and retrieving bits of text. You could use it to save bookmarks, hard-to-remember commands, complex emoticons, stuff like that. It&#8217;s similar to the excellent <a href="http://zachholman.com/boom/">boom</a> by <a href="http://zachholman.com/">Zach Holman</a> but suits me better.</p>
+
+<p>I wanted:</p>
+
+<ul>
+<li>to store a large variety of things</li>
+<li>to classify those things with tags</li>
+<li>to store those things and their tags in a plain text file</li>
+</ul>
+
+<p>I did not want:</p>
+
+<ul>
+<li>to need to remember specific keys associated with specific values in order to get to the things that I had saved</li>
+<li>to need to install a collection of Ruby gems that I might never use otherwise</li>
+<li>to need to deal with the associated problems with gem versions, etc.</li>
+</ul>
+
+<p>So I wrote <code>star</code>. I use it every day.</p>
+
+<p>So say you want to find some music. You type:</p>
+
+<pre><code>$ star music
+</code></pre>
+
+<p>Which returns:</p>
+
+<pre><code>1) http://adambryanbaumwiltzie.bandcamp.com/
+   Tags: Adam Wiltzie, listen, music
+2) http://screws.nilsfrahm.com/
+   Tags: Nils Frahm, Screws, music
+3) https://soundcloud.com/deadbeat
+   Tags: Deadbeat, dub techno, music
+4) https://soundcloud.com/modernlove/sets/andy-stott-luxury-problems-1
+   Tags: Andy Stott, Luxury Problems, music
+5) https://soundcloud.com/user18081971
+   Tags: aphex twin, listen, music
+0) None.
+?: 
+</code></pre>
+
+<p>Or say you&#8217;re working with a MySQL database:</p>
+
+<pre><code>$ star mysql
+1) alter table `TABLE` add [primary] key (`COLUMN`);
+   Tags: add key, mysql
+2) alter table `TABLE` add `COLUMN-NAME` TYPE(LENGTH) default 'DEFAULT-VALUE' not null after `AFTER-THIS-COLUMN`;
+   Tags: add column, mysql
+3) alter table `TABLE` change `OLD-NAME` `NEW-NAME` TYPE(LENGTH);
+   Tags: change column, mysql
+4) alter table `TABLE` drop column `COLUMN`;
+   Tags: drop column, mysql
+5) create table `TABLE` (`COLUMN` TYPE(LENGTH) not null auto_increment [, MORE COLUMNS...], primary key (`id`));
+   Tags: create a table, mysql
+0) None.
+?: 
+</code></pre>
+
+<p>You type the number of the line you want and the script pipes the text on that line to <code>pbcopy</code>, thereby copying it to your clipboard.</p>
+
+<p>You can add new entries with something like:</p>
+
+<pre><code>$ star -n clipboard utility &quot;OS X&quot; Flycut https://github.com/TermiT/Flycut/
+</code></pre>
+
+<p>You can delete entries by using the <code>-d</code> option, and you can edit, add, or delete entries in your <code>$EDITOR</code> with <code>-e</code>.</p>
+
+<p>Your data is stored in plain text in a file, by default at <code>~/.config/star/store</code> but you can change that by specifying a different filename in the config file at <code>~/.config/star/config.yaml</code>.</p>
+
+<p>So if you&#8217;re interested, it&#8217;s <a href="https://github.com/rmavis/star">on github</a>. Clone the repo and run the demo:</p>
+
+<pre><code>$ ruby star.rb --demo
+</code></pre>
+
+<p>And if you like it and decide to keep it, installation is as easy as putting it somewhere safe, <code>chmod</code>ing the <code>star.rb</code> file executable, and creating a link to it in some directory in your <code>PATH</code>, like:</p>
+
+<pre><code>$ sudo ln -s where/ever/it/is/star.rb /usr/local/bin/star
+</code></pre>
+
+        <div class="footer-wrap">
+  <div class="footer-date-line"><span class="footer-date-cell">Posted on 28 Jun 2014.</span> <span class="footer-date-cell">Last updated on 30 Nov 2016.</span></div>
+</div>
+
+      </div>
+
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+    </div>
+
+    <div id="bg-screen"></div>
+<script>
+new BackgroundLoader();
+new Visitor();
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,64 @@
+---
+Title: Does The World Really Need Another Programming Language?
+Blurb: Or anything at all, really?
+Author: Richard Mavis
+Tags:
+    - development
+    - work
+Date posted: 20160521
+Date updated: 20160521
+Live: true
+Index: true
+TOC: true
+...
+
+
+
+# Does The World Really Need Another Programming Language?
+
+This question is equally [ridiculous][ridic1] and [common][ridic2]. Why should the authors of new programming languages feel the need to [justify][qa1] their [creations][qa2]?
+
+Part of it might be that a programming language, unlike other intellectual pursuits like math or music or painting or philosophy or architecture or whatever, is as much a tool as it is a creative expression and intellectual artifact (though nobody ever asks if the world really needs another mathematical model or another big beautiful building). People that think of programming languages primarily or exclusively as tools might wonder why someone would bother creating a new language in the same way they might wonder why someone would bother creating a new [hammer][hammer]. But these people basically misunderstand what a programming language is, what one entails, how one is used, how one might differ from another.
+
+On another level, the rhetoric of the question is problematic. So let's parse the question.
+
+What is meant by "the world"? In this sense it clearly does not mean "the planet"---the planet has no need of anything humans do. So "the world" must mean "human civilization". So then the question becomes: Does human civilization really need another programming language? Implicit in this question is the thought that the current state of programming languages is sufficiently advanced and functional and pleasing that new languages are highly unlikely to improve upon them. And do we really think that human civilization will never need or want to produce another programming language? That the languages we have _right now_ are the final word on programming languages? That the languages we have right now cannot be improved upon? Anybody who thinks that the programming languages we have right now could not possibly be improved upon has not spent much time with programming languages.
+
+But maybe the question is just truncated. Advancements in computational needs lead to advancements in the design of languages that can satisfy those needs, and if the pace of technological advancement is relatively slow it could be perceived that the current languages are sufficient to meet current needs. So then the question becomes: Does human civilization really need another programming language _right now_? That's a fair question. On one hand, at very least we can assume the author of a programming language perceived the need for a new one---that it was designed and built to meet the needs of its author. On the other, programming languages are not purely technological, functional artifacts, like keyboards or central processing units---they are also a creative endeavor. And nobody ever asks if the world really needs another song or another painting.
+
+So what about the word "really"? It implies relative priority and it is the most critical part of the question. So now the question becomes: Of all the things that humans could be working on, is another programming language very high on the list of those things likely to meet the needs of the species or civilization? This is also a fair question and the answer is almost guaranteed to be no. But neither does the species likely have any need at all for your photographs or your shoes or your new video game or your new restaurant. But that doesn't mean we don't feel compelled to create these things or that we shouldn't or that nobody will appreciate them.
+
+Because creativity sits at the top of [Marlow's hierarchy of needs][maslow] and to deny creative self-actualization to anyone would be barbaric. And a programming language has the potential to be an agent of actualization both for the writer of the language and for the people who write great programs in that language. The historical development of and culture around programming is young relative to that of music or poetry or philosophy but even today comparable threads of influence and innovation can be traced in the same way as they can through those other fields---there are [classical][clang] [languages][lisp], [dead][fortran] [langages][cobol], [modern][ruby] [languages][haskell], [special-purpose][bash] and [general-purpose][perl] [languages][golang], [professional][java] [languages][swift], [avant-garde][piet] [languages][anguish], [languages][qbasic] for [kids][blockly], [languages][brainfuck] for [masochists][malbolge], [languages][chef] for [laughs][lolcode]. And this culture will only become richer as we progress. A rich and robust culture is the peak of civilization.
+
+So rather than asking whether we really need another programming language, we should ask questions more in line with what we ask about movies or books or buildings, like: What is the goal of this programming language? How close does it come to achieving that goal? How is this language different from the others? How and why did this language come to be? Is it innovative? Is it beautiful? What can I learn from it? Do I like it? Why or why not?
+
+
+
+
+
+[ridic1]: http://www.slate.com/articles/technology/technology/2014/06/apple_wwdc_2014_the_company_introduces_a_new_programming_language_called.html
+[ridic2]: http://radar.oreilly.com/2010/06/does-the-world-need-yet-anothe.html
+[qa1]: http://www.little-lang.org/why.html
+[qa2]: http://wren.io/qa.html
+[hammer]: https://www.flickr.com/photos/raindrift/sets/72157629492908038
+[maslow]: https://en.wikipedia.org/wiki/Maslow%27s_hierarchy_of_needs
+[clang]: https://en.wikipedia.org/wiki/C_%28programming_language%29
+[lisp]: https://en.wikipedia.org/wiki/Lisp_%28programming_language%29
+[fortran]: https://en.wikipedia.org/wiki/Fortran
+[cobol]: https://en.wikipedia.org/wiki/COBOL
+[ruby]: https://en.wikipedia.org/wiki/Ruby_(programming_language)
+[haskell]: https://en.wikipedia.org/wiki/Haskell_%28programming_language%29
+[bash]: https://en.wikipedia.org/wiki/Bash_(Unix_shell)
+[perl]: https://en.wikipedia.org/wiki/Perl
+[golang]: https://en.wikipedia.org/wiki/Go_(programming_language)
+[java]: https://en.wikipedia.org/wiki/Java_(programming_language)
+[swift]: https://en.wikipedia.org/wiki/Swift_(programming_language)
+[piet]: http://www.dangermouse.net/esoteric/piet.html
+[anguish]: http://blogs.perl.org/users/zoffix_znet/2016/05/anguish-invisible-programming-language-and-invisible-data-theft.html
+[qbasic]: https://en.wikipedia.org/wiki/QBasic
+[blockly]: https://en.wikipedia.org/wiki/Blockly
+[brainfuck]: https://en.wikipedia.org/wiki/Brainfuck
+[malbolge]: https://en.wikipedia.org/wiki/Malbolge
+[lolcode]: https://en.wikipedia.org/wiki/LOLCODE
+[chef]: http://www.dangermouse.net/esoteric/chef.html
+[js]: https://en.wikipedia.org/wiki/JavaScript

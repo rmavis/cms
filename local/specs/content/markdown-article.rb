@@ -38,9 +38,9 @@ module Local::Specs::Content::MarkdownArticle
   # output_file :: symbol -> string
   def output_file(type)
     if (type == :html)
-      "#{DirMap.public}/#{self.filename}.html"
+      "#{DirMap.public}/pages/#{self.filename}.html"
     else
-      "#{DirMap.public}/#{self.filename}.html"
+      "#{DirMap.public}/pages/#{self.filename}.html"
     end
   end
 

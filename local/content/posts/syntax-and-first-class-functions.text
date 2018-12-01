@@ -1,0 +1,109 @@
+---
+Title: Syntax and First-Class Functions
+Author: Richard Mavis
+Blurb: A short survey.
+Tags:
+    - development
+    - javascript
+    - lisp
+    - php
+    - python
+    - ruby
+Date posted: 20150817
+Date updated: 20150817
+Live: true
+Index: true
+TOC: true
+...
+
+
+
+# Syntax and First-Class Functions
+
+For a few years Ruby has been my language of choice for web and CLI projects. Its conceptual and syntactic integrity (every value is an object, every function is a member of a class, every class is a descendant of the Object class) simplifies the work both of thinking through a problem and of expressing your solution. The simplicity and consistency of its design make thinking and writing in The Ruby Way very easy.
+
+But that way is not quite ideal. In particular, the way Ruby handles first-class functions feels relatively clumsy. Here's a contrived situation in which you might want to use first-class functions:
+
+    def formal(name)
+      "Hello, #{name}."
+    end
+
+    def informal(name)
+      "Howdy, #{name}."
+    end
+
+    style = (person.familiar?) ? :informal : :formal
+    Object.send(style, "neighbor")
+
+And if `formal` and `informal` were members of a `Greet` class:
+
+    Greet.send(style, "neighbor")
+
+Ruby requires you to notate the function name that you want to call as a symbol, and then to `send` that symbol to the object for execution. This adds bad funk to the flow, a small brainfart to the mental model of function-as-variable, by introducing a sort of referent-translation step. You cannot call the variable function directly, as with something like this:
+
+    style = informal
+    Greet.style("neighbor")
+
+Instead, you pass an encoded version of the function's name to a function that decodes that name and then calls that named function for you.
+
+So on one hand, Ruby's style is consistent---every method called on an object must be named directly---and its consistency is one of Ruby's virtues. On the other hand, the process of symbolizing the method name and invoking it with `send` is less elegant than it could be.
+
+This process of calling a function by a representation of its name is similar to PHP's `call_user_func`.
+
+    function formal($name) {
+        return "Hello, $name.";
+    }
+
+    function informal($name) {
+        return "Howdy, $name.";
+    }
+
+    $style = (is_familiar($person)) ? "informal" : "formal";
+    call_user_func($style, "neighbor");
+
+Calling class methods is similar:
+
+    call_user_method("Greet", $style, "neighbor");
+
+But, at least as of version ~5.4, PHP allows a different syntax:
+
+    $style = "informal";
+    $style("neighbor");
+
+And:
+
+    Greet->$style("neighbor");
+
+Appending parentheses to a variable name is a fine way of calling a variable function. It looks just like an ordinary function call---there's no need to call a global function or to prepend a symbolized function name to the parameter list---and it introduces no referent-translation step. And there's the additional bonus of explicitly indicating an absence of arguments.
+
+This is how first-class functions are called both in JavaScript:
+
+    function informal(name) {
+        return "Howdy, " + name + ".";
+    }
+
+    var style = informal;
+    style("neighbor");
+
+And in Python:
+
+    def formal(name):
+        return "Hello, " + name + "."
+
+    style = formal
+    style("stranger")
+
+If parentheses triggered function calls in Ruby, rather than only designating parameter lists, then its first-class function-handling would be on par with JavaScript's, which is great. Instead, it's closer to PHP's---and not even current PHP, but a deprecated version. It pains to me write that.
+
+But the gold standard of simplicity and consistency is Lisp---any Lisp, but Scheme in particular---where everything is either an atom or a list, and any atom at the start of a list is treated as a function and any others are arguments to that function.
+
+    (define (formal name)
+        (string-append "Hello, " name "."))
+
+    (define (informal name)
+        (string-append "Howdy, " name "."))
+
+    (define (greet style name)
+        (style name))
+
+    (greet informal "neighbor")

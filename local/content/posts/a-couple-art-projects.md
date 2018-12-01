@@ -8,9 +8,9 @@ Tags:
     - personal
 Date posted: 2017-07-26
 Date updated: 2017-11-09
+Live: true
 Index: true
 TOC: true
-Live: false
 ...
 
 

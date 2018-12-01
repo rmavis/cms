@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+         body {
+             position: relative;
+             margin: 0;
+             padding: 0;
+             width: 100%;
+             height: 100%;
+         }
+
+         #bg-screen {
+             position: relative;
+             margin: 0;
+             padding: 0;
+             width: 100vw;
+             height: 100vh;
+             font-size: 0;
+             overflow: hidden;
+         }
+        </style>
+        <script type="text/javascript" src="/js/bg-stars.js"></script>
+    </head>
+
+    <body onload="loadStars()">
+        <div id="bg-screen"></div>
+
+        <script>
+         function loadStars() {
+             BgStars.init({
+                 target: document.getElementById('bg-screen'),
+                 number: [5, 20],
+                 arms: [2, 8],
+                 armHeight: [2, 10],
+                 armWidth: [10, 2000],
+                 colors: {
+                     h: {vals: [0, 360], unit: null, int: true},
+                     s: {vals: [0, 100], unit: '%', int: true},
+                     l: {vals: [0, 100], unit: '%', int: true},
+                     a: {vals: [0.25, 1], unit: null, int: false},
+                 }
+             });
+         }
+        </script>
+    </body>
+</html>

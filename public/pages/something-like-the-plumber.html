@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/favicon.png" />
+<meta name="viewport" content="initial-scale=1, width=device-width" />
+
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<script type="text/javascript" src="/js/visitor.js"></script>
+<script type="text/javascript" src="/js/bg-squares.js"></script>
+<script type="text/javascript" src="/js/bg-circles.js"></script>
+<script type="text/javascript" src="/js/bg-stars.js"></script>
+<script type="text/javascript" src="/js/malevich.js"></script>
+<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
+<script type="text/javascript" src="/js/bg-loader.js"></script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>~/Something Like The Plumber</title>
+<meta name="description" content="Long live pipes." />
+<meta name="author" content="Richard Mavis" />
+<meta name="keywords" content="development, linux" />
+<meta name="post_date" content="20180618" />
+<meta name="last_updated" content="20180624" />
+<meta name="index" content="yes" />
+<meta name="toc" content="yes" />
+
+  </head>
+
+  <body>
+    <div id="carapace">
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+
+      <div class="body-wrap">
+        <h1 id="somethingliketheplumber">Something Like The Plumber</h1>
+
+<p>I&#8217;ve never used it directly but the examples I&#8217;ve seen of <a href="https://9p.io/wiki/plan9/Using_plumbing/index.html">Plan 9&#8217;s plumber</a> <a href="http://www.mostlymaths.net/2013/04/just-as-mario-using-plan9-plumber.html">in action</a> make it seem easy to use and insanely helpful. The internals are a mystery to me but from a UI perspective it looks a lot like a launcher (such as <a href="https://tools.suckless.org/dmenu/">dmenu</a> or <a href="https://qsapp.com/">Quicksilver</a>) that acts on selected text, and from a conceptual perspective seems a lot like <a href="http://www.linfo.org/pipes.html">pipes</a>. Basically, you select some text and click some mouse key chord&#8212;the selected text gets piped into some set of rules and, if it passes all the checks, gets sent on to some action, which then does whatever you want with it.</p>
+
+<p>So I wrote a little collection of scripts that, together, create functionality that&#8217;s something like the plumber. It relies on:</p>
+
+<ul>
+<li><code>dmenu</code> and <code>xclip</code></li>
+<li>a collection of scripts that all receive some text and act on it</li>
+<li>a script that passes the names of those scripts to <code>dmenu</code>, gets the wanted one, and calls it, piping the active text selection into it</li>
+<li>some way to launch that piping script (in this case, some <a href="https://i3wm.org/"><code>i3</code></a> configuration)</li>
+</ul>
+
+<p>It&#8217;s very simple:</p>
+
+<div class="img-block">
+  <img class="blockimg" src="/images/something-like-the-plumber/screenshot-plumber.png" alt="i3 plumber screenshot" />
+</div>
+
+<p>In this screenshot, the part bordered in blue shows four files:</p>
+
+<ul>
+<li>top: The <code>i3</code> config to call the <code>plumber-list-scripts</code> script (enabling you to type the mod key and <code>p</code> to execute the given command, thereby making it accessible anywhere during the session)</li>
+<li>middle: The <code>plumber-list-scripts</code> script</li>
+<li>bottom left: The directory of <code>plumber</code> scripts</li>
+<li>bottom right: The <code>dictionary</code> script</li>
+</ul>
+
+<p>The bar in <a href="http://acme.cat-v.org/">Acme</a> colors up on top is <code>dmenu</code> rendered with the colors, prompt, etc., specified in the <code>plumber-list-scripts</code> script.</p>
+
+<p>And the block beneath the part bordered in blue is the result of calling the <code>dictionary</code> script with the highlighted text, in this case the &#8220;plumber&#8221; highlighted in blue.</p>
+
+<p>I&#8217;ve only tried this in <code>i3</code> but it should be more or less trivial to set up in any Linux desktop or window manager.</p>
+
+        <div class="footer-wrap">
+  <div class="footer-date-line"><span class="footer-date-cell">Posted on 18 Jun 2018.</span> <span class="footer-date-cell">Last updated on 24 Jun 2018.</span></div>
+</div>
+
+      </div>
+
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+    </div>
+
+    <div id="bg-screen"></div>
+<script>
+new BackgroundLoader();
+new Visitor();
+</script>
+
+  </body>
+</html>

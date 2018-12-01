@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/favicon.png" />
+<meta name="viewport" content="initial-scale=1, width=device-width" />
+
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<script type="text/javascript" src="/js/visitor.js"></script>
+<script type="text/javascript" src="/js/bg-squares.js"></script>
+<script type="text/javascript" src="/js/bg-circles.js"></script>
+<script type="text/javascript" src="/js/bg-stars.js"></script>
+<script type="text/javascript" src="/js/malevich.js"></script>
+<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
+<script type="text/javascript" src="/js/bg-loader.js"></script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>~/MasterPlans</title>
+<meta name="author" content="Richard Mavis" />
+<meta name="description" content="Not just a business plan." />
+<meta name="keywords" content="work, development, design, php, ruby" />
+<meta name="post_date" content="20140701" />
+<meta name="last_updated" content="20150203" />
+<meta name="index" content="yes" />
+<meta name="toc" content="yes" />
+
+  </head>
+
+  <body>
+    <div id="carapace">
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+
+      <div class="body-wrap">
+        <h1 id="masterplans">MasterPlans</h1>
+
+<p>In early February 2008 Bryan Howe, founder and CEO of Sente, Inc., DBA <a href="http://www.masterplans.com/">MasterPlans</a>, hired me to build internal and client projects as part of what was intended to be a creative division of the company that would do mostly marketing work for small businesses. And we did that for a while. I remade our site four or five times, remade <a href="http://www.businessplan.com/">our other site</a> a few times, built a custom blogging platform, made a lot of small client sites, laid out a few business plans in InDesign, etc. And then the recession hit, which changed things.</p>
+
+<h2 id="maps">MAPS</h2>
+
+<p>The sales team was using SalesForce. Bryan wanted to move away from that so he asked me to build a replacement. He wanted the information from the various contact forms on our site to be handled differently, to have the ability to weigh those leads differently, to assign them to salespeople semi-randomly based on those weights, and to be able to track how different salespeople handled leads of different weights, among other things.</p>
+
+<p>So I built that system. Bryan could log in, adjust the various form weights and distribution percentages. Sales staff could log in, view and claim leads from their haystack and work their alchemy of converting those leads to gold. They could pass leads around to each other, rank them according to their likeliness of buying, send them promotional materials, proposals, contracts. There was a section that listed two-week old leads, reminding sales to follow up with them. There was a section where Bryan could view various analytics. And it was good.</p>
+
+<p>But there was a problem. Production staff was using Basecamp to manage their projects. So after closing a lead, sales would hand over the client&#8217;s information to the project manager. Sometimes they would enter the name or email address or contract value or plan level incorrectly and sometimes they would find that it had been incorrect all along. And there was always the duplication of effort of re-entering information. There was also the frustration of being unable to cull certain analytics. So Bryan asked me to extend the system, to add project management capabilities to our CRM so we could stop using Basecamp.</p>
+
+<p>So I did that next. After sales closed a lead, and after billing billed them, the new client information would appear on the project manager&#8217;s dashboard. They would contact the client, schedule calls, keep notes, create milestones, divvy the project tasks to the production staff. Production staff would see the due dates for their tasks and milestones spread over the month&#8217;s calendar. They could make notes on tasks, which everyone attached to that milestone could see, etc.</p>
+
+<p>And now the whole company uses this tool, which we call MAPS. There are distinct views and permission levels for reception, sales, production, management, and myself. And there are other components, like a dropbox to anonymously pass comments to management, a book club, a forum. I take feature suggestions and add or edit whatever people want. Over the years the system has both grown quite a lot and become quite well tailored to how we work.</p>
+
+<p>It has also become a nightmare to maintain&mdash;all the classic frustrations that result from piling components and features onto a system that started with a master plan much smaller than it ended up needing. Also, it&#8217;s ugly.</p>
+
+<div class="img-block"><img class="blockimg" src="/images/masterplans/MAPS-old.png" alt="MAPS v1" /></div>
+
+<h2 id="mapsv2">MAPS v2</h2>
+
+<p>So I decided to rewrite it. The new system could be designed with the full scope of its feature set in mind. From the start I could approach the interface design knowing what the various teams wanted from their tools, and the database design knowing how information moves through it, and the client-server interaction in whatever way fit best.</p>
+
+<p>I wrote the first version of MAPS in PHP because I knew PHP, I knew I could write it pretty quickly and I knew that it would be easy to set up on the server. I wrote the second version in Ruby because I wanted to learn Ruby and about what was involved with using Ruby for a web project. And instead of using Ruby On Rails I decided to build what I needed right on Rack. I learned a lot in the process.</p>
+
+<p>When it came to designing the interface, I decided a few things right away:</p>
+
+<ul>
+<li>There would be no system-default buttons, dropdowns, checkboxes, etc.</li>
+<li>There would be icons only where language would be ugly or inconvenient.</li>
+<li>Everything that should be clickable would be and data edits would occur in-line, automatically, and be reflected everywhere they should be.</li>
+</ul>
+
+<p>I took inspiration from tiling window managers, the <a href="http://www.herzogdemeuron.com/">Herzog &amp; de Meuron</a> website, <a href="http://xiki.org/">Xiki</a>, <a href="http://www.experimentaljetset.nl/">Experimental Jetset</a>, <a href="http://www.hogbaysoftware.com/">Jesse Grosjean</a>, and I wrote nearly everything myself except for a few Javascript functions for scrolling. And so far I&#8217;m happy with the results. I think everybody is.</p>
+
+<div class="img-block"><img class="blockimg" src="/images/masterplans/MAPS-new.png" alt="MAPS v1" /></div>
+
+<p>I also wrote a <a href="http://maps.masterplans.com/how-to">manual</a>.</p>
+
+        <div class="footer-wrap">
+  <div class="footer-date-line"><span class="footer-date-cell">Posted on 1 Jul 2014.</span> <span class="footer-date-cell">Last updated on 3 Feb 2015.</span></div>
+</div>
+
+      </div>
+
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+    </div>
+
+    <div id="bg-screen"></div>
+<script>
+new BackgroundLoader();
+new Visitor();
+</script>
+
+  </body>
+</html>

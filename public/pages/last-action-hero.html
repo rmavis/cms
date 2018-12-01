@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/favicon.png" />
+<meta name="viewport" content="initial-scale=1, width=device-width" />
+
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<script type="text/javascript" src="/js/visitor.js"></script>
+<script type="text/javascript" src="/js/bg-squares.js"></script>
+<script type="text/javascript" src="/js/bg-circles.js"></script>
+<script type="text/javascript" src="/js/bg-stars.js"></script>
+<script type="text/javascript" src="/js/malevich.js"></script>
+<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
+<script type="text/javascript" src="/js/bg-loader.js"></script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>~/Last Action Hero</title>
+<meta name="author" content="Richard Mavis" />
+<meta name="description" content="Why write six lines of fish when you could write 66 lines of Lisp?" />
+<meta name="keywords" content="development, lisp, fish" />
+<meta name="post_date" content="20150913" />
+<meta name="last_updated" content="20150913" />
+<meta name="index" content="yes" />
+<meta name="toc" content="yes" />
+
+  </head>
+
+  <body>
+    <div id="carapace">
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+
+      <div class="body-wrap">
+        <h1 id="lastactionhero">Last Action Hero</h1>
+
+<p>This sort of thing happens to me all the time:</p>
+
+<pre><code>$ emacs readme.md
+The file readme.md does not exist.
+$ touch readme.md
+$ emacs readme.md
+</code></pre>
+
+<p>Or maybe I&#8217;m just <code>ls</code>ing a bunch of directories and find one I need to get into:</p>
+
+<pre><code>$ ls /long/path/to/where/ever
+$ cd /long/path/to/where/ever
+</code></pre>
+
+<p>Or I want to remind myself of what a shell function does before running it, so I run <code>cat</code>. But I see something&#8217;s off, so I need to make a quick update:</p>
+
+<pre><code>$ cat ~/.config/fish/functions/today.fish
+$ emacs ~/.config/fish/functions/today.fish
+</code></pre>
+
+<p>There are three ways to create that second command:</p>
+
+<ol>
+<li>Type the whole thing out.</li>
+<li>Hit the up arrow, alt-arrow back through the path, delete the <code>cat</code>, type in <code>emacs</code>.</li>
+<li>The same as #2 but you hit <code>ctrl-a</code> instead of alt-arrowing.</li>
+</ol>
+
+<p>And here&#8217;s a fourth method:</p>
+
+<pre><code>$ lah emacs
+</code></pre>
+
+<p><code>lah</code> stands for Last Action Hero. It finds the last non-<code>lah</code> command in your history, replaces the executable&#8217;s name with the new name you provide, and executes that new command.</p>
+
+<p>So</p>
+
+<pre><code>$ emacs readme.md
+The file readme.md does not exist.
+$ lah touch
+</code></pre>
+
+<p>will run <code>touch readme.md</code>, and then</p>
+
+<pre><code>$ lah emacs
+</code></pre>
+
+<p>will run <code>emacs readme.md</code>.</p>
+
+<p>If you enter more than one parameter, it will append the rest to the end of the new command. So, following the above,</p>
+
+<pre><code>$ lah emacs notes todo.org
+</code></pre>
+
+<p>will run <code>emacs readme.md notes todo.org</code>.</p>
+
+<p>If you want to give a gander, it&#8217;s on <a href="https://github.com/rmavis/lah">Github</a>.</p>
+
+<h2 id="notes">Notes</h2>
+
+<p>Lisp is wonderful. I&#8217;ve been reading <em>Structure and Interpretation of Computer Programs</em> and <em>The Little Schemer</em> and pretty much any article related to Lisp that appears on <a href="https://news.ycombinator.com/">Hacker News</a> but I haven&#8217;t yet had a reason to write anything in a Lisp beyond the exercises in the books.</p>
+
+<p>So <code>lah</code> is my first. It works and I&#8217;m happy with it but it&#8217;s not a very good solution to the problem. Here&#8217;s a <code>fish</code> function to accomplish basically the same thing:</p>
+
+<pre><code>function lah
+  set old_cmd $history[1]
+  set old_exec (echo $old_cmd | cut -f 1 -d ' ')
+  set new_cmd (echo $old_cmd | sed &quot;s/$old_exec/$argv[1]/&quot;)
+  eval $new_cmd
+end
+</code></pre>
+
+<p>But why write six lines of <code>fish</code> when you could write 66 lines of Lisp?</p>
+
+        <div class="footer-wrap">
+  <div class="footer-date-line"><span class="footer-date-cell">Posted on 13 Sep 2015.</span> <span class="footer-date-cell">Last updated on 13 Sep 2015.</span></div>
+</div>
+
+      </div>
+
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+    </div>
+
+    <div id="bg-screen"></div>
+<script>
+new BackgroundLoader();
+new Visitor();
+</script>
+
+  </body>
+</html>

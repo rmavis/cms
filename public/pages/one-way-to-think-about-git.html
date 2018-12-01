@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/favicon.png" />
+<meta name="viewport" content="initial-scale=1, width=device-width" />
+
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<script type="text/javascript" src="/js/visitor.js"></script>
+<script type="text/javascript" src="/js/bg-squares.js"></script>
+<script type="text/javascript" src="/js/bg-circles.js"></script>
+<script type="text/javascript" src="/js/bg-stars.js"></script>
+<script type="text/javascript" src="/js/malevich.js"></script>
+<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
+<script type="text/javascript" src="/js/bg-loader.js"></script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>~/One Way to Think About git</title>
+<meta name="description" content="The Grand Unified diff and patch Program." />
+<meta name="author" content="Richard Mavis" />
+<meta name="keywords" content="development, git" />
+<meta name="post_date" content="20160408" />
+<meta name="last_updated" content="20160408" />
+<meta name="index" content="yes" />
+<meta name="toc" content="yes" />
+
+  </head>
+
+  <body>
+    <div id="carapace">
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+
+      <div class="body-wrap">
+        <h1 id="onewaytothinkaboutgit">One Way to Think About git</h1>
+
+<p>Recently a coworker told me that, working with <code>git</code>, he was unclear on the benefits of feature or bugfix branches in specific and not very clear on the concept and utility of branches in general. This is an expansion of the explanation I gave him.</p>
+
+<h2 id="diff">diff</h2>
+
+<p>The <code>diff</code> program compares files and produces an output explaining the differences.</p>
+
+<p>So say you have two files:</p>
+
+<pre><code>$  cat a.txt
+Hello world.
+$ cat b.txt
+Hello world.
+Happy to be here.
+</code></pre>
+
+<p>Running <code>diff</code> on those files will show the difference between them.</p>
+
+<pre><code>$ diff a.txt b.txt 
+1a2
+Happy to be here.
+</code></pre>
+
+<p>The first line of that output is a change command&#8212;the letter <code>a</code> stands for &#8220;append&#8221;, the <code>2</code> after it is the line number of the second file to append to the first file, and the <code>1</code> before it is the line number of the first file after which the new lines will be appended. So, in other words, &#8220;add line 2 of the second file after the first line of the first file&#8221;. And the second line is the line to add.</p>
+
+<p>Say these files change.</p>
+
+<pre><code>$ cat a.txt 
+Hello world.
+This is a great place.
+I love it here.
+$ cat b.txt 
+Hello world.
+I'm so happy to be here.
+This is a great place.
+</code></pre>
+
+<p>Then this <code>diff</code>:</p>
+
+<pre><code>$ diff a.txt b.txt 
+1a2
+&gt; I'm so happy to be here.
+3d3
+&lt; I love it here.
+</code></pre>
+
+<p>contains two change instructions. The first says &#8220;append line two of the second file (shown here by the line after the <code>&gt;</code>) after line one of the first file&#8221;, and the second says &#8220;delete line 3 of the first file (shown here by the line after the <code>&lt;</code>), which would have appeared in the second file as line three if it weren&#8217;t deleted&#8221;.</p>
+
+<p>There&#8217;s a variation of this output called the &#8220;unified format&#8221;, and you can see this verison by including the <code>-u</code> option in the <code>diff</code> command.</p>
+
+<pre><code>$ diff -u a.txt b.txt
+1. --- a.txt       2016-04-08 14:15:30.000000000 -0700
+2. +++ b.txt       2016-04-08 14:22:52.000000000 -0700
+3. @@ -1,3 +1,3 @@
+4.  Hello world.
+5. +I'm so happy to be here.
+6.  This is a great place.
+7. -I love it here.
+</code></pre>
+
+<p>Line by line, this output shows (the line numbers don&#8217;t appear in the output&#8212;those were added to match the lines in this list):</p>
+
+<ol>
+<li>A reference to the &#8220;from&#8221; file.</li>
+<li>A reference to the &#8220;to&#8221; file.</li>
+<li>A &#8220;chunk&#8221; header. The number ranges <code>-1,3</code> and <code>+1,3</code> show, by the numbers, the line to start the changes on and the number of lines from that one that the following changes apply to, and, by the <code>-</code> and <code>+</code> signs, that the ranges apply to the &#8220;from&#8221; and &#8220;to&#8221; files respectively. The lines following a chunk header are change instructions.</li>
+<li>A space as the first character of a line in a change chunk indicates a line both files have in common. So this line is present in both files as the first line.</li>
+<li>A <code>+</code> as the first character of a line in a change chunk indicates a line present in the &#8220;to&#8221; file but absent in the &#8220;from&#8221; file.</li>
+<li>Another line both files have in common. In the &#8220;from&#8221; file, this line would be the second, since it lacks the preceding line. In the &#8220;to&#8221; file, this line would be the third.</li>
+<li>A <code>-</code> as the first character of a line in a change chunk indicates a line present in the &#8220;from&#8221; file but absent in the &#8220;to&#8221; file.</li>
+</ol>
+
+<p>Another way to look at this output is as a set of instructions on how to change the &#8220;from&#8221; file into the &#8220;to&#8221; file. So to change <code>a.txt</code> into <code>b.txt</code>, you&#8217;d add the text on line 5 (as the new second line) and subtract the text in line 7 (the old third line). Changing files in this way&#8212;by using this sort of instruction set&#8212;is called &#8220;patching&#8221;.</p>
+
+<h2 id="patch">patch</h2>
+
+<p>You can save a set of changes to a file:</p>
+
+<pre><code>$ diff -u a.txt b.txt &gt; changes
+</code></pre>
+
+<p>And the <code>patch</code> program can read that file and peform those changes:</p>
+
+<pre><code>$ patch &lt; changes
+patching file a.txt
+$ cat a.txt 
+Hello world.
+I'm so happy to be here.
+This is a great place.
+$ cat b.txt 
+Hello world.
+I'm so happy to be here.
+This is a great place.
+</code></pre>
+
+<p>Now say that you didn&#8217;t have the file <code>b.txt</code>. With the <code>changes</code> patch file, you could still apply the changes to <code>a.txt</code>, thereby changing <code>a.txt</code> into <code>b.txt</code>:</p>
+
+<pre><code>$ rm b.txt
+$ ls
+a.txt           changes
+$ cat a.txt
+Hello world.
+This is a great place.
+I love it here.
+$ patch a.txt &lt; changes 
+patching file a.txt
+$ cat a.txt 
+Hello world.
+I'm so happy to be here.
+This is a great place.
+</code></pre>
+
+<p>Patch files are one way to update software&#8212;you could distribute patch files to people that have copies of your program, those people could apply those patches and thereby upgrade to your latest release.</p>
+
+<p>Now imagine the logistics of using patch files to track your releases. To separate the development version of your program from the stable version you might keep two copies, <code>program-stable/</code> and <code>program-dev/</code>. After you&#8217;ve added some new feature to the <code>dev</code> version, say you generate a series of patch files and <code>zip</code> them up, naming the file according to the new release number. Say the difference between your <code>0.1</code> and <code>0.2</code> release contains a dozen new files and dozens of patches.</p>
+
+<p>A more robust method would be to keep copies of the program according to each release number, like <code>program-0.1-stable</code>, <code>program-0.2-stable</code>, <code>program-0.2.1-stable</code>, <code>program-0.2.1-dev</code>. You could then generate sets of patch files for upgrading from any version to any version (and your users might expect you to).</p>
+
+<p>The complexity of maintaining different versions and different sets of patch files would grow both with the complexity and with the longevity of your program. And this doesn&#8217;t factor in the complexity of collaboration, where someone might be in charge of <code>program-0.2.2-new-feature-a</code> and someone else in charge of <code>program-0.2.2-new-feature-b</code>. This also doesn&#8217;t factor in the disk space required by all these copies.</p>
+
+<h2 id="git">git</h2>
+
+<p>One way to think about <code>git</code> is as a <em>Grand Unified <code>diff</code> and <code>patch</code> program</em>. It manages all that complexity for you.</p>
+
+<p>A repository is essentially a codebase. A <code>commit</code> is essentially a set of patches. A <code>branch</code> is essentially a set of commits. You can <code>checkout</code> any branch to apply the patches at the <code>HEAD</code> (which is the currently-active commit of the currently-active branch) of that branch, and you can then <code>checkout</code> any previous commit in that branch. If your changes are good you can <code>merge</code> them into another branch (say your main stable branch), or you can <code>revert</code> them if they&#8217;re bad. When you&#8217;re ready to release your program, you can <code>tag</code> the commit you&#8217;ll be sending out with the version number.</p>
+
+<p>To make collaboration and working with backups easy, you can <code>pull</code> and <code>push</code> your codebase to other copies of the codebase. You&#8217;ll <code>pull</code> and <code>push</code> the code&#8217;s history along with the files, so your coworkers will be able to access the previous changes.</p>
+
+<h3 id="featurebranches">Feature Branches</h3>
+
+<p>This is a long way to say that bugfix and feature branches are useful in that they enable you to isolate sets of related changes. Adding one feature could result in many commits. Though it&#8217;s true that merging a feature branch into the main branch will bring all of that feature&#8217;s commits into the main history, if you want to review the history of a certain feature it&#8217;s much more convenient to <code>checkout</code> that feature&#8217;s branch, which should only contain the commits specific to that feature, than to hunt through the merged history of the entire project.</p>
+
+        <div class="footer-wrap">
+  <div class="footer-date-line"><span class="footer-date-cell">Posted on 8 Apr 2016.</span> <span class="footer-date-cell">Last updated on 8 Apr 2016.</span></div>
+</div>
+
+      </div>
+
+      <div class="nav-wrap">
+  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
+  <span class="nav-item">&para;</span>
+  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
+</div>
+
+    </div>
+
+    <div id="bg-screen"></div>
+<script>
+new BackgroundLoader();
+new Visitor();
+</script>
+
+  </body>
+</html>

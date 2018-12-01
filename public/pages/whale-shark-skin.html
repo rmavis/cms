@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+         * {
+	         -moz-box-sizing: border-box;
+	         -webkit-box-sizing: border-box;
+	         box-sizing: border-box;
+         }
+
+         body {
+             position: relative;
+             width: 100vw;
+             height: 100vh;
+             overflow: hidden;
+             margin: 0;
+             padding: 0;
+         }
+        </style>
+        <script type="text/javascript" src="/js/whale-shark-skin.js"></script>
+        <script>
+         function init() {
+             var n = Math.random();
+             var frame = document.body;
+             if (n < 0.5) {
+                 frame.appendChild(Whalesharkskin({
+                     cols: 40,
+                     line: 'hsl(0, 0%, 80%)',
+                     boxColor: 'hsl(0, 0%, 100%)',
+                     dotColor: [[0, 0], [0, 0], [10, 100]],
+                     dotSize: [25, 75],
+                 }));
+             }
+             else {
+                 frame.appendChild(Whalesharkskin({
+                     cols: 25,
+                     line: 'hsl(0, 0%, 90%)',
+                     boxColor: [[60, 120], [50, 50], [90, 100]],
+                     dotColor: [[150, 210], [80, 80], [50, 50]],
+                     dotSize: [20, 50],
+                 }));
+             }
+         }
+         window.addEventListener('load', init, false);
+        </script>
+    </head>
+
+    <body>
+    </body>
+</html>

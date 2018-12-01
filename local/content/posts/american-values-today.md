@@ -5,8 +5,8 @@ Author: Richard Mavis
 Tags:
     - personal
     - politics
-Date posted: 20180127
-Date updated: 20180127
+Date posted: 2018-01-27
+Date updated: 2018-01-27
 Live: true
 Index: true
 TOC: true

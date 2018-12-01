@@ -5,8 +5,8 @@ Author: Richard Mavis
 Tags:
     - development
     - linux
-Date posted: 20180618
-Date updated: 20180624
+Date posted: 2018-06-18
+Date updated: 2018-06-24
 Live: true
 Index: true
 TOC: true

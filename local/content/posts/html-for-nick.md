@@ -6,8 +6,8 @@ Tags:
     - development
     - html
     - css
-Date posted: 20140125
-Date updated: 20150203
+Date posted: 2014-01-25
+Date updated: 2015-02-03
 Live: true
 Index: true
 TOC: true

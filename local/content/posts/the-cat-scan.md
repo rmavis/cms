@@ -6,8 +6,8 @@ Tags:
     - personal
     - development
     - ruby
-Date posted: 20170712
-Date updated: 20170712
+Date posted: 2017-07-12
+Date updated: 2017-07-12
 Live: true
 Index: true
 TOC: true

@@ -4,8 +4,8 @@ Author: Richard Mavis
 Blurb: Or, magazine mashups.
 Tags:
     - art
-Date posted: 20140226
-Date updated: 20150203
+Date posted: 2014-02-26
+Date updated: 2015-02-03
 Live: true
 Index: true
 TOC: true

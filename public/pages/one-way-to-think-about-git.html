@@ -1,47 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-<link rel="shortcut icon" href="/images/favicon.png" />
-<meta name="viewport" content="initial-scale=1, width=device-width" />
+<html>
+    <head>
+    <title>One Way to Think About git</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <script type="text/javascript" src="/main.js"></script>
+</head>
 
-<link type="text/css" rel="stylesheet" href="/css/main.css" />
-<script type="text/javascript" src="/js/visitor.js"></script>
-<script type="text/javascript" src="/js/bg-squares.js"></script>
-<script type="text/javascript" src="/js/bg-circles.js"></script>
-<script type="text/javascript" src="/js/bg-stars.js"></script>
-<script type="text/javascript" src="/js/malevich.js"></script>
-<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
-<script type="text/javascript" src="/js/bg-loader.js"></script>
-
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>~/One Way to Think About git</title>
-<meta name="description" content="The Grand Unified diff and patch Program." />
-<meta name="author" content="Richard Mavis" />
-<meta name="keywords" content="development, git" />
-<meta name="post_date" content="20160408" />
-<meta name="last_updated" content="20160408" />
-<meta name="index" content="yes" />
-<meta name="toc" content="yes" />
-
-  </head>
-
-  <body>
-    <div id="carapace">
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-
-      <div class="body-wrap">
-        <h1 id="onewaytothinkaboutgit">One Way to Think About git</h1>
+    <body>
+        <div class="markdown-body__wrap">
+    <h1>One Way to Think About git</h1>
 
 <p>Recently a coworker told me that, working with <code>git</code>, he was unclear on the benefits of feature or bugfix branches in specific and not very clear on the concept and utility of branches in general. This is an expansion of the explanation I gave him.</p>
 
-<h2 id="diff">diff</h2>
+<h2>diff</h2>
 
 <p>The <code>diff</code> program compares files and produces an output explaining the differences.</p>
 
@@ -112,7 +83,7 @@ This is a great place.
 
 <p>Another way to look at this output is as a set of instructions on how to change the &#8220;from&#8221; file into the &#8220;to&#8221; file. So to change <code>a.txt</code> into <code>b.txt</code>, you&#8217;d add the text on line 5 (as the new second line) and subtract the text in line 7 (the old third line). Changing files in this way&#8212;by using this sort of instruction set&#8212;is called &#8220;patching&#8221;.</p>
 
-<h2 id="patch">patch</h2>
+<h2>patch</h2>
 
 <p>You can save a set of changes to a file:</p>
 
@@ -158,7 +129,7 @@ This is a great place.
 
 <p>The complexity of maintaining different versions and different sets of patch files would grow both with the complexity and with the longevity of your program. And this doesn&#8217;t factor in the complexity of collaboration, where someone might be in charge of <code>program-0.2.2-new-feature-a</code> and someone else in charge of <code>program-0.2.2-new-feature-b</code>. This also doesn&#8217;t factor in the disk space required by all these copies.</p>
 
-<h2 id="git">git</h2>
+<h2>git</h2>
 
 <p>One way to think about <code>git</code> is as a <em>Grand Unified <code>diff</code> and <code>patch</code> program</em>. It manages all that complexity for you.</p>
 
@@ -166,29 +137,9 @@ This is a great place.
 
 <p>To make collaboration and working with backups easy, you can <code>pull</code> and <code>push</code> your codebase to other copies of the codebase. You&#8217;ll <code>pull</code> and <code>push</code> the code&#8217;s history along with the files, so your coworkers will be able to access the previous changes.</p>
 
-<h3 id="featurebranches">Feature Branches</h3>
+<h3>Feature Branches</h3>
 
 <p>This is a long way to say that bugfix and feature branches are useful in that they enable you to isolate sets of related changes. Adding one feature could result in many commits. Though it&#8217;s true that merging a feature branch into the main branch will bring all of that feature&#8217;s commits into the main history, if you want to review the history of a certain feature it&#8217;s much more convenient to <code>checkout</code> that feature&#8217;s branch, which should only contain the commits specific to that feature, than to hunt through the merged history of the entire project.</p>
-
-        <div class="footer-wrap">
-  <div class="footer-date-line"><span class="footer-date-cell">Posted on 8 Apr 2016.</span> <span class="footer-date-cell">Last updated on 8 Apr 2016.</span></div>
 </div>
-
-      </div>
-
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-    </div>
-
-    <div id="bg-screen"></div>
-<script>
-new BackgroundLoader();
-new Visitor();
-</script>
-
-  </body>
+    </body>
 </html>

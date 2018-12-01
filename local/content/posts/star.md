@@ -5,8 +5,8 @@ Blurb: Simple Text Archiving and Retrieving.
 Tags:
     - development
     - ruby
-Date posted: 20140628
-Date updated: 20161130
+Date posted: 2014-06-28
+Date updated: 2016-11-30
 Live: true
 Index: true
 TOC: true

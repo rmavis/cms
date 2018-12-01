@@ -6,8 +6,8 @@ Tags:
     - design
     - development
     - php
-Date posted: 20140731
-Date updated: 20150203
+Date posted: 2014-07-31
+Date updated: 2015-02-03
 Live: true
 Index: true
 TOC: true

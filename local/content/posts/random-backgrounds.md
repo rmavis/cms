@@ -8,8 +8,8 @@ Tags:
     - html
     - css
     - javascript
-Date posted: 20150509
-Date updated: 20170111
+Date posted: 2015-05-09
+Date updated: 2017-01-11
 Live: true
 Index: true
 TOC: true

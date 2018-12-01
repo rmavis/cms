@@ -1,47 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-<link rel="shortcut icon" href="/images/favicon.png" />
-<meta name="viewport" content="initial-scale=1, width=device-width" />
+<html>
+    <head>
+    <title>Random Backgrounds</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <script type="text/javascript" src="/main.js"></script>
+</head>
 
-<link type="text/css" rel="stylesheet" href="/css/main.css" />
-<script type="text/javascript" src="/js/visitor.js"></script>
-<script type="text/javascript" src="/js/bg-squares.js"></script>
-<script type="text/javascript" src="/js/bg-circles.js"></script>
-<script type="text/javascript" src="/js/bg-stars.js"></script>
-<script type="text/javascript" src="/js/malevich.js"></script>
-<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
-<script type="text/javascript" src="/js/bg-loader.js"></script>
-
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>~/Random Backgrounds</title>
-<meta name="author" content="Richard Mavis" />
-<meta name="description" content="Because plain backgrounds are plain." />
-<meta name="keywords" content="design, development, html, css, javascript" />
-<meta name="post_date" content="20150509" />
-<meta name="last_updated" content="20170111" />
-<meta name="index" content="yes" />
-<meta name="toc" content="yes" />
-
-  </head>
-
-  <body>
-    <div id="carapace">
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-
-      <div class="body-wrap">
-        <h1 id="randombackgrounds">Random Backgrounds</h1>
+    <body>
+        <div class="markdown-body__wrap">
+    <h1>Random Backgrounds</h1>
 
 <p>Plain backgrounds are plain. So <a href="https://github.com/rmavis/random-backgrounds">here are a few little Javascripts</a> to generate random backgrounds.</p>
 
-<h2 id="samples">Samples</h2>
+<h2>Samples</h2>
 
 <ul>
 <li><a href="http://richardmavis.info/stars">Stars</a></li>
@@ -54,7 +25,7 @@
 
 <p>There&#8217;s a randomly-chosen random background on the bottom of this page, too.</p>
 
-<h2 id="files">Files</h2>
+<h2>Files</h2>
 
 <p>There are three generators in the repository:</p>
 
@@ -68,7 +39,7 @@
 
 <p>And one test page: <code>bg-test.html</code>.</p>
 
-<h2 id="installation">Installation</h2>
+<h2>Installation</h2>
 
 <ol>
 <li>Download the files</li>
@@ -76,7 +47,7 @@
 <li>There is no step 3</li>
 </ol>
 
-<h2 id="use">Use</h2>
+<h2>Use</h2>
 
 <p>Each generator receives an object specifying things like the number of elements to create, upper and lower bounds for colors, the element to append the elements it generates to, etc. There are sample parameters at the bottom of each file. Or you can pass it nothing and let the generator generate the values it needs itself.</p>
 
@@ -84,29 +55,9 @@
 
 <p>This looks best when the target element spans the full height and width of the page.</p>
 
-<h2 id="bonus">Bonus</h2>
+<h2>Bonus</h2>
 
 <p>The <code>bg-loader.js</code> file contains a few functions used by the generators, but can also randomly choose a random generator. So rather than calling, e.g., <code>new Circles()</code>, you can call <code>new BackgroundLoader()</code>, and in return you&#8217;ll get a random random background. That&#8217;s what the pages on this site use.</p>
-
-        <div class="footer-wrap">
-  <div class="footer-date-line"><span class="footer-date-cell">Posted on 9 May 2015.</span> <span class="footer-date-cell">Last updated on 11 Jan 2017.</span></div>
 </div>
-
-      </div>
-
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-    </div>
-
-    <div id="bg-screen"></div>
-<script>
-new BackgroundLoader();
-new Visitor();
-</script>
-
-  </body>
+    </body>
 </html>

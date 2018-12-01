@@ -7,8 +7,8 @@ Tags:
     - information
     - literature
     - personal
-Date posted: 20180331
-Date updated: 20180624
+Date posted: 2018-03-31
+Date updated: 2018-06-24
 Live: true
 Index: true
 TOC: true

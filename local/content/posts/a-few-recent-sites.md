@@ -5,8 +5,8 @@ Author: Richard Mavis
 Tags:
     - development
     - personal
-Date posted: 20161002
-Date updated: 20161002
+Date posted: 2016-10-02
+Date updated: 2016-10-02
 Live: true
 Index: true
 TOC: true

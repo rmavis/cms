@@ -1,75 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-<link rel="shortcut icon" href="/images/favicon.png" />
-<meta name="viewport" content="initial-scale=1, width=device-width" />
+<html>
+    <head>
+    <title>Javascript Libraries</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <script type="text/javascript" src="/main.js"></script>
+</head>
 
-<link type="text/css" rel="stylesheet" href="/css/main.css" />
-<script type="text/javascript" src="/js/visitor.js"></script>
-<script type="text/javascript" src="/js/bg-squares.js"></script>
-<script type="text/javascript" src="/js/bg-circles.js"></script>
-<script type="text/javascript" src="/js/bg-stars.js"></script>
-<script type="text/javascript" src="/js/malevich.js"></script>
-<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
-<script type="text/javascript" src="/js/bg-loader.js"></script>
-
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>~/Javascript Libraries</title>
-<meta name="author" content="Richard Mavis" />
-<meta name="description" content="And how libraries can become a framework." />
-<meta name="keywords" content="development, javascript" />
-<meta name="post_date" content="20160227" />
-<meta name="last_updated" content="20160408" />
-<meta name="index" content="yes" />
-<meta name="toc" content="yes" />
-
-  </head>
-
-  <body>
-    <div id="carapace">
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-
-      <div class="body-wrap">
-        <h1 id="javascriptlibraries">Javascript Libraries</h1>
+    <body>
+        <div class="markdown-body__wrap">
+    <h1>Javascript Libraries</h1>
 
 <p>Here are some Javascript libraries I&#8217;ve written.</p>
 
-<h4 id="http.jshttp"><a href="https://github.com/rmavis/http">Http.js</a></h4>
+<h4><a href="https://github.com/rmavis/http">Http.js</a></h4>
 
 <p>For managing AJAX requests.</p>
 
-<h4 id="clattr.jsclattr"><a href="https://github.com/rmavis/clattr">Clattr.js</a></h4>
+<h4><a href="https://github.com/rmavis/clattr">Clattr.js</a></h4>
 
 <p>For managing element attributes.</p>
 
-<h4 id="alert.jsalert"><a href="https://github.com/rmavis/alert">Alert.js</a></h4>
+<h4><a href="https://github.com/rmavis/alert">Alert.js</a></h4>
 
 <p>For managing good-looking, high-functioning alerts and notifications.</p>
 
-<h4 id="scrollmonitor.jsscrollmonitor"><a href="https://github.com/rmavis/scrollmonitor">ScrollMonitor.js</a></h4>
+<h4><a href="https://github.com/rmavis/scrollmonitor">ScrollMonitor.js</a></h4>
 
 <p>For monitoring and responding to a user&#8217;s scroll position.</p>
 
-<h4 id="informer.jsinformer"><a href="https://github.com/rmavis/informer">Informer.js</a></h4>
+<h4><a href="https://github.com/rmavis/informer">Informer.js</a></h4>
 
 <p>For better handling of forms and their data.</p>
 
-<h4 id="monopage.jsmonopage"><a href="https://github.com/rmavis/monopage">Monopage.js</a></h4>
+<h4><a href="https://github.com/rmavis/monopage">Monopage.js</a></h4>
 
 <p>For correlating URLs and element states on a single-page site.</p>
 
-<h4 id="utils.jsutils"><a href="https://github.com/rmavis/utils.js">Utils.js</a></h4>
+<h4><a href="https://github.com/rmavis/utils.js">Utils.js</a></h4>
 
 <p>Miscellaneous utility functions.</p>
 
-<h2 id="notes">Notes</h2>
+<h2>Notes</h2>
 
 <p>I think frameworks are a poor investment <a href="https://encrypted.google.com/search?hl=en&amp;q=frameworks%20vs%20libraries">for all the usual reasons</a>: the skills required to effectively use a framework are typically framework-specific and therefore non-transferable, and they are subject to obsolescence by the framework&#8217;s developers; frameworks are projects that will likely change must faster than the language they&#8217;re written in and, as some wise man once said, only a fool would build a house on sand; they create bloat (every function a user downloads that is not used is bloat); they encourage dependence rather than self-reliance; etc. For many reasons, libraries are a better investment, a better development pattern, and tend to result in a better experience both for the user and for the developer.</p>
 
@@ -80,26 +51,6 @@
 <p>It&#8217;s easy to see how a set of libraries can become a framework&#8212;what is a framework if not a collection of related, inter-dependent, and hopefully DRY libraries? But there&#8217;s a fundamental difference in the design philosophy: one is monolithic and maybe allows for modular components, the other <em>is only modular components</em> and you can use them however you want.</p>
 
 <p>Also, I&#8217;m lazy, and I&#8217;m pretty stupid, so I&#8217;d rather stick with <a href="https://en.wikipedia.org/wiki/Unix_philosophy">what&#8217;s worked for forty years</a> than keep up with <a href="http://bitworking.org/news/2014/05/zero_framework_manifesto">the framework of the week</a>.</p>
-
-        <div class="footer-wrap">
-  <div class="footer-date-line"><span class="footer-date-cell">Posted on 27 Feb 2016.</span> <span class="footer-date-cell">Last updated on 8 Apr 2016.</span></div>
 </div>
-
-      </div>
-
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-    </div>
-
-    <div id="bg-screen"></div>
-<script>
-new BackgroundLoader();
-new Visitor();
-</script>
-
-  </body>
+    </body>
 </html>

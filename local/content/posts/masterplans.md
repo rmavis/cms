@@ -8,8 +8,8 @@ Tags:
     - design
     - php
     - ruby
-Date posted: 20140701
-Date updated: 20150203
+Date posted: 2014-07-01
+Date updated: 2015-02-03
 Live: true
 Index: true
 TOC: true

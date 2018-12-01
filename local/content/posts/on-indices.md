@@ -5,8 +5,8 @@ Blurb: An orderly look at ordering information.
 Tags:
     - information
     - design
-Date posted: 20150213
-Date updated: 20150213
+Date posted: 2015-02-13
+Date updated: 2015-02-13
 Live: true
 Index: true
 TOC: true

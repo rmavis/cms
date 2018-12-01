@@ -4,8 +4,8 @@ Blurb: And later.
 Author: Richard Mavis
 Tags:
     - personal
-Date posted: 20170301
-Date updated: 20170301
+Date posted: 2017-03-01
+Date updated: 2017-03-01
 Live: true
 Index: false
 TOC: false

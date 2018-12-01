@@ -5,8 +5,8 @@ Blurb: A vital curriculum.
 Tags:
     - personal
     - work
-Date posted: 20140716
-Date updated: 20180327
+Date posted: 2014-07-16
+Date updated: 2018-03-27
 Live: true
 Index: true
 TOC: true

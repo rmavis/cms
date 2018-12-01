@@ -8,8 +8,8 @@ Tags:
     - ruby
     - html
     - css
-Date posted: 20141015
-Date updated: 20150404
+Date posted: 2014-10-15
+Date updated: 2015-04-04
 Live: true
 Index: true
 TOC: true

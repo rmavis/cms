@@ -4,8 +4,8 @@ Author: Richard Mavis
 Blurb: It's a shocker.
 Tags:
     - personal
-Date posted: 20140514
-Date updated: 20150203
+Date posted: 2014-05-14
+Date updated: 2015-02-03
 Live: true
 Index: false
 TOC: false

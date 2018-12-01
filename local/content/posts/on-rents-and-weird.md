@@ -6,8 +6,8 @@ Tags:
     - design
     - portland
     - personal
-Date posted: 20170728
-Date updated: 20170728
+Date posted: 2017-07-28
+Date updated: 2017-07-28
 Live: true
 Index: true
 TOC: true

@@ -82,6 +82,7 @@ module Base
     # CLI.group_conf :: void -> hash
     def self.group_conf
       {
+        :as_group => true,
         :print_act => :to_file!,
       }
     end

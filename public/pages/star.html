@@ -1,51 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-<link rel="shortcut icon" href="/images/favicon.png" />
-<meta name="viewport" content="initial-scale=1, width=device-width" />
+<html>
+    <head>
+    <title>STAR</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <script type="text/javascript" src="/main.js"></script>
+</head>
 
-<link type="text/css" rel="stylesheet" href="/css/main.css" />
-<script type="text/javascript" src="/js/visitor.js"></script>
-<script type="text/javascript" src="/js/bg-squares.js"></script>
-<script type="text/javascript" src="/js/bg-circles.js"></script>
-<script type="text/javascript" src="/js/bg-stars.js"></script>
-<script type="text/javascript" src="/js/malevich.js"></script>
-<script type="text/javascript" src="/js/whale-shark-skin.js"></script>
-<script type="text/javascript" src="/js/bg-loader.js"></script>
-
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>~/STAR</title>
-<meta name="author" content="Richard Mavis" />
-<meta name="description" content="Simple Text Archiving and Retrieving." />
-<meta name="keywords" content="development, ruby" />
-<meta name="post_date" content="20140628" />
-<meta name="last_updated" content="20161130" />
-<meta name="index" content="yes" />
-<meta name="toc" content="yes" />
-
-  </head>
-
-  <body>
-    <div id="carapace">
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-
-      <div class="body-wrap">
-        <h1 id="star">STAR</h1>
+    <body>
+        <div class="markdown-body__wrap">
+    <h1>STAR</h1>
 
 <p>STAR stands for Simple Text Archiving and Retrieving. There are two versions: an <a href="https://github.com/rmavis/star">old one written in Ruby</a>, and <a href="https://github.com/rmavis/go-STAR">a new one written in Go</a>. Their <code>readme</code>s are below.</p>
 
-<h2 id="ingo">In Go</h2>
+<h2>In Go</h2>
 
 <p><code>star</code> is a simple tool for saving and retrieving bits of text. You could use it to save bookmarks, hard-to-remember commands, complex emoticons, stuff like that.</p>
 
-<h3 id="usage">Usage</h3>
+<h3>Usage</h3>
 
 <p>I use <code>star</code> for all sorts of things.</p>
 
@@ -135,7 +106,7 @@ Delete these records: all
 
 <p>So essentially <code>star</code> saves, interfaces with, and acts on text snippets that it stores in a plain text file.</p>
 
-<h3 id="installation">Installation</h3>
+<h3>Installation</h3>
 
 <p>This version of <code>star</code> is written in Go. In <code>bin/</code> there are compiled executables for every combination of <code>[linux darwin windows]</code> and <code>[amd64 386]</code> in the format <code>star_[os]-[arch]</code>. So to install you could just download the executable you need, put it somewhere useful, and create a symlink somewhere in your <code>$PATH</code>:</p>
 
@@ -154,7 +125,7 @@ $ go install
 
 <p>There&#8217;s also <a href="https://github.com/rmavis/star">a version written in Ruby</a>, if you&#8217;re into that. They&#8217;re similar but I recommend this one&#8212;it&#8217;s faster and has better browsing options.</p>
 
-<h2 id="inruby">In Ruby</h2>
+<h2>In Ruby</h2>
 
 <p><code>star</code> is a simple tool for saving and retrieving bits of text. You could use it to save bookmarks, hard-to-remember commands, complex emoticons, stuff like that. It&#8217;s similar to the excellent <a href="http://zachholman.com/boom/">boom</a> by <a href="http://zachholman.com/">Zach Holman</a> but suits me better.</p>
 
@@ -234,26 +205,6 @@ $ go install
 
 <pre><code>$ sudo ln -s where/ever/it/is/star.rb /usr/local/bin/star
 </code></pre>
-
-        <div class="footer-wrap">
-  <div class="footer-date-line"><span class="footer-date-cell">Posted on 28 Jun 2014.</span> <span class="footer-date-cell">Last updated on 30 Nov 2016.</span></div>
 </div>
-
-      </div>
-
-      <div class="nav-wrap">
-  <span class="nav-item"><a class="nav-link" href="/contents">contents</a></span>
-  <span class="nav-item">&para;</span>
-  <span class="nav-item"><a class="nav-link" href="/index">index</a></span>
-</div>
-
-    </div>
-
-    <div id="bg-screen"></div>
-<script>
-new BackgroundLoader();
-new Visitor();
-</script>
-
-  </body>
+    </body>
 </html>

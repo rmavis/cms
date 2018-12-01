@@ -7,8 +7,8 @@ Tags:
   - javascript
   - html
   - css
-Date posted: 20180715
-Date updated: 20180715
+Date posted: 2018-07-15
+Date updated: 2018-07-15
 Live: true
 Index: true
 TOC: true

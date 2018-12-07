@@ -16,13 +16,7 @@ module Local::Specs::Content::TableOfContents
           },
         },
       },
-      :group => {
-        :Group => {
-          :_self => {
-            :required => true,
-          },
-        },
-      },
+      :group => :GroupName,
     }
   end
 

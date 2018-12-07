@@ -32,7 +32,9 @@ module Base
     end
 
     # Field.make :: (spec, attrs, value) -> Field
-    # For type definitions, see `from_plan`.
+    # spec = Constant (module name)
+    # attrs = (hash) the field's attributes
+    # val = (var) the field's value, which will be set if valid
     # Subclasses can override this method but those methods must have
     # the same type signature.
     def self.make(spec, attrs = { }, value = nil)

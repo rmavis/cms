@@ -9,6 +9,7 @@ end
   :Date => 'date.rb',
   :Entry => 'entry.rb',
   :Group => 'group.rb',
+  :GroupName => 'group-name.rb',
   :ImageAndText => 'image-and-text.rb',
   :ImagePair => 'image-pair.rb',
   :Image => 'image.rb',

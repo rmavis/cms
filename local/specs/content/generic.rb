@@ -18,7 +18,7 @@ module Local::Specs::Content::Generic
           },
         },
       },
-      :news => :Group,
+      :news => :GroupName,
       :cover_image => :ImageAndText,
       :image_pair => :ImagePair,
       :body => {

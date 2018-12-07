@@ -1,19 +1,21 @@
 module Local::Specs::Groups::PagesByTags
 
   def self.content_path
-    "#{DirMap.content}/news"
+    "#{DirMap.content}/posts"
   end
 
   def self.filter(file, items)
-    if (File.extname(file) == ".yaml")
-      content = ::Base::Content.from_file(file)
+    if ((File.extname(file) == ".md") ||
+        (File.extname(file) == ".text"))
+      content = ::Local::Specs::Fields::MarkdownFile.content_from_file(file)
       if ((content.has_key?(:meta)) &&
           (content[:meta].has_key?(:live)) &&
           (content[:meta][:live]) &&
+          (content[:meta].has_key?(:index)) &&
+          (content[:meta][:index]) &&
           (content[:meta].has_key?(:tags)) &&
-          (content[:meta][:tags].is_a?(Array)) &&
-          (content[:meta][:tags].include?('news')))
-        return content
+          (content[:meta][:tags].is_a?(Array)))
+        return ::Local::Specs::Content::MarkdownArticle.prepare_content!(content, file)
       else
         return nil
       end
@@ -52,7 +54,6 @@ module Local::Specs::Groups::PagesByTags
         )
       )
     end
-
     return groups
   end
 

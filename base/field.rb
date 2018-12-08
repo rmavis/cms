@@ -71,6 +71,31 @@ module Base
 
     attr_reader :attrs, :type
 
+    # set_if_valid! :: a -> b|nil
+    # set_if_valid! receives a value intended for the current Field.
+    # If the value is valid, it will be set and returned. Else, nil.
+    def set_if_valid!(val)
+      _val = self.validate(val)
+
+      if (_val.nil?)
+        if (self.attrs[:required])
+          raise "The value given (`#{val}`) for field `#{self.class}` is required but invalid."
+        else
+          return nil
+        end
+      end
+
+      self.set_attr!(:value, _val)
+      return _val
+    end
+
+    # validate :: m -> nil
+    # Each Field can implement its own `validate` method which must
+    # have the signature `a -> b|nil`.
+    def validate(val)
+      raise "A Field must define a `validate` method (#{self.class.name})."
+    end
+
     # get_attr :: symbol -> a
     # get_attr receives a key of the current's Field's `attrs` and
     # returns the assciated value.
@@ -96,31 +121,6 @@ module Base
     # get_out_val returns the current Field's `value`.
     def get_out_val
       self.attrs[:value]
-    end
-
-    # validate :: m -> nil
-    # Each Field can implement its own `validate` method which must
-    # have the signature `a -> b|nil`.
-    def validate(val)
-      raise "A Field must define a `validate` method (#{self.class.name})."
-    end
-
-    # set_if_valid! :: a -> b|nil
-    # set_if_valid! receives a value intended for the current Field.
-    # If the value is valid, it will be set and returned. Else, nil.
-    def set_if_valid!(val)
-      _val = self.validate(val)
-
-      if (_val.nil?)
-        if (self.attrs[:required])
-          raise "The value given (`#{val}`) for field `#{self.class}` is required but invalid."
-        else
-          return nil
-        end
-      end
-
-      self.set_attr!(:value, _val)
-      return _val
     end
 
   end

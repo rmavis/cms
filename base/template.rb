@@ -1,9 +1,7 @@
 # The Template class is the core of the CMS's core functionality.
 # The main idea is that a Template contains a collection of Fields,
 # and a Field contains a value and other attributes, and these
-# Fields can be rendered as an HTML page, form, as YAML, etc. So
-# a Template is an object that contains a collection of fields and
-# methods for reading and rendering those fields in various ways.
+# Fields can be rendered in a variety of view types.
 module Base
   class Template
     include Extendable

@@ -87,10 +87,7 @@ A group spec should also define a `view_file` method. This will work as it does 
 
 Sometimes it's more convenient to write/store content in formats other than YAML. Sometimes it's nice to store an article's metadata (in YAML) and body (in Markdown) in the same file. There's a reasonably easy and flexible way to accomplish that.
 
-This example will use the `MarkdownArticle` Content Spec and the `MarkdownTransform` and `MarkdownFile` Field Specs:
-- The content template (MarkdownArticle) has its own `to_view` method, which defers to (calls) the appropriate field's `to_view`.
-- The transform field (MarkdownTransform) specifies two methods, `(in|out)put_field`, which the parent class (FileTransform) uses in its own `to_view` procedure.
-- As part of that procedure, the FileTransform class will call `to_view` on the `input_field`, which will get written to the filename specified by the `output_field`. That file will be read and returned as the field's view.
-- The content that gets written to that file is determined by the `input_field`'s subfields. When that `input_field` is instantiated (see ReadableFile::make), its subfields will be the result of calling `read` on the ReadableFile's child (in this case `MarkdownFile`).
-
-It's a somewhat complex process but each part is small and functions pretty well as expected and within their own jurisdictions.
+This example will use the `MarkdownArticle` Content Spec and the `MarkdownFile` Field Spec:
+- The field spec (MarkdownFile) must have a `content_from_file` method (all Fields of type `ReadableFile` must have one), which must have the siguature `string -> hash`. The given string will name the file to read, and the returned hash should have have keys that match those specified by the spec's `fields` method.
+- The content spec can also have a `content_from_file` method. If so, it should have the same signature.
+- When the Template if built, it builds all its Fields. When the `MarkdownFile` Field is built, its `content_from_file` method will be called, and the Field's value will be the resulting hash.

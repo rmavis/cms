@@ -12,9 +12,9 @@ module Base
       ::Local::Specs
     end
 
-    # Entry.content_specs_prefix :: void -> string
-    def self.content_specs_prefix
-      "#{self.specs_prefix}::Content"
+    # Entry.entry_specs_prefix :: void -> string
+    def self.entry_specs_prefix
+      "#{self.specs_prefix}::Entries"
     end
 
     # Entry.base_entries_prefix :: void -> symbol
@@ -29,7 +29,7 @@ module Base
       # the name. This isn't ideal behavior -- maybe check for the
       # leading `::`?  #TODO
       if (spec.is_a?(String))
-        "#{self.content_specs_prefix}::#{spec}".to_const
+        "#{self.entry_specs_prefix}::#{spec}".to_const
       elsif (spec.is_a?(Symbol))
         spec.to_s.to_const
       elsif (spec.is_a?(Module))

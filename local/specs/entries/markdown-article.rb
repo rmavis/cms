@@ -1,4 +1,4 @@
-module Local::Specs::Content::MarkdownArticle
+module Local::Specs::Entries::MarkdownArticle
 
   def self.type
     :View
@@ -16,7 +16,7 @@ module Local::Specs::Content::MarkdownArticle
   # The content paramater will be altered in-place.
   def self.prepare_content!(content, file)
     # This is necessary.
-    content[:spec] = ::Local::Specs::Content::MarkdownArticle
+    content[:spec] = ::Local::Specs::Entries::MarkdownArticle
 
     # This seems a reasonable default.
     if (!content[:meta].has_key?(:slug))
@@ -29,9 +29,9 @@ module Local::Specs::Content::MarkdownArticle
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/markdown-page.html.erb"
+      "#{DirMap.html_views}/entries/markdown-page.html.erb"
     else
-      "#{DirMap.html_views}/content/markdown-page.html.erb"
+      "#{DirMap.html_views}/entries/markdown-page.html.erb"
     end
   end
 

@@ -33,9 +33,9 @@ module Local::Specs::Groups::RecentNews
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/news-posts.html.erb"
+      "#{DirMap.html_views}/entries/news-posts.html.erb"
     else
-      "#{DirMap.html_views}/content/news-posts.html.erb"
+      "#{DirMap.html_views}/entries/news-posts.html.erb"
     end
   end
 

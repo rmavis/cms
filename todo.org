@@ -1,5 +1,5 @@
 * Todo
-** Base [21/25]
+** Base [22/26]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -41,6 +41,7 @@
   And run them.
   To process/produce views from content files and pipe those into public files.
 - [X] Rename `template` to `entry`
+- [X] Rename `content` to `entries`
 - [ ] Auto-generate `_autoload` files
 - [ ] Router
 - [ ] How to specify a group of related objects in a specific order and by a specific key?

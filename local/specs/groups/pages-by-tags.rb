@@ -15,7 +15,7 @@ module Local::Specs::Groups::PagesByTags
           (content[:meta][:index]) &&
           (content[:meta].has_key?(:tags)) &&
           (content[:meta][:tags].is_a?(Array)))
-        return ::Local::Specs::Content::MarkdownArticle.prepare_content!(content, file)
+        return ::Local::Specs::Entries::MarkdownArticle.prepare_content!(content, file)
       else
         return nil
       end
@@ -40,7 +40,7 @@ module Local::Specs::Groups::PagesByTags
       groups.push(
         ::Base::Entry.from_content(
           {
-            :spec => ::Local::Specs::Content::TaggedGroup,
+            :spec => ::Local::Specs::Entries::TaggedGroup,
             :slug => "tag-group-#{tag.downcase.gsub(/[^-0-9a-z_]/, '-')}",
             :meta => {
               :title => tag,
@@ -60,9 +60,9 @@ module Local::Specs::Groups::PagesByTags
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/tag-index.html.erb"
+      "#{DirMap.html_views}/entries/tag-index.html.erb"
     else
-      "#{DirMap.html_views}/content/tag-index.html.erb"
+      "#{DirMap.html_views}/entries/tag-index.html.erb"
     end
   end
 

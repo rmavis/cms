@@ -9,7 +9,7 @@ module Local::Specs::Groups::MarkdownPages
   end
 
   def self.view_spec
-    ::Local::Specs::Content::MarkdownArticle
+    ::Local::Specs::Entries::MarkdownArticle
   end
 
   def self.filter(file, items)
@@ -36,9 +36,9 @@ module Local::Specs::Groups::MarkdownPages
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/markdown-posts.html.erb"
+      "#{DirMap.html_views}/entries/markdown-posts.html.erb"
     else
-      "#{DirMap.html_views}/content/markdown-posts.html.erb"
+      "#{DirMap.html_views}/entries/markdown-posts.html.erb"
     end
   end
 

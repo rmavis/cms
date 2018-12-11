@@ -1,11 +1,9 @@
-module Local::Specs::Content::Generic
+module Local::Specs::Entries::News
 
-  # This is the Entry type.
   def self.type
     :View
   end
 
-  # Generic.fields :: void -> hash
   def self.fields
     {
       :meta => {
@@ -13,14 +11,20 @@ module Local::Specs::Content::Generic
           :_self => {
             :required => true,
           },
+          :title => {
+            :required => true,
+          },
+          :date => {
+            :required => true,
+          },
           :author => {
             :required => true,
           },
-        },
+          :tags => {
+            :required => true,
+          },
+        }
       },
-      :news => :GroupName,
-      :cover_image => :ImageAndText,
-      :image_pair => :ImagePair,
       :body => {
         :BodyBlocks => {
           :_self => {
@@ -28,34 +32,23 @@ module Local::Specs::Content::Generic
           },
         },
       },
-      :this_year => :ThisYear,
-      :make_md5 => :MD5,
     }
   end
 
-  # view_fields :: void -> [Field]
-  def view_fields(type)
-    if (type == :html)
-      self.make_fields(
-        [
-          :cover_image,
-          :image_pair,
-          :body,
-          :news,
-          :this_year,
-        ]
-      )
-    else
-      self.fields
-    end
+  def self.content_path
+    "#{DirMap.content}/news"
+  end
+
+  def self.public_path
+    "/news"
   end
 
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/generic.html.erb"
+      "#{DirMap.html_views}/entries/post-news.html.erb"
     else
-      "#{DirMap.html_views}/content/generic.html.erb"
+      "#{DirMap.html_views}/entries/post-news.html.erb"
     end
   end
 

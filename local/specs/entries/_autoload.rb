@@ -1,4 +1,4 @@
-module Local::Specs::Content
+module Local::Specs::Entries
 end
 
 
@@ -10,5 +10,5 @@ end
   :TableOfContents => 'table-of-contents.rb',
   :TaggedGroup => 'tagged-group.rb',
 }.each do |mod,file|
-  Local::Specs::Content.autoload(mod, "#{__dir__}/#{file}")
+  Local::Specs::Entries.autoload(mod, "#{__dir__}/#{file}")
 end

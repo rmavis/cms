@@ -3,7 +3,7 @@ end
 
 
 {
-  :Content => "content/_autoload.rb",
+  :Entries => "entries/_autoload.rb",
   :Fields => "fields/_autoload.rb",
   :Groups => "groups/_autoload.rb",
 }.each do |mod,file|

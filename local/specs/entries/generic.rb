@@ -1,11 +1,11 @@
-module Local::Specs::Content::Gallery
+module Local::Specs::Entries::Generic
 
   # This is the Entry type.
   def self.type
     :View
   end
 
-  # Gallery.fields :: void -> hash
+  # Generic.fields :: void -> hash
   def self.fields
     {
       :meta => {
@@ -13,8 +13,14 @@ module Local::Specs::Content::Gallery
           :_self => {
             :required => true,
           },
+          :author => {
+            :required => true,
+          },
         },
       },
+      :news => :GroupName,
+      :cover_image => :ImageAndText,
+      :image_pair => :ImagePair,
       :body => {
         :BodyBlocks => {
           :_self => {
@@ -22,13 +28,8 @@ module Local::Specs::Content::Gallery
           },
         },
       },
-     # :news => {
-     #    :Entry => {
-     #      :spec => :News,
-     #      :required => true,
-     #      :limit => 2,
-     #    },
-     #  },
+      :this_year => :ThisYear,
+      :make_md5 => :MD5,
     }
   end
 
@@ -37,8 +38,11 @@ module Local::Specs::Content::Gallery
     if (type == :html)
       self.make_fields(
         [
+          :cover_image,
+          :image_pair,
           :body,
-          # :news,
+          :news,
+          :this_year,
         ]
       )
     else
@@ -49,9 +53,9 @@ module Local::Specs::Content::Gallery
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/gallery.html.erb"
+      "#{DirMap.html_views}/entries/generic.html.erb"
     else
-      "#{DirMap.html_views}/content/gallery.html.erb"
+      "#{DirMap.html_views}/entries/generic.html.erb"
     end
   end
 

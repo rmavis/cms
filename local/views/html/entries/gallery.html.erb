@@ -9,7 +9,7 @@
 
         <%
         Group.make(
-            'local/content/news',
+            'local/entries/news',
             lambda do |file, items|
                 if (File.extname(file) == ".yaml")
                     content = ::Base::Content.from_file(file)

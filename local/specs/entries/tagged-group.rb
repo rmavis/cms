@@ -1,4 +1,4 @@
-module Local::Specs::Content::TableOfContents
+module Local::Specs::Entries::TaggedGroup
 
   def self.type
     :View
@@ -16,25 +16,32 @@ module Local::Specs::Content::TableOfContents
           },
         },
       },
-      :group => :GroupName,
+      :group => {
+        :Group => {
+          :_self => {
+            :required => true,
+          },
+        },
+      },
     }
   end
 
   # view_file :: symbol -> string
+  # This method was copy-and-pasted and not modified.
   def view_file(type)
     if (type == :html)
-      "#{DirMap.html_views}/content/table-of-contents.html.erb"
+      "#{DirMap.html_views}/entries/tagged-group.html.erb"
     else
-      "#{DirMap.html_views}/content/table-of-contents.html.erb"
+      "#{DirMap.html_views}/entries/tagged-group.html.erb"
     end
   end
 
   # output_file :: symbol -> string
   def output_file(type)
     if (type == :html)
-      "#{DirMap.public}/pages/table-of-contents.html"
+      "#{DirMap.public}/#{self.filename}.html"
     else
-      "#{DirMap.public}/pages/table-of-contents.html"
+      "#{DirMap.public}/#{self.filename}.html"
     end
   end
 

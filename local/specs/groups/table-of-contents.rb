@@ -11,7 +11,7 @@ module Local::Specs::Groups::TableOfContents
         (content[:meta][:live]) &&
         (content[:meta].has_key?(:toc)) &&
         (content[:meta][:toc]))
-      return ::Local::Specs::Content::MarkdownArticle.prepare_content!(content, file)
+      return ::Local::Specs::Entries::MarkdownArticle.prepare_content!(content, file)
     else
       return nil
     end

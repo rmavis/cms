@@ -7,7 +7,7 @@ The Specs themselves shouldn't really be thought of as objects -- instead, they 
 - content_path: which returns a string naming the directory where the content files based on the spec are stored
 - public_path: which returns a string naming the directory where the view files should be output
 - view_file: which returns the path (relative to `{root}/local/views`) to an ERB template that can render the spec's view
-- fields (for Content specs and Compound field types): which returns a hash specifying the names of types and names of member Fields and rules that apply both to those members and to itself. For example:
+- fields (for Entry specs and Compound field types): which returns a hash specifying the names of types and names of member Fields and rules that apply both to those members and to itself. For example:
 ```
 def self.fields
     {
@@ -61,13 +61,13 @@ Specs for compound fields don't need those methods -- they will call them on the
 Both types of Fields will have a property, `type`, which will be a string matching the final segment of the Field Spec's `module` name. So the `Local::Specs::Fields::ImagePair` Field will have the `type` 'ImagePair'.
 
 
-## Content
+## Entry
 
-Content specs will be instantiated by the their base Entry `type` class. Like Compound Fields, they should also contain:
+Entry specs will be instantiated by the their base Entry `type` class. Like Compound Fields, they should also contain:
 - a `fields` method that specifies their components
 - a `view_file` method that returns a renderable file for the desired type of view
 
-Aside from those three, Content specs should be built to suit, providing what their base types require.
+Aside from those three, Entry specs should be built to suit, providing what their base types require.
 
 
 ## Groups
@@ -87,7 +87,7 @@ A group spec should also define a `view_file` method. This will work as it does 
 
 Sometimes it's more convenient to write/store content in formats other than YAML. Sometimes it's nice to store an article's metadata (in YAML) and body (in Markdown) in the same file. There's a reasonably easy and flexible way to accomplish that.
 
-This example will use the `MarkdownArticle` Content Spec and the `MarkdownFile` Field Spec:
+This example will use the `MarkdownArticle` Entry Spec and the `MarkdownFile` Field Spec:
 - The field spec (MarkdownFile) must have a `content_from_file` method (all Fields of type `ReadableFile` must have one), which must have the siguature `string -> hash`. The given string will name the file to read, and the returned hash should have have keys that match those specified by the spec's `fields` method.
-- The content spec can also have a `content_from_file` method. If so, it should have the same signature.
+- The entry spec can also have a `content_from_file` method. If so, it should have the same signature.
 - When the Entry if built, it builds all its Fields. When the `MarkdownFile` Field is built, its `content_from_file` method will be called, and the Field's value will be the resulting hash.

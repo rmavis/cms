@@ -22,25 +22,6 @@ module Base
       ::Base::Templates
     end
 
-    # Template.default_fields :: void -> hash
-    def self.default_fields
-      {
-        :slug => nil,
-      }
-    end
-
-    # Template.make_slug :: string -> hash
-    def self.make_slug(name)
-      {
-        :slug => name
-      }
-    end
-
-    # Template.slug_from_filename :: string -> hash
-    def self.slug_from_filename(filename)
-      return self.make_slug(File.basename(filename, ".*"))
-    end
-
     # Template::get_full_spec :: a -> constant?
     def self.get_full_spec(spec)
       # If the spec is a string, assume it was read from the content
@@ -58,63 +39,29 @@ module Base
       end
     end
 
-    # Template.check_content_keys! :: (hash, string?) -> bool
-    def self.check_content_keys!(content, source = nil)
-      [:spec, :slug].each do |key|
-        if (!content.has_key?(key))
-          if (source.nil?)
-            raise "Error: no `#{key}` specified in content: `#{content.to_s}`."
-          else
-            raise "Error: no `#{key}` specified for content in `#{source}`."
-          end
-        end
-      end
+    # Template.from_file :: (string, spec?) -> Template
+    # spec = constant
+    def self.from_file(path, spec = nil)
+      return self.from_content(Content.from_file(path, spec))
     end
 
-    # Template.from_file_with_spec :: (symbol|string, string) -> Template
-    def self.from_file_with_spec(spec, filename)
-      template_spec = self.get_full_spec(spec)
-      if (template_spec.respond_to?(:content_from_file))
-        content = Content.from_reader(
-          lambda { |f| template_spec.content_from_file(f) },
-          filename
-        )
-      else
-        content = Content.from_file(filename)
-      end
-      return self.from_content({:spec => spec}.merge(content), filename)
+    # Template.from_content :: hash -> Template
+    # In this method, the `content` must specify its own `spec`.
+    # That Spec must specify a Base Template `type` that it's based on.
+    def self.from_content(content)
+      spec = self.get_full_spec(content[:spec])
+      return "#{self.base_templates_prefix}::#{spec.type}".to_const.make(spec, content)
     end
 
-    # Template.from_file :: string -> Template
-    def self.from_file(filename)
-      return self.from_content(
-               # If the `slug` is specified in the content, it will
-               # take precedence
-               self.slug_from_filename(filename).merge(Content::from_file(filename)), filename
-             )
-    end
-
-    # Template.from_content :: (hash, string?) -> Template
-    def self.from_content(content, source = nil)
-      self.check_content_keys!(content, source)
-      template_spec = self.get_full_spec(content[:spec])
-      return "#{self.base_templates_prefix}::#{template_spec.type}".to_const.make(
-        template_spec,
-        content
-      )
-    end
-
-    # Template.make :: (spec, content) -> Template
-    def self.make(template_spec, content)
-      self.new(
-        template_spec,
-        self.make_fields(template_spec, content)
-      )
+    # Template.make :: (constant, hash) -> Template
+    # Subclasses of Template can implement their own `make` methods.
+    def self.make(spec, content)
+      self.new(spec, self.make_fields(spec, content))
     end
 
     # Template.make_fields :: (spec, content) -> Fields
-    #   spec = (const) The name of the template spec to build,
-    #     e.g. `:View`
+    #   spec = (constant) The template spec to build
+    #     e.g. `Local::Specs::Content::Generic`
     #   content = (hash) The keys of which will be contained in the
     #     hash returned by the spec's `fields` method, and the values
     #     will be the content to make the `:value` of the newly-created
@@ -122,10 +69,10 @@ module Base
     #   Fields = (hash) The keys of which will be the same as given by
     #     the content hash, and the values will be Field objects, the
     #     values of which will be the values given by the content hash
-    def self.make_fields(template_spec, content = { })
+    def self.make_fields(spec, content = { })
       fields = self.get_default_fields(content)
 
-      template_spec.fields.each do |key,val|
+      spec.fields.each do |key,val|
         if (val.is_a?(Symbol))
           if (content.has_key?(key))
             fields[key] = Field.from_plan(val, { }, content[key])
@@ -150,13 +97,15 @@ module Base
     # Template.get_default_fields :: (hash) -> hash
     def self.get_default_fields(content)
       fields = { }
-      self.default_fields.each_pair do |key,val|
+
+      Content.default_fields.each_pair do |key,val|
         if (content.has_key?(key))
           fields[key] = content[key]
         else
           fields[key] = val
         end
       end
+
       return fields
     end
 

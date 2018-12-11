@@ -77,9 +77,10 @@ module Local::Specs::Fields::MarkdownFile
       mmd_io.readlines.join
     end
 
-    return ::Base::Template.slug_from_filename(filename).merge(
+    return ::Base::Content.slug_from_filename(filename).merge(
       {
-        :meta => ::Base::Content.from_yaml(meta.join),
+        :spec => ::Local::Specs::Fields::MarkdownFile,
+        :meta => ::Base::Content.read_yaml(meta.join),
         :body => body
       }
     )

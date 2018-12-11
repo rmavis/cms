@@ -118,15 +118,15 @@ module Base
     def self.make_content(conf, ref)
       if (conf[:to_file])
         if (conf[:spec])
-          ::Base::Template.from_file_with_spec(conf[:spec], ref).to_file!(conf[:type])
+          Template.from_file(ref, Template.get_full_spec(conf[:spec])).to_file!(conf[:type])
         else
-          ::Base::Template.from_file(ref).to_file!(conf[:type])
+          Template.from_file(ref).to_file!(conf[:type])
         end
       else
         if (conf[:spec])
-          puts ::Base::Template.from_file_with_spec(conf[:spec], ref).to_view(conf[:type])
+          puts Template.from_file(ref, Template.get_full_spec(conf[:spec])).to_view(conf[:type])
         else
-          puts ::Base::Template.from_file(ref).to_view(conf[:type])
+          puts Template.from_file(ref).to_view(conf[:type])
         end
       end
     end
@@ -136,15 +136,15 @@ module Base
     def self.make_group(conf, ref)
       if (conf[:to_file])
         if (conf[:as_group])
-          ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_file!(conf[:type])
+          Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_file!(conf[:type])
         else
-          ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_files!(conf[:type])
+          Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_files!(conf[:type])
         end
       else
         if (conf[:as_group])
-          puts ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_view(conf[:type])
+          puts Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_view(conf[:type])
         else
-          ::Base::Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_views(conf[:type])
+          Group.from_spec("::Local::Specs::Groups::#{ref}".to_const).to_views(conf[:type])
         end
       end
     end

@@ -5,11 +5,11 @@ There are three key, core components to this CMS:
 - Templates, which are containers for Fields
 - Groups, which are containers for Templates
 
-The particulars of how Fields, Templates, and Groups are should cooperate is specified by the various Spec modules.
+The particulars of how Fields, Templates, and Groups should cooperate is specified by the various Spec modules.
 
 A Field Spec, at very least, will specify the Field type it's based on. Depending on the needs/expectations of that Field type, it might also specify subfields, how to extract and parse the value intended for that field, etc.
 
-A Content Spec, similarly, will at very least specify the View it's based on and the Fields that comprise it.
+A Content Spec, similarly, will at very least specify the Template it's based on and the Fields that comprise it.
 
 A Group Spec, unlike the others, is not based on a pre-defined base Group type, but it will need to specify the directory containing the content files relevant to the group, how to `filter` and `prepare` the content.
 

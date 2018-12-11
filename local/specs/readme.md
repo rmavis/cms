@@ -43,9 +43,9 @@ end
 
 In this hash, the top-level keys map to keys that will be used in the content (yaml) files. The second-level keys are the module names of member fields. The third-level keys contain rules for the fields named by the second-level keys, except the `_self` key, which contains rules that apply to the field itself.
 
-The `content_path`, `public_path`, and `view_file` methods are optional. If they are not specified in the spec, then they will be inherited from the Template/Field that the Spec specifies as its `type`.
+The `content_path`, `public_path`, and `view_file` methods are optional. If they are not specified in the spec, then they will be inherited from the Entry/Field that the Spec specifies as its `type`.
 
-All this said, the Spec can contain instance methods. When the object (a Template, Field, etc) is built from the Spec, the object will `extend` the Spec, thereby inheriting those instance methods.
+All this said, the Spec can contain instance methods. When the object (a Entry, Field, etc) is built from the Spec, the object will `extend` the Spec, thereby inheriting those instance methods.
 
 
 ## Fields
@@ -63,7 +63,7 @@ Both types of Fields will have a property, `type`, which will be a string matchi
 
 ## Content
 
-Content specs will be instantiated by the their base Template `type` class. Like Compound Fields, they should also contain:
+Content specs will be instantiated by the their base Entry `type` class. Like Compound Fields, they should also contain:
 - a `fields` method that specifies their components
 - a `view_file` method that returns a renderable file for the desired type of view
 
@@ -78,7 +78,7 @@ All groups need a couple module methods:
 - content_path: which returns a (string) path to the directory to read through
 - filter, which receives a hash and returns a boolean indicating whether the object represented by that hash should be built and included in the group
 
-A group spec can also include a `prepare` method. If it does, the method must receive an array of Templates and return an array of Templates. The purpose of the `prepare` method is to enable arbitrary transformation of the Templates that comprise the Group. If the spec defines this method, it will be called just before creating the Group. Else, not.
+A group spec can also include a `prepare` method. If it does, the method must receive an array of Entries and return an array of Entries. The purpose of the `prepare` method is to enable arbitrary transformation of the Entries that comprise the Group. If the spec defines this method, it will be called just before creating the Group. Else, not.
 
 A group spec should also define a `view_file` method. This will work as it does for Pages, etc.
 
@@ -90,4 +90,4 @@ Sometimes it's more convenient to write/store content in formats other than YAML
 This example will use the `MarkdownArticle` Content Spec and the `MarkdownFile` Field Spec:
 - The field spec (MarkdownFile) must have a `content_from_file` method (all Fields of type `ReadableFile` must have one), which must have the siguature `string -> hash`. The given string will name the file to read, and the returned hash should have have keys that match those specified by the spec's `fields` method.
 - The content spec can also have a `content_from_file` method. If so, it should have the same signature.
-- When the Template if built, it builds all its Fields. When the `MarkdownFile` Field is built, its `content_from_file` method will be called, and the Field's value will be the resulting hash.
+- When the Entry if built, it builds all its Fields. When the `MarkdownFile` Field is built, its `content_from_file` method will be called, and the Field's value will be the resulting hash.

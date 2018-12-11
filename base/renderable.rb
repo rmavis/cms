@@ -12,13 +12,13 @@ module Base
     end
 
     # to_view :: symbol -> string
-    # to_view renders the Template through its `view_file`.
+    # to_view renders the Entry through its `view_file`.
     def to_view(type)
       return Render.template(binding(), self.view_file(type))
     end
 
     # to_file! :: symbol -> void
-    # to_file! renders the Template to its `output_file`.
+    # to_file! renders the Entry to its `output_file`.
     def to_file!(type)
       handle = File.open(self.output_file(type), 'w')
       handle.write(self.to_view(type))

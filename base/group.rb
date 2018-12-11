@@ -8,7 +8,7 @@ module Base
     end
 
     # Group::get_full_spec :: a -> constant?
-    # This method was copied from Template and should probably be
+    # This method was copied from Entry and should probably be
     # improved in similar ways.  @TODO
     def self.get_full_spec(spec)
       if (spec.is_a?(String))
@@ -42,7 +42,7 @@ module Base
       return group
     end
 
-    # Group.make :: (path, ((path, [hash]) -> hash?), ([Template] -> [Template])?) -> Group
+    # Group.make :: (path, ((path, [hash]) -> hash?), ([Entry] -> [Entry])?) -> Group
     # path = (string) The directory that contains the content files.
     # The purpose of the `filter` function is to determine which
     # files in the `path` should be used in this Group.
@@ -60,7 +60,7 @@ module Base
         if (!File.directory?(path))
           content = filter.call(path, items)
           if (content)
-            items.push(Template.from_content(content))
+            items.push(Entry.from_content(content))
           end
         end
       end
@@ -73,16 +73,16 @@ module Base
     end
 
 
-    # new :: [Template] -> Group
+    # new :: [Entry] -> Group
     # Technically, any type of parameter can be assigned to a Group's
-    # `items`, but it's really meant to use an array of Templates.
+    # `items`, but it's really meant to use an array of Entries.
     def initialize(items = [ ])
       @items = items
     end
 
     attr_reader :items
 
-    # set_items! :: [Template] -> void
+    # set_items! :: [Entry] -> void
     # See note on `initialize`.
     def set_items!(items)
       @items = items

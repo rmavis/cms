@@ -1,28 +1,28 @@
-# The Template class is the core of the CMS's core functionality.
-# The main idea is that a Template contains a collection of Fields,
+# The Entry class is the core of the CMS's core functionality.
+# The main idea is that a Entry contains a collection of Fields,
 # and a Field contains a value and other attributes, and these
 # Fields can be rendered in a variety of view types.
 module Base
-  class Template
+  class Entry
     include Extendable
     include Renderable
 
-    # Template.specs_prefix :: void -> symbol
+    # Entry.specs_prefix :: void -> symbol
     def self.specs_prefix
       ::Local::Specs
     end
 
-    # Template.content_specs_prefix :: void -> string
+    # Entry.content_specs_prefix :: void -> string
     def self.content_specs_prefix
       "#{self.specs_prefix}::Content"
     end
 
-    # Template.base_templates_prefix :: void -> symbol
-    def self.base_templates_prefix
-      ::Base::Templates
+    # Entry.base_entries_prefix :: void -> symbol
+    def self.base_entries_prefix
+      ::Base::Entries
     end
 
-    # Template::get_full_spec :: a -> constant?
+    # Entry::get_full_spec :: a -> constant?
     def self.get_full_spec(spec)
       # If the spec is a string, assume it was read from the content
       # file and is shorthand, meaning it has only the final part of
@@ -39,28 +39,28 @@ module Base
       end
     end
 
-    # Template.from_file :: (string, spec?) -> Template
+    # Entry.from_file :: (string, spec?) -> Entry
     # spec = constant
     def self.from_file(path, spec = nil)
       return self.from_content(Content.from_file(path, spec))
     end
 
-    # Template.from_content :: hash -> Template
+    # Entry.from_content :: hash -> Entry
     # In this method, the `content` must specify its own `spec`.
-    # That Spec must specify a Base Template `type` that it's based on.
+    # That Spec must specify a Base Entry `type` that it's based on.
     def self.from_content(content)
       spec = self.get_full_spec(content[:spec])
-      return "#{self.base_templates_prefix}::#{spec.type}".to_const.make(spec, content)
+      return "#{self.base_entries_prefix}::#{spec.type}".to_const.make(spec, content)
     end
 
-    # Template.make :: (constant, hash) -> Template
-    # Subclasses of Template can implement their own `make` methods.
+    # Entry.make :: (constant, hash) -> Entry
+    # Subclasses of Entry can implement their own `make` methods.
     def self.make(spec, content)
       self.new(spec, self.make_fields(spec, content))
     end
 
-    # Template.make_fields :: (spec, content) -> Fields
-    #   spec = (constant) The template spec to build
+    # Entry.make_fields :: (spec, content) -> Fields
+    #   spec = (constant) The entry spec to build
     #     e.g. `Local::Specs::Content::Generic`
     #   content = (hash) The keys of which will be contained in the
     #     hash returned by the spec's `fields` method, and the values
@@ -94,7 +94,7 @@ module Base
       return fields
     end
 
-    # Template.get_default_fields :: (hash) -> hash
+    # Entry.get_default_fields :: (hash) -> hash
     def self.get_default_fields(content)
       fields = { }
 
@@ -110,7 +110,7 @@ module Base
     end
 
 
-    # new :: (const, fields) -> Template
+    # new :: (const, fields) -> Entry
     # fields = a hash mapping symbols to Fields
     def initialize(spec, fields)
       @spec = spec
@@ -133,7 +133,7 @@ module Base
 
     # spec_short_name :: void -> string
     def spec_short_name
-      return self.spec.to_s.sub("#{Template.specs_prefix}::", '')
+      return self.spec.to_s.sub("#{Entry.specs_prefix}::", '')
     end
 
     # content_path :: void -> string
@@ -156,7 +156,7 @@ module Base
     end
 
     # to_yaml :: void -> string
-    # to_yaml renders the current Template as YAML and returns the
+    # to_yaml renders the current Entry as YAML and returns the
     # resulting string.
     def to_yaml
       fields = {
@@ -170,7 +170,7 @@ module Base
 
     # make_fields :: [symbol] -> [Field]
     # make_fields receives an array of symbols and returns an array
-    # of Fields. Each (subclass of) Template will define its own
+    # of Fields. Each (subclass of) Entry will define its own
     # `fields`, which will be a hash shaped like `{:key => Field}`.
     def make_fields(keys)
       fields = [ ]
@@ -186,4 +186,4 @@ module Base
 end
 
 
-Base.autoload(:Templates, "#{__dir__}/templates/_autoload.rb")
+Base.autoload(:Entries, "#{__dir__}/entries/_autoload.rb")

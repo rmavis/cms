@@ -17,8 +17,8 @@ module Base
     end
 
     # Field.from_plan :: (spec, attrs, val) -> Field
-    # spec = (symbol) the name of the field's template spec
-    #        e.g., :Meta, :BodyBlocks, etc.
+    # spec = (symbol) the name of the field's entry spec
+    #   e.g., :Meta, :BodyBlocks, etc.
     # attrs = (hash) the field's attributes
     # val = (var) the field's value, which will be set if valid
     def self.from_plan(name, attrs = { }, value = nil)

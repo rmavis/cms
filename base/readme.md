@@ -2,14 +2,14 @@
 
 There are three key, core components to this CMS:
 - Fields, which are containers for values
-- Templates, which are containers for Fields
-- Groups, which are containers for Templates
+- Entries, which are containers for Fields
+- Groups, which are containers for Entries
 
-The particulars of how Fields, Templates, and Groups should cooperate is specified by the various Spec modules.
+The particulars of how Fields, Entries, and Groups should cooperate is specified by the various Spec modules.
 
 A Field Spec, at very least, will specify the Field type it's based on. Depending on the needs/expectations of that Field type, it might also specify subfields, how to extract and parse the value intended for that field, etc.
 
-A Content Spec, similarly, will at very least specify the Template it's based on and the Fields that comprise it.
+A Content Spec, similarly, will at very least specify the Entry it's based on and the Fields that comprise it.
 
 A Group Spec, unlike the others, is not based on a pre-defined base Group type, but it will need to specify the directory containing the content files relevant to the group, how to `filter` and `prepare` the content.
 
@@ -32,6 +32,6 @@ Subclasses of the base Field can define their own `make` methods, and often shou
 During initialization, a Field object will `extend` the Spec it's given, thereby inheriting the instance methods defined in the Spec. This allows for including Spec-specific functionality for building the field as well as instance methods in the spec's file.
 
 
-## Templates
+## Entries
 
 ## Groups

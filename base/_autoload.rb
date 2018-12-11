@@ -13,12 +13,12 @@ end
 {
   :CLI => 'cli.rb',
   :Content => 'content.rb',
+  :Entry => 'entry.rb',
   :Extendable => 'extendable.rb',
   :Field => 'field.rb',
   :Group => 'group.rb',
-  :Template => 'template.rb',
   :Render => 'render.rb',
   :Renderable => 'renderable.rb'
 }.each do |mod,file|
-  Base.autoload(mod, "#{__dir__}/#{file}")
+  ::Base.autoload(mod, "#{__dir__}/#{file}")
 end

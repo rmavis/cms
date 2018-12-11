@@ -21,7 +21,7 @@ module Local::Specs::Fields::MarkdownTransform
   end
 
 
-  # The FileTransform class overrides the base Template's `to_view`.
+  # The FileTransform class overrides the base Entry's `to_view`.
   # That procedure requires `(in|out)put_field` methods from this class.
 
   def input_field

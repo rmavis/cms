@@ -18,7 +18,7 @@ module Base::Fields
 
     # Entry.get_spec :: Symbol -> Constant
     def self.get_spec(spec)
-      "#{::Base::Template.content_specs_prefix}::#{spec}".to_const
+      "#{::Base::Entry.content_specs_prefix}::#{spec}".to_const
     end
 
     # Entry.new :: attrs -> Entry
@@ -88,12 +88,12 @@ module Base::Fields
       end
     end
 
-    # resolve :: void -> Template|[Template]
+    # resolve :: void -> Entry|[Entry]
     def resolve
       if (self.value.is_a?(String))
-        return ::Base::Template.from_file(self.path)
+        return ::Base::Entry.from_file(self.path)
       elsif (self.value.is_a?(Array))
-        return self.path.collect { |path| ::Base::Template.from_file(path) }
+        return self.path.collect { |path| ::Base::Entry.from_file(path) }
       else
         raise "Can't resolve Entry: `value` must be a String or an Array."
       end
@@ -101,11 +101,11 @@ module Base::Fields
 
     # to_view :: symbol -> string
     def to_view(type)
-      template = self.resolve
-      if (template.is_a?(Array))
-        (template.collect { |_t| _t.to_view(type) }).join("\n")
+      entry = self.resolve
+      if (entry.is_a?(Array))
+        (entry.collect { |_t| _t.to_view(type) }).join("\n")
       else
-        return template.to_view(type)
+        return entry.to_view(type)
       end
     end
 

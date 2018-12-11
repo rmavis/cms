@@ -38,7 +38,7 @@ module Local::Specs::Groups::PagesByTags
     groups = [ ]
     tags.keys.sort!.each do |tag|
       groups.push(
-        ::Base::Template.from_content(
+        ::Base::Entry.from_content(
           {
             :spec => ::Local::Specs::Content::TaggedGroup,
             :slug => "tag-group-#{tag.downcase.gsub(/[^-0-9a-z_]/, '-')}",

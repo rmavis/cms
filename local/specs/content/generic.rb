@@ -1,6 +1,6 @@
 module Local::Specs::Content::Generic
 
-  # This is the Template type.
+  # This is the Entry type.
   def self.type
     :View
   end

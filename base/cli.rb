@@ -118,15 +118,15 @@ module Base
     def self.make_content(conf, ref)
       if (conf[:to_file])
         if (conf[:spec])
-          Template.from_file(ref, Template.get_full_spec(conf[:spec])).to_file!(conf[:type])
+          Entry.from_file(ref, Entry.get_full_spec(conf[:spec])).to_file!(conf[:type])
         else
-          Template.from_file(ref).to_file!(conf[:type])
+          Entry.from_file(ref).to_file!(conf[:type])
         end
       else
         if (conf[:spec])
-          puts Template.from_file(ref, Template.get_full_spec(conf[:spec])).to_view(conf[:type])
+          puts Entry.from_file(ref, Entry.get_full_spec(conf[:spec])).to_view(conf[:type])
         else
-          puts Template.from_file(ref).to_view(conf[:type])
+          puts Entry.from_file(ref).to_view(conf[:type])
         end
       end
     end

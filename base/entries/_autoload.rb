@@ -1,4 +1,4 @@
-module Base::Templates
+module Base::Entries
 end
 
 
@@ -6,5 +6,5 @@ end
   :Form => 'form.rb',
   :View => 'view.rb',
 }.each do |mod,file|
-  Base::Templates.autoload(mod, "#{__dir__}/#{file}")
+  ::Base::Entries.autoload(mod, "#{__dir__}/#{file}")
 end

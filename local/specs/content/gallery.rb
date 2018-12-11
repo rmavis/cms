@@ -1,6 +1,6 @@
 module Local::Specs::Content::Gallery
 
-  # This is the Template type.
+  # This is the Entry type.
   def self.type
     :View
   end

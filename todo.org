@@ -1,5 +1,5 @@
 * Todo
-** Base [20/23]
+** Base [21/25]
 - [X] Add dynamic/calculated fields
 - [X] Create Templates from YAML files
 - [X] Convert Templates to YAML
@@ -40,6 +40,8 @@
 - [X] Need a way to specify build procedures.
   And run them.
   To process/produce views from content files and pipe those into public files.
+- [X] Rename `template` to `entry`
+- [ ] Auto-generate `_autoload` files
 - [ ] Router
 - [ ] How to specify a group of related objects in a specific order and by a specific key?
   If a Group is an array, then this type is a hash.

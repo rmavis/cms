@@ -1,5 +1,5 @@
 # A Group Field is a Field whose value is a Group.
-# A Group is defined by its items, which is an array of Templates.
+# A Group is defined by its items, which is an array of Entries.
 # So the value of a Group Field will be the Group.
 module Base::Fields
   class Group < ::Base::Field
@@ -21,7 +21,7 @@ module Base::Fields
       end
 
       val.items.each do |item|
-        if (!item.is_a?(::Base::Template))
+        if (!item.is_a?(::Base::Entry))
           return nil
         end
       end

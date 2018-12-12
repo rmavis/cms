@@ -18,7 +18,7 @@ module Base::Fields
 
     # Entry.get_spec :: Symbol -> Constant
     def self.get_spec(spec)
-      "#{::Base::Entry.entry_specs_prefix}::#{spec}".to_const
+      "#{ModMap.entries}::#{spec}".to_const
     end
 
     # Entry.new :: attrs -> Entry

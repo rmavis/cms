@@ -9,7 +9,7 @@ The particulars of how Fields, Entries, and Groups should cooperate is specified
 
 A Field Spec, at very least, will specify the Field type it's based on. Depending on the needs/expectations of that Field type, it might also specify subfields, how to extract and parse the value intended for that field, etc.
 
-A Content Spec, similarly, will at very least specify the Entry it's based on and the Fields that comprise it.
+An Entry Spec, similarly, will at very least specify the Entry it's based on and the Fields that comprise it.
 
 A Group Spec, unlike the others, is not based on a pre-defined base Group type, but it will need to specify the directory containing the content files relevant to the group, how to `filter` and `prepare` the content.
 

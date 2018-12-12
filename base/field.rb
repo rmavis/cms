@@ -6,11 +6,6 @@ module Base
     include Extendable
     include Renderable
 
-    # Field.specs_prefix :: void -> symbol
-    def self.specs_prefix
-      ::Local::Specs::Fields
-    end
-
     # Field.fields_prefix :: void -> symbol
     def self.fields_prefix
       ::Base::Fields
@@ -22,12 +17,12 @@ module Base
     # attrs = (hash) the field's attributes
     # val = (var) the field's value, which will be set if valid
     def self.from_plan(name, attrs = { }, value = nil)
-      if (self.specs_prefix.const_defined?(name))
-        spec = "#{self.specs_prefix}::#{name}".to_const
+      if (ModMap.fields.const_defined?(name))
+        spec = "#{ModMap.fields}::#{name}".to_const
         type = "#{self.fields_prefix}::#{spec.type}".to_const
         return type.make(spec, attrs, value)
       else
-        raise "Can't create a `#{name}` field: that module doesn't exist in `#{self.specs_prefix}`."
+        raise "Can't create a `#{name}` field: that module doesn't exist in `#{ModMap.fields}`."
       end
     end
 

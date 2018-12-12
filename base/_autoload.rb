@@ -2,8 +2,13 @@
 require 'yaml'
 
 # Local loads.
+# These must occur in this order.
+# 0. Extensions. Because other classes will use them.
 require_relative 'extensions.rb'
+# 1. DirMap. For the same reason.
 require_relative 'dir_map.rb'
+# 2. ModMap. Because it uses extensions and DirMap.
+require_relative 'mod_map.rb'
 
 
 module Base

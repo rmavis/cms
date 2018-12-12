@@ -2,17 +2,12 @@ module Base
   class Group
     include Renderable
 
-    # Group.specs_prefix :: void -> symbol
-    def self.specs_prefix
-      ::Local::Specs::Groups
-    end
-
     # Group::get_full_spec :: a -> constant?
     # This method was copied from Entry and should probably be
     # improved in similar ways.  @TODO
     def self.get_full_spec(spec)
       if (spec.is_a?(String))
-        "#{self.specs_prefix}::#{spec}".to_const
+        "#{ModMap.groups}::#{spec}".to_const
       elsif (spec.is_a?(Symbol))
         spec.to_s.to_const
       elsif (spec.is_a?(Module))

@@ -7,16 +7,6 @@ module Base
     include Extendable
     include Renderable
 
-    # Entry.specs_prefix :: void -> symbol
-    def self.specs_prefix
-      ::Local::Specs
-    end
-
-    # Entry.entry_specs_prefix :: void -> string
-    def self.entry_specs_prefix
-      "#{self.specs_prefix}::Entries"
-    end
-
     # Entry.base_entries_prefix :: void -> symbol
     def self.base_entries_prefix
       ::Base::Entries
@@ -29,7 +19,7 @@ module Base
       # the name. This isn't ideal behavior -- maybe check for the
       # leading `::`?  #TODO
       if (spec.is_a?(String))
-        "#{self.entry_specs_prefix}::#{spec}".to_const
+        "#{ModMap.entries}::#{spec}".to_const
       elsif (spec.is_a?(Symbol))
         spec.to_s.to_const
       elsif (spec.is_a?(Module))
@@ -133,7 +123,7 @@ module Base
 
     # spec_short_name :: void -> string
     def spec_short_name
-      return self.spec.to_s.sub("#{Entry.specs_prefix}::", '')
+      return self.spec.to_s.sub("#{ModMap.specs}::", '')
     end
 
     # content_path :: void -> string

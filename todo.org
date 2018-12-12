@@ -1,49 +1,5 @@
 * Todo
-** Base [22/26]
-- [X] Add dynamic/calculated fields
-- [X] Create Templates from YAML files
-- [X] Convert Templates to YAML
-  Currently the values are not being set properly in compound fields.
-  The field's `attrs[:value]` receives the value, but the component fields' `attrs[:value]` remains `nil`. So extracting those values via recursive, consistent calls to `val` are not working.
-- [X] When converting Template to YAML, add the `template` key
-- [X] Are the `value_type`s even being used?
-- [X] Convert Templates to HTML Pages
-- [X] Convert Templates to HTML Forms
-- [X] Move field template name into field class as property?
-  Could have `page_file` and `form_file`?
-  Because assuming filenames / requiring filenames to conform to rules sucks.
-- [X] Make the erb variable name easier-working
-- [X] Documentation
-- [X] Code cleanup / organization
-  Make Page and Form subclasses of template. Make `PageGeneric` a subclass of Page. Then can put properties for fetching a global nav and footer, etc, in Page.
-- [X] File loader
-  Subclasses, especially.
-  Could just use regular `require` lines.
-- [X] Rename `templates/` to `local/`
-  And all module references.
-- [X] Make a `Markdown` field type?
-  Want to enable a way to separate big chunks of Markdown from normal YAML content types.
-  And it'd be super great if it could include bits of metadata in the markdown file.
-  So two things:
-  - Use the `reference`/`entry` type to point to a markdown file, which will be parsed.
-  - Use the metadate in the markdown file as the Template's metadata.
-- [X] Build groups
-- [X] How to specify Groups in Content files?
-  What about a Group (base) field type?
-- [X] Improve organization of view templates
-- [X] Need a way to easily identify a field's `type`
-  Particularly for the templates, so can check `field.type` and react accordingly.
-  Could add a `type` method in field specs.
-  Could get it programmatically in Base::Field.
-  Could set it in Base::Field.make when the the field is `extend`ed, say to (some part of) the spec's name.
-- [X] Class to manage CLI
-- [X] Need a way to specify build procedures.
-  And run them.
-  To process/produce views from content files and pipe those into public files.
-- [X] Rename `template` to `entry`
-- [X] Rename `content` to `entries`
-- [ ] Auto-generate `_autoload` files
-- [ ] Router
+** Base [0/3]
 - [ ] How to specify a group of related objects in a specific order and by a specific key?
   If a Group is an array, then this type is a hash.
   Can call it a Set.
@@ -58,6 +14,7 @@
   - charles
   And then reference the full objects referenced by those slugs.
 - [ ] Address all TODOs
+- [ ] Router?
 
 ** Admin panel [0/4]
 - [ ] Admin login
@@ -65,9 +22,3 @@
 - [ ] Edit pages
   Receiving and validating data, whether that's from a YAML file or an HTML form, is essentially the same process: data comes into a function, that function cycles through and calls all appropriate `validate` methods, collects validated data, and directs it somewhere.
 - [ ] Upload assets
-
-** Public [0/1]
-- [ ] View pages
-
-** Next [0/1]
-- [ ] Collections of pages/templates?

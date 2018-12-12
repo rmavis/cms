@@ -1,0 +1,9 @@
+<div class="group__wrap">
+    <h4 class="group-tag__copy"><%= self.fields[:meta].fields[:title].get_out_val %></h4>
+
+    <div class="group-items__wrap">
+        <% self.fields[:group].value.items.each do |item| %>
+            <span class="group-item__title"><%= item.fields[:meta].fields[:title].get_out_val %></span>
+        <% end %>
+    </div>
+</div>

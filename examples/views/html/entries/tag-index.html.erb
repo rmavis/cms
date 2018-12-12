@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages by tags</title>
+        <link rel="stylesheet" type="text/css" href="/main.css" />
+        <script type="text/javascript" src="/main.js"></script>
+    </head>
+
+    <body>
+        <% self.items.each do |item| %>
+            <%= item.to_view(:html) %>
+        <% end %>
+    </body>
+</html>

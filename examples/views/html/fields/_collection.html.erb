@@ -1,0 +1,5 @@
+<div class="field-wrap field-wrap--collection">
+    <% self.fields.each do |field| %>
+        <%= field.to_view(:html) %>
+    <% end %>
+</div>

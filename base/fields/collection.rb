@@ -52,6 +52,11 @@ module Base::Fields
       return fields
     end
 
+    # set_fields! :: [Field] -> void
+    def set_fields!(fields)
+      @fields = fields
+    end
+
     # get_out_val :: void -> [hash]
     def get_out_val
       v = [ ]

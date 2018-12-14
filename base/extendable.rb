@@ -18,5 +18,16 @@ module Base
       end
     end
 
+    # make_readers! :: fields -> void
+    # fields = a hash whose keys are symbols and values are Fields
+    # make_readers! creates instance methods for easily accessing an
+    # object's (Entry, compound Field) fields. So, rather than like
+    # `self.fields[:fieldname]`, this enables `self._fieldname`.
+    def make_readers!(fields, prefix = '_')
+      fields.each do |key,field|
+        self.define_singleton_method("#{prefix}#{key}".to_sym) { fields[key] }
+      end
+    end
+
   end
 end

@@ -5,8 +5,8 @@ module Base::Fields
     # Compound.make :: (spec, attrs, val) -> Compound
     # For more, see `Field.make`.
     def self.make(spec, attrs = { }, value = nil)
-      field = (attrs.has_key?(:_self)) ? self.new(spec, attrs[:_self]) : self.new(spec)
-      field.set_fields!(self.make_subfields(spec, attrs.select { |k,v| k != :_self }, value))
+      fields = self.make_subfields(spec, attrs.select { |k,v| k != :_self }, value)
+      field = (attrs.has_key?(:_self)) ? self.new(spec, attrs[:_self], fields) : self.new(spec, { }, fields)
       return field
     end
 
@@ -26,17 +26,19 @@ module Base::Fields
       return fields
     end
 
-    # new :: hash -> Compound
-    def initialize(spec, attrs = { })
+    # new :: (constant, hash, hash|array) -> Compound
+    def initialize(spec, attrs = { }, fields = { })
       super(spec, attrs)
+      self.set_fields!(fields)
       self.extend(spec)
-      @fields = { }
     end
 
     attr_reader :fields
 
+    # set_fields! :: hash -> void
     def set_fields!(fields)
       @fields = fields
+      make_readers!(self.fields)
     end
 
     # set_if_valid! :: hash -> true|nil

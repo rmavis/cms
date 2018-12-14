@@ -1,10 +1,10 @@
 <% self.items.each do |item| %>
-    <a class="toc-wrap-link" href="/<%= item.fields[:slug] %>">
+    <a class="toc-wrap-link" href="/<%= item._slug %>">
         <div class="toc-block">
             <div class="toc-txt-block">
-                <h3 class="toc-block-title"><span class="toc-txt-wrap"><%= item.fields[:meta].fields[:title].value %></span></h3>
-                <div class="toc-block-blurb"><span class="toc-txt-wrap"><%= item.fields[:meta].fields[:blurb].value %></span></div>
-                <div class="toc-block-date"><span class="toc-txt-wrap"><%= item.fields[:meta].fields[:datePosted].value.strftime('%-d %b %Y') %></span></div>
+                <h3 class="toc-block-title"><span class="toc-txt-wrap"><%= item._meta._title.value %></span></h3>
+                <div class="toc-block-blurb"><span class="toc-txt-wrap"><%= item._meta._blurb.value %></span></div>
+                <div class="toc-block-date"><span class="toc-txt-wrap"><%= item._meta._datePosted.value.strftime('%-d %b %Y') %></span></div>
             </div>
         </div>
     </a>

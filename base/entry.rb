@@ -94,7 +94,7 @@ module Base
     # fields = a hash mapping symbols to Fields
     def initialize(spec, fields)
       @spec = spec
-      @fields = fields
+      self.set_fields!(fields)
       self.extend(spec)
       extend!(spec, [:content_path, :public_path, :view_file])
     end
@@ -104,6 +104,9 @@ module Base
     # set_fields! :: fields -> void
     def set_fields!(fields)
       @fields = fields
+      if (self.fields.is_a?(Hash))
+        make_readers!(self.fields)
+      end
     end
 
     # set_spec! :: symbol -> void

@@ -1,5 +1,16 @@
 class ModMap
 
+  # ModMap.module_from_name :: (name, bank) -> constant
+  # name = (string|symbol) name of the individual module
+  # bank = (constant) naming the module the `name` is under
+  def self.module_from_name(name, bank)
+    if (!bank.const_defined?(name))
+      raise "The module '#{name}' doesn't exist in '#{bank}'."
+    end
+    return "#{bank}::#{name}".to_const
+  end
+
+  # ModMap.required_modules :: void -> [string]
   def self.required_modules
     [
       'specs',

@@ -2,19 +2,9 @@ module Base
   class Group
     include Renderable
 
-    # Group::get_full_spec :: a -> constant?
-    # This method was copied from Entry and should probably be
-    # improved in similar ways.  @TODO
-    def self.get_full_spec(spec)
-      if (spec.is_a?(String))
-        "#{ModMap.groups}::#{spec}".to_const
-      elsif (spec.is_a?(Symbol))
-        spec.to_s.to_const
-      elsif (spec.is_a?(Module))
-        spec
-      else
-        nil
-      end
+    # Group::get_full_spec :: (a, constant) -> constant?
+    def self.get_full_spec(spec, bank = ModMap.groups)
+      Entry.get_full_spec(spec, bank)
     end
 
     # Group.from_spec :: spec -> Group

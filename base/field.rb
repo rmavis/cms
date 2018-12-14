@@ -20,27 +20,17 @@ module Base
       if (name.is_a?(Module))
         return name
       elsif (name.is_a?(String))
-        return self.module_from_name(name.to_sym, bank)
+        return ModMap.module_from_name(name.to_sym, bank)
       elsif (name.is_a?(Symbol))
-        return self.module_from_name(name, bank)
+        return ModMap.module_from_name(name, bank)
       elsif (name.is_a?(Hash))
         if (name.keys.length > 1)
           raise "A Field's plan must contain just one key."
         end
-        return self.module_from_name(name.keys[0], bank)
+        return ModMap.module_from_name(name.keys[0], bank)
       else
         raise "Can only deduce a Field's module name from a string, symbol, or single-key hash."
       end
-    end
-
-    # Field.module_from_name :: (name, bank) -> constant
-    # name = (string|symbol) name of the individual module
-    # bank = (constant) naming the module the `name` is under
-    def self.module_from_name(name, bank = ModMap.fields)
-      if (!bank.const_defined?(name))
-        raise "The module '#{name}' doesn't exist in '#{bank}'."
-      end
-      return "#{bank}::#{name}".to_const
     end
 
     # Field.subspec :: ((symbol|hash), bank) -> subspec
@@ -80,7 +70,7 @@ module Base
     # val = (var) the field's value, which will be set if valid
     def self.from_plan(name, attrs = { }, value = nil)
       spec = self.get_full_spec(name, ModMap.fields)
-      type = self.module_from_name(spec.type, self.fields_prefix)
+      type = ModMap.module_from_name(spec.type, self.fields_prefix)
       return type.make(spec, attrs, value)
     end
 

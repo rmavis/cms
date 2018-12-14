@@ -12,18 +12,18 @@ module Base
       ::Base::Entries
     end
 
-    # Entry::get_full_spec :: a -> constant?
-    def self.get_full_spec(spec)
-      # If the spec is a string, assume it was read from the content
-      # file and is shorthand, meaning it has only the final part of
-      # the name. This isn't ideal behavior -- maybe check for the
-      # leading `::`?  #TODO
-      if (spec.is_a?(String))
-        "#{ModMap.entries}::#{spec}".to_const
+    # Entry::get_full_spec :: (a, constant) -> constant?
+    def self.get_full_spec(spec, bank = self.base_entries_prefix)
+      if (spec.is_a?(Module))
+        return spec
       elsif (spec.is_a?(Symbol))
-        spec.to_s.to_const
-      elsif (spec.is_a?(Module))
-        spec
+        return ModMap.module_from_name(spec, bank)
+      elsif (spec.is_a?(String))
+        if (spec.slice(0, 2) == '::')
+          return self.get_full_spec(spec.to_const, bank)
+        else
+          return ModMap.module_from_name(spec, bank)
+        end
       else
         nil
       end
@@ -39,7 +39,7 @@ module Base
     # In this method, the `content` must specify its own `spec`.
     # That Spec must specify a Base Entry `type` that it's based on.
     def self.from_content(content)
-      spec = self.get_full_spec(content[:spec])
+      spec = self.get_full_spec(content[:spec], ModMap.fields)
       return "#{self.base_entries_prefix}::#{spec.type}".to_const.make(spec, content)
     end
 

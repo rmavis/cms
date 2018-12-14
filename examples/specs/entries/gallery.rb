@@ -32,6 +32,14 @@ module Local::Specs::Entries::Gallery
     }
   end
 
+  def self.content_path
+    "#{DirMap.content}"
+  end
+
+  def self.public_path
+    "/"
+  end
+
   # view_fields :: void -> [Field]
   def view_fields(type)
     if (type == :html)

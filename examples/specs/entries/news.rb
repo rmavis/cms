@@ -55,9 +55,9 @@ module Local::Specs::Entries::News
   # output_file :: symbol -> string
   def output_file(type)
     if (type == :html)
-      "#{DirMap.public}/#{self.filename}.html"
+      "#{DirMap.public}#{News.public_path}/#{self.filename}.html"
     else
-      "#{DirMap.public}/#{self.filename}.html"
+      "#{DirMap.public}#{News.public_path}/#{self.filename}.html"
     end
   end
 

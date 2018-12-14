@@ -5,9 +5,9 @@ Spec files specify how the objects that they relate to should be built.
 The Specs themselves shouldn't really be thought of as objects -- instead, they are rules for how an object should be built. So Specs are not instantiable -- they should contain no Class definition, no `initialize` method, etc. Instead, they can contain singleton methods, such as:
 - type: which returns a symbol naming the type of object (from the base types) to instantiate
 - content_path: which returns a string naming the directory where the content files based on the spec are stored
-- public_path: which returns a string naming the directory where the view files should be output
-- view_file: which returns the path (relative to `{root}/local/views`) to an ERB template that can render the spec's view
+- public_path: which returns a string naming path relative to the web root where the file should be accessed
 - fields (for Entry specs and Compound field types): which returns a hash specifying the names of types and names of member Fields and rules that apply both to those members and to itself. For example:
+- view_file: which returns the path (relative to `{root}/local/views`) to an ERB template that can render the spec's view
 ```
 def self.fields
     {
@@ -43,9 +43,9 @@ end
 
 In this hash, the top-level keys map to keys that will be used in the content (yaml) files. The second-level keys are the module names of member fields. The third-level keys contain rules for the fields named by the second-level keys, except the `_self` key, which contains rules that apply to the field itself.
 
-The `content_path`, `public_path`, and `view_file` methods are optional. If they are not specified in the spec, then they will be inherited from the Entry/Field that the Spec specifies as its `type`.
+The `content_path`, `public_path`, and `view_file` methods are required. If they are not specified in the Spec, an exception will be thrown.
 
-All this said, the Spec can contain instance methods. When the object (a Entry, Field, etc) is built from the Spec, the object will `extend` the Spec, thereby inheriting those instance methods.
+All this said, the Spec can also contain instance methods. When the object (a Entry, Field, etc) is built from the Spec, the object will `extend` the Spec, thereby inheriting those instance methods.
 
 
 ## Fields

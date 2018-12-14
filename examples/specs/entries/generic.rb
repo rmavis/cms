@@ -50,6 +50,14 @@ module Local::Specs::Entries::Generic
     end
   end
 
+  def self.content_path
+    "#{DirMap.content}"
+  end
+
+  def self.public_path
+    "/"
+  end
+
   # view_file :: symbol -> string
   def view_file(type)
     if (type == :html)

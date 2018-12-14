@@ -120,21 +120,35 @@ module Base
     end
 
     # content_path :: void -> string
+    # An Entry's `content_path` should return the local directory
+    # where its content file is kept.
     def content_path
-      DirMap.content
+      raise "An Entry must define a `content_path` in its Spec."
     end
 
     # public_path :: void -> string
+    # An Entry's `public_path` should return the web-accessible path
+    # (less the slug) where it cna be accessed.
     def public_path
-      DirMap.public
+      raise "An Entry must define a `public_path` in its Spec."
+    end
+
+    # url :: void -> string
+    def url
+      "#{self.public_path}/#{self.slug}"
+    end
+
+    # slug :: void -> string
+    def slug
+      self.fields[:slug]
     end
 
     # filename :: symbol? -> string
     def filename(type = nil)
       if (type.nil?)
-        self.fields[:slug]
+        self.slug
       else
-        "#{self.fields[:slug]}.#{type}"
+        "#{self.slug}.#{type}"
       end
     end
 

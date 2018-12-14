@@ -25,9 +25,4 @@ module Local::Specs::Fields::Image
     "#{self.public_path}/#{self.value}"
   end
 
-  # Image.form_file :: void -> string
-  # def self.form_file
-  #   "#{self.form_files_dir}/image.html.erb"
-  # end
-
 end

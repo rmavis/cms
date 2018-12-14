@@ -94,14 +94,5 @@ module Base::Fields
       return parts.join('')
     end
 
-    # to_form :: void -> string
-    # def to_form
-    #   if (self.respond_to?(:form_file))
-    #     return ::Base::Render.template(binding(), self.form_file)
-    #   else
-    #     return self.render_fields(:to_form)
-    #   end
-    # end
-
   end
 end

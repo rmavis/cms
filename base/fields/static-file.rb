@@ -1,9 +1,14 @@
+# A StaticFile Field must define these additional methods:
+# content_path: (string) the full directory path where the file
+#   is stored
+# public_path: (string) the directory relative to the web root
+#   where the file can be accessed as in a URL
 module Base::Fields
   class StaticFile < Reference
     include ::Base::Extendable
 
-    # A StaticFile's `make` procedure is identical to that of the
-    # base field's, so no additional work is required here.
+    # StaticFile.make :: (spec, attrs, value) -> StaticFile
+    # For more, see `Base::Field.make`.
     def self.make(spec, attrs = { }, value = nil)
       field = self.new(spec, attrs)
       if (!value.nil?)

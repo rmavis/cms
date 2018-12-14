@@ -50,35 +50,25 @@ module Base
     end
 
     # Entry.make_fields :: (spec, content) -> Fields
-    #   spec = (constant) The entry spec to build
-    #     e.g. `Local::Specs::Content::Generic`
-    #   content = (hash) The keys of which will be contained in the
-    #     hash returned by the spec's `fields` method, and the values
-    #     will be the content to make the `:value` of the newly-created
-    #     fields
-    #   Fields = (hash) The keys of which will be the same as given by
-    #     the content hash, and the values will be Field objects, the
-    #     values of which will be the values given by the content hash
+    # spec = (constant) The entry spec to build
+    #   e.g. `Local::Specs::Content::Generic`
+    # content = (hash) The keys of which will be contained in the
+    #   hash returned by the spec's `fields` method, and the values
+    #   will be the content to make the `:value` of the newly-created
+    #   fields
+    # Fields = (hash) The keys of which will be the same as given by
+    #   the content hash, and the values will be Field objects, the
+    #   values of which will be the values given by the content hash
     def self.make_fields(spec, content = { })
       fields = self.get_default_fields(content)
 
       spec.fields.each do |key,val|
-        if (val.is_a?(Symbol))
-          if (content.has_key?(key))
-            fields[key] = Field.from_plan(val, { }, content[key])
-          else
-            fields[key] = Field.from_plan(val)
-          end
-        elsif (val.is_a?(Hash))
-          # There should only be one of each `key` in the spec.
-          if (content.has_key?(key))
-            fields[key] = Field.from_plan(val.keys[0], val.values[0], content[key])
-          else
-            fields[key] = Field.from_plan(val.keys[0], val.values[0])
-          end
-        else
-          raise "The classes of a Spec's `fields` must be specified as a Symbol or a Hash."
-        end
+        subspec = Field.subspec(val, ModMap.fields)
+        fields[key] = Field.from_plan(
+          subspec[:spec],
+          subspec[:attrs],
+          (content.has_key?(key)) ? content[key] : nil
+        )
       end
 
       return fields

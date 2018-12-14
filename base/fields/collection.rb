@@ -31,15 +31,15 @@ module Base::Fields
 
       values.each do |value|
         value.transform_keys(lambda {|s| s.to_sym}).each do |key,val|
-          if (rules.include?(key))
+          if (rules.has_key?(key))
             count.tally!(key)
-            field_spec = rules[key].keys[0]
-            if ((rules[key][field_spec].is_a?(Hash)) &&
-                (rules[key][field_spec].has_key?(:limit)) &&
-                (count[key] > rules[key][field_spec][:limit]))
-              raise "Too many '#{key}' fields in Collection field '#{field_spec}': limit #{rules[key][field_spec][:limit]}."
+            subspec = ::Base::Field.subspec(rules[key], ModMap.fields)
+            if ((rules[key][subspec[:name]].is_a?(Hash)) &&
+                (rules[key][subspec[:name]].has_key?(:limit)) &&
+                (count[key] > rules[key][subspec[:name]][:limit]))
+              raise "Too many '#{key}' fields in Collection field '#{subspec[:name]}': limit #{rules[key][subspec[:name]][:limit]}."
             else
-              field = ::Base::Field.from_plan(field_spec, rules[key].values[0], val)
+              field = ::Base::Field.from_plan(subspec[:spec], subspec[:attrs], val)
               field.set_attr!(self.spec_attrs_key, key)
               fields.push(field)
             end

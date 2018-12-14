@@ -18,10 +18,10 @@ module Base::Fields
     def self.make_subfields(spec, attrs, vals)
       fields = { }
       spec.fields(attrs).each do |key,plan|
-        field_type = plan.keys[0]
-        field_attrs = (attrs.has_key?(key)) ? plan.values[0].merge(attrs[key]) : plan.values[0]
+        subspec = ::Base::Field.subspec(plan, ModMap.fields)
+        field_attrs = (attrs.has_key?(key)) ? subspec[:attrs].merge(attrs[key]) : subspec[:attrs]
         field_val = ((vals.is_a?(Hash)) && (vals.has_key?(key))) ? vals[key] : nil
-        fields[key] = ::Base::Field.from_plan(field_type, field_attrs, field_val)
+        fields[key] = ::Base::Field.from_plan(subspec[:spec], field_attrs, field_val)
       end
       return fields
     end

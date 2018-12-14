@@ -11,19 +11,77 @@ module Base
       ::Base::Fields
     end
 
+    # Field.get_full_spec :: (name, bank) -> constant
+    # name = (module|string|symbol|hash) name of a module.
+    #   If a hash, it should be one used in an Entry or compound
+    #   Field's Spec to specify rules/attributes for a Field.
+    # bank = (constant) naming the module the `name` is under
+    def self.get_full_spec(name, bank = self.fields_prefix)
+      if (name.is_a?(Module))
+        return name
+      elsif (name.is_a?(String))
+        return self.module_from_name(name.to_sym, bank)
+      elsif (name.is_a?(Symbol))
+        return self.module_from_name(name, bank)
+      elsif (name.is_a?(Hash))
+        if (name.keys.length > 1)
+          raise "A Field's plan must contain just one key."
+        end
+        return self.module_from_name(name.keys[0], bank)
+      else
+        raise "Can only deduce a Field's module name from a string, symbol, or single-key hash."
+      end
+    end
+
+    # Field.module_from_name :: (name, bank) -> constant
+    # name = (string|symbol) name of the individual module
+    # bank = (constant) naming the module the `name` is under
+    def self.module_from_name(name, bank = ModMap.fields)
+      if (!bank.const_defined?(name))
+        raise "The module '#{name}' doesn't exist in '#{bank}'."
+      end
+      return "#{bank}::#{name}".to_const
+    end
+
+    # Field.subspec :: ((symbol|hash), bank) -> subspec
+    # bank = see `get_full_spec`
+    # subspec = A hash containing three keys:
+    #   name = (symbol) the Spec's shortname
+    #   spec = (constant) the Spec's full module name
+    #   attrs = (hash)
+    def self.subspec(plan, bank = self.fields_prefix)
+      if (plan.is_a?(Symbol))
+        return {
+          :name => plan,
+          :spec => self.get_full_spec(plan, bank),
+          :attrs => { },
+        }
+      elsif (plan.is_a?(Hash))
+        if (plan.keys.length > 1)
+          raise "A Field's subspec must contain just one key."
+        end
+        if (!plan.values[0].is_a?(Hash))
+          raise "A Field's subspec must specify attributes as a hash."
+        end
+        return {
+          :name => plan.keys[0].to_sym,
+          :spec => self.get_full_spec(plan, bank),
+          :attrs => plan.values[0],
+        }
+      else
+        raise "A Field's subspec must be a symbol or a hash."
+      end
+    end
+
     # Field.from_plan :: (spec, attrs, val) -> Field
     # spec = (symbol) the name of the field's entry spec
     #   e.g., :Meta, :BodyBlocks, etc.
     # attrs = (hash) the field's attributes
     # val = (var) the field's value, which will be set if valid
     def self.from_plan(name, attrs = { }, value = nil)
-      if (ModMap.fields.const_defined?(name))
-        spec = "#{ModMap.fields}::#{name}".to_const
-        type = "#{self.fields_prefix}::#{spec.type}".to_const
-        return type.make(spec, attrs, value)
-      else
-        raise "Can't create a `#{name}` field: that module doesn't exist in `#{ModMap.fields}`."
-      end
+      spec = self.get_full_spec(name, ModMap.fields)
+      type = self.module_from_name(spec.type, self.fields_prefix)
+      return type.make(spec, attrs, value)
     end
 
     # Field.make :: (spec, attrs, value) -> Field

@@ -39,7 +39,7 @@ module Base
     # In this method, the `content` must specify its own `spec`.
     # That Spec must specify a Base Entry `type` that it's based on.
     def self.from_content(content)
-      spec = self.get_full_spec(content[:spec], ModMap.fields)
+      spec = self.get_full_spec(content[:spec], ModMap.entries)
       return "#{self.base_entries_prefix}::#{spec.type}".to_const.make(spec, content)
     end
 

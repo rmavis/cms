@@ -8,15 +8,19 @@ module Local::Specs::Fields::BodyBlocks
   def self.fields(attrs = { })
     _attrs = {
       :image => {
-        :required => true,
+      },
+      :imagePair => {
+      },
+      :imageWithText => {
       },
       :text => {
-        :required => true,
       },
     }.deep_merge(attrs)
 
     return {
-      :image => {:ImageAndText => _attrs[:image]},
+      :image => {:Image => _attrs[:image]},
+      :imagePair => {:ImagePair => _attrs[:imagePair]},
+      :imageWithText => {:ImageAndText => _attrs[:imageWithText]},
       :text => {:PlainText => _attrs[:text]},
     }
   end

@@ -22,7 +22,12 @@ module Base
     def self.template(binding, filename)
       if ((File.exist?(filename)) &&
           (File.readable?(filename)))
-        return ERB.new(IO.read(filename), $SAFE, '>', self.render_name).result(binding)
+        begin
+          return ERB.new(IO.read(filename), $SAFE, '>', self.render_name).result(binding)
+        rescue => e
+          $stderr.puts "Failed to render template '#{filename}'."
+          raise e
+        end
       else
         raise "Error: template file `#{filename}` doesn't exist or cannot be read."
       end
@@ -49,5 +54,6 @@ module Base
     #     raise "Error: template file `#{filename}` doesn't exist or cannot be read."
     #   end
     # end
+
   end
 end

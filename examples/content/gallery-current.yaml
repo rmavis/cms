@@ -15,11 +15,13 @@ body:
     image:
       file: work/current/1.jpg
   -
-    image:
-      file: work/current/2.jpg
+    imagePair:
+      left:
+        file: work/current/2.jpg
+      right:
+        file: work/current/3.jpg
+        caption: This is my favorite.
   -
-    image:
-      file: work/current/3.jpg
-news:
-  - test-1
-  - test-3
+    imageWithText:
+      file: work/current/4.jpg
+      caption: This is so nice.

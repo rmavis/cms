@@ -5,7 +5,7 @@ module Local::Specs::Fields::Image
   end
 
   def self.content_path
-    "#{DirMap.public}/#{self.public_path}"
+    "#{DirMap.public}#{self.public_path}"
   end
 
   def self.public_path
@@ -24,10 +24,5 @@ module Local::Specs::Fields::Image
   def get_out_val
     "#{self.public_path}/#{self.value}"
   end
-
-  # Image.form_file :: void -> string
-  # def self.form_file
-  #   "#{self.form_files_dir}/image.html.erb"
-  # end
 
 end

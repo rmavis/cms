@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-    <%= self.render("#{DirMap.html_views}/snippets/generic-head.html.erb") %>
+    <head>
+        <%= self.render("#{DirMap.html_views}/snippets/head-base.html.erb") %>
+        <%= self.render("#{DirMap.html_views}/snippets/head-meta.html.erb") %>
+    </head>
 
     <body>
         <% self.view_fields(:html).each do |field| %>

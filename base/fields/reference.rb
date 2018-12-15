@@ -21,5 +21,19 @@ module Base::Fields
       raise "A Reference field must define its own `validate` method."
     end
 
+    # Since the `value` for a Reference field will be a Field, just
+    # defer the `(view|output)_file` methods to that. A subclass can
+    # define its own methods, but this is a sane defualt.
+
+    # view_file :: symbol -> string
+    def view_file(type)
+      self.value.view_file(type)
+    end
+
+    # output_file :: symbol -> string
+    def output_file(type)
+      self.value.output_file(type)
+    end
+
   end
 end

@@ -1,0 +1,5 @@
+<title><%= self._meta._title.get_out_val %></title>
+
+<% if (self._meta.fields.has_key?(:author)) %>
+    <meta name="author" content="<%= self._meta._author.get_out_val %>" />
+<% end %>

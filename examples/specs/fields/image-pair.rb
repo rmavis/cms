@@ -9,11 +9,17 @@ module Local::Specs::Fields::ImagePair
   def self.fields(attrs = { })
     _attrs = {
       :left => {
+        :file => {
+          :required => true,
+        },
         :caption => {
           :required => nil,
         },
       },
       :right => {
+        :file => {
+          :required => true,
+        },
         :caption => {
           :required => nil,
         },

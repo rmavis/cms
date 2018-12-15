@@ -37,7 +37,7 @@ module Base::Fields
             if ((rules[key][subspec[:name]].is_a?(Hash)) &&
                 (rules[key][subspec[:name]].has_key?(:limit)) &&
                 (count[key] > rules[key][subspec[:name]][:limit]))
-              raise "Too many '#{key}' fields in Collection field '#{subspec[:name]}': limit #{rules[key][subspec[:name]][:limit]}."
+              raise "Too many '#{key}' fields in Collection field '#{subspec[:name]}': limit #{rules[key][subspec[:name]][:limit]}. ((#{count.to_s}))"
             else
               field = ::Base::Field.from_plan(subspec[:spec], subspec[:attrs], val)
               field.set_attr!(self.spec_attrs_key, key)

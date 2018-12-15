@@ -10,14 +10,14 @@ meta:
     - three
   live: true
 cover_image:
-  file: path/to/cover-image.jpg
+  file: path/to/image.jpg
   caption: this is so nice
 image_pair:
   left:
-    file: path/to/left-image.jpg
+    file: path/to/image.jpg
     caption: this is so nice left
   right:
-    file: path/to/right-image.jpg
+    file: path/to/image.jpg
     caption: this is so nice right
 body:
   -
@@ -28,7 +28,7 @@ body:
       caption: cool image
   -
     image:
-      file: path/to/another-image.jpg
+      file: path/to/image.jpg
       caption: another cool image
   -
     text: this is more text

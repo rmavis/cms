@@ -1,6 +1,7 @@
 module Local::Specs::Entries::Gallery
 
-  # This is the Entry type.
+  # Gallery.type :: void -> symbol
+  # This is the base Entry type to base this Spec on.
   def self.type
     :View
   end
@@ -20,38 +21,23 @@ module Local::Specs::Entries::Gallery
           :_self => {
             :required => true,
           },
+          :text => {
+            :required => true,
+            :limit => 1,
+          }
         },
       },
-     # :news => {
-     #    :Entry => {
-     #      :spec => :News,
-     #      :required => true,
-     #      :limit => 2,
-     #    },
-     #  },
     }
   end
 
+  # Gallery.content_path :: void -> string
   def self.content_path
     "#{DirMap.content}"
   end
 
+  # Gallery.public_path :: void -> string
   def self.public_path
     "/"
-  end
-
-  # view_fields :: void -> [Field]
-  def view_fields(type)
-    if (type == :html)
-      self.make_fields(
-        [
-          :body,
-          # :news,
-        ]
-      )
-    else
-      self.fields
-    end
   end
 
   # view_file :: symbol -> string

@@ -1,13 +1,14 @@
 <div class="field-wrap field-wrap--image-pair">
     <div class="image-pair__cell image-pair__cell--left">
         <img class="image-pair__image image-pair__image--left" src="<%= self.fields[:left].fields[:file].get_out_val %>" />
-        <% if self.fields[:left].fields[:caption] %>
+        <% if (self._left._caption.value) %>
             <span class="image-pair__caption image-pair__caption--left"><%= self.fields[:left].fields[:caption].get_out_val %></span>
         <% end %>
     </div>
+
     <div class="image-pair__cell image-pair__cell--right">
         <img class="image-pair__image image-pair__image--right" src="<%= self.fields[:right].fields[:file].get_out_val %>" />
-        <% if self.fields[:right].fields[:caption] %>
+        <% if (self._right._caption.value) %>
             <span class="image-pair__caption image-pair__caption--right"><%= self.fields[:right].fields[:caption].get_out_val %></span>
         <% end %>
     </div>

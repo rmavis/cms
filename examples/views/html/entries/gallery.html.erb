@@ -1,37 +1,54 @@
 <!DOCTYPE html>
 <html>
-    <%= self.render("#{DirMap.html_views}/snippets/generic-head.html.erb") %>
+    <head>
+        <%= self.render("#{DirMap.html_views}/snippets/head-base.html.erb") %>
+        <%= self.render("#{DirMap.html_views}/snippets/head-meta.html.erb") %>
+    </head>
 
     <body>
-        <% self.view_fields(:html).each do |field| %>
-            <%= field.to_view(:html) %>
-        <% end %>
+        <div class="gallery-body__wrap">
+            <%
+            self.fields[:body].fields.each do |field|
+                if (field.type == :Image) %>
+                    <%= field.render("#{DirMap.html_views}/fields/image.html.erb") %>
+                <% elsif (field.type == :ImagePair) %>
+                    <%= field.render("#{DirMap.html_views}/fields/image-pair.html.erb") %>
+                <% elsif (field.type == :ImageWithText) %>
+                    <%= field.render("#{DirMap.html_views}/fields/image-with-text.html.erb") %>
+                <% elsif (field.type == :PlainText) %>
+                    <%= field.render("#{DirMap.html_views}/fields/plain-text.html.erb") %>
+                <% end
+            end
+            %>
+        </div>
 
-        <%
-        Group.make(
-            'local/entries/news',
-            lambda do |file, items|
-                if (File.extname(file) == ".yaml")
-                    content = ::Base::Content.from_file(file)
-                    if ((content.has_key?(:meta)) &&
-                        (content[:meta].has_key?(:live)) &&
-                        (content[:meta][:live]))
-                        return content
+        <div class="gallery-news__wrap">
+            <%
+            Group.make(
+                "#{DirMap.content}/news",
+                lambda do |file, items|
+                    if (File.extname(file) == ".yaml")
+                        content = ::Base::Content.from_file(file)
+                        if ((content.has_key?(:meta)) &&
+                            (content[:meta].has_key?(:live)) &&
+                            (content[:meta][:live]))
+                            return content
+                        else
+                            return nil
+                        end
                     else
                         return nil
                     end
-                else
-                    return nil
+                end,
+                lambda do |items|
+                    items.sort do |fieldA, fieldB|
+                        fieldA.fields[:meta].fields[:date].get_out_val <=> fieldB.fields[:meta].fields[:date].get_out_val
+                    end
                 end
-            end,
-            lambda do |items|
-              items.sort do |fieldA, fieldB|
-                  fieldA.fields[:meta].fields[:date].value <=> fieldB.fields[:meta].fields[:date].value
-              end
-            end
-        ).items.each do |item|
-        %>
-            <%= item.to_view(:html) %>
-        <% end %>
+            ).items.each do |item|
+            %>
+                <%= item.to_view(:html) %>
+            <% end %>
+        </div>
     </body>
 </html>

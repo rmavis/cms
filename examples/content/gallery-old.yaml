@@ -20,3 +20,5 @@ body:
   -
     image:
       file: work/past/3.jpg
+  -
+    text: Too much text.

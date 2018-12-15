@@ -109,10 +109,11 @@ module Base
       self.extend(spec)
       extend!(spec, [:view_file])
       @attrs = self.class.attrs.merge(attrs)
-      @type = spec.to_s.split('::').last
+      @spec = spec
+      @type = spec.to_s.split('::').last.to_sym
     end
 
-    attr_reader :attrs, :type
+    attr_reader :attrs, :spec, :type
 
     # set_if_valid! :: a -> b|nil
     # set_if_valid! receives a value intended for the current Field.

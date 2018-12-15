@@ -28,7 +28,8 @@ module Base::Fields
         return nil
       end
 
-      if (File.exist?("#{self.content_path}/#{val}"))
+#puts "CHECKING #{self.spec.content_path}/#{val}"
+      if (File.exist?("#{self.spec.content_path}/#{val}"))
         return val
       else
         return nil

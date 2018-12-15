@@ -126,7 +126,7 @@ That will print the rendered view to `stdout` (as the `-o` option indicates). If
            command |         spec name                entry content file
                view type
 
-which will write its output to `examples/public/pages/a-few-recent-sites.html`.
+which will write its output to `examples/public/pages/a-few-recent-sites.html`, as the [`MarkdownArticle` Spec](examples/specs/entries/markdown-article.rb) defines in its `output_file` method.
 
 You can render a Group by running something like
 

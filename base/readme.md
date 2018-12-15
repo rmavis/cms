@@ -3,10 +3,12 @@
 
 ## Core Components
 
-There are three key, core components to this CMS:
+There are really only five key, core components to this CMS:
 - Fields, which are containers for values
 - Entries, which are containers for Fields
 - Groups, which are containers for Entries
+- Specs, which define how those things are built
+- Views, which are different ways of rendering those things
 
 The particulars of how Fields, Entries, and Groups should cooperate is specified by the various Spec modules.
 
@@ -16,7 +18,7 @@ An Entry Spec, similarly, will at very least specify the Entry it's based on and
 
 A Group Spec, unlike the others, is not based on a pre-defined base Group type, but it will need to specify the directory containing the content files relevant to the group, how to `filter` and `prepare` the content.
 
-Specs can also specify a `view_file`---which names an `erb` template file that knows how to render a view of that object---and an `output_file`---which names a file to write the view into.
+Specs can also specify a `view_file`---which names an `erb` template file that knows how to render a view of that object---and an `output_file`---which names a file to write the view into. An Entry Spec must specify an `output_file`. Group and Field Specs may define their own `output_file`s, but they're not required.
 
 ### Fields
 
@@ -35,7 +37,11 @@ During initialization, a Field object will `extend` the Spec it's given, thereby
 
 ### Entries
 
+@TODO
+
 ### Groups
+
+@TODO
 
 
 ## CLI

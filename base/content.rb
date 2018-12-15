@@ -14,7 +14,7 @@ module Base
         content = self.read_yaml(File.read(file), self.key_transform)
       else
         if (spec.respond_to?(:content_from_file))
-          content = spec.send(:content_from_file, file).transform_keys(self.key_transform)
+          content = spec.send(:content_from_file, file)
         else
           content = self.read_yaml(File.read(file), self.key_transform)
         end

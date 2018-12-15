@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '_autoload.rb'
+require_relative 'cms.rb'
 
 class Build
 
@@ -24,7 +24,7 @@ class Build
     Dir.foreach(dir) do |entry|
       file = "#{dir}/#{entry}"
       if (self.is_readable_file?(file))
-        system("./cms.rb view html -s MarkdownArticle #{args.join(' ')} #{file}")
+        system("#{__dir__}/cms.rb view html -s MarkdownArticle #{args.join(' ')} #{file}")
       else
         $stderr.puts "Skipping `#{file}`."
       end

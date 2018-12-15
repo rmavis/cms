@@ -2,12 +2,13 @@
 
 Some things I hate about otherwise great CMSes are:
 
+- Having to work through their GUIs
 - Storing site configuration in the database
 - Storing custom field information in the database
 - Not easily enabling re-use of custom fields
 - View templates via weird templating languages like Handlebars and Twig
 - Needlessly re-generating views instead of serving what could or should be static files
-- The Loop
+- The Loop and all those globals
 
 So this CMS:
 
@@ -16,7 +17,7 @@ So this CMS:
 - Uses `erb` to render templates
 - Generates static files
 
-It currently has no graphical admin---though I plan on writing one---so as of now it's "headless", meaning you interact with the CMS via the command line.
+It currently has no graphical admin---though I plan on writing one---so as of now it's "headless", meaning you interact with the CMS by writing files and acting on them via the command line.
 
 
 ## Core Concepts
@@ -30,6 +31,8 @@ There are Entries, which are containers for Fields.
 There are Groups, which are containers for Entries.
 
 And there are Specs, which define how the other things should be made and behave.
+
+These things can be rendered through Views, which could be HTML (for web pages), XML (for RSS feeds), JSON (for easy data exchange), etc.
 
 
 ### Fields
@@ -106,18 +109,36 @@ Since there is no graphical admin UI yet, all interaction is done on the command
 To generate a single Entry, you could run something like
 
     ./cms.rb view html -o examples/content/index.yaml
+    -------- ---- ---- -- ---------------------------
+        |     |    |    |              |
+        |     |    |    |              |
+      script  |    |  option(s)        |
+           command |           entry content file
+               view type
 
-That will print the rendered view to `stdout`. If an entry's Spec defines the output file, you could run something like
+That will print the rendered view to `stdout` (as the `-o` option indicates). If an entry's Spec defines the output file, you could run something like
 
     ./cms.rb view html -s MarkdownArticle examples/content/posts/a-few-recent-sites.md
+    -------- ---- ---- -- --------------- --------------------------------------------
+        |     |    |    |        |                             |
+        |     |    |    |        |                             |
+      script  |    |  option(s)  |                             |
+           command |         spec name                entry content file
+               view type
 
 which will write its output to `examples/public/pages/a-few-recent-sites.html`.
 
 You can render a Group by running something like
 
     ./cms.rb group html -o MarkdownPages
+    -------- ----- ---- -- -------------
+        |      |     |   |        |
+        |      |     |   |        |
+      script   |     | option(s)  |
+            command  |       group name
+                 view type
 
-Since interaction is on the command line, you can use other CLI tools to automate or script it. For example, you could write a `Makefile`:
+Since interaction is on the command line, you can use other CLI tools to automate or script things. For example, you could write a `Makefile`, like
 
     pages:
         ./build.rb pages

@@ -1,0 +1,13 @@
+---
+base: 'base'
+local: 'examples'
+content: 'examples/content'
+specs: 'examples/specs'
+field_specs: 'examples/specs/fields'
+entry_specs: 'examples/specs/entry'
+group_specs: 'examples/specs/groups'
+views: 'examples/views'
+html_views: 'examples/views/html'
+html_snippets: 'examples/views/html/snippets'
+public: 'examples/public'
+...

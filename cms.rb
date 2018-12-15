@@ -2,7 +2,7 @@
 
 # This file loaded by this line should load the module that contains
 # the local Specs. It is needed!
-require_relative 'local/_autoload.rb'
+require_relative '_autoload.rb'
 
 # The file loaded by this line loads the module that contains the
 # base classes. It is also needed.

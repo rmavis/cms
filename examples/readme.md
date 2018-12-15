@@ -1,5 +1,12 @@
 # Examples
 
+## How To Initialize An Installation
+
+0. Put the `cms` somewhere.
+1. Create a `dir_map.yaml` file in the `cms`'s root directory. See the [example](dir_map.yaml).
+2. Create a `mod_map.yaml` file in the `cms`'s root directory. See the [example](mod_map.yaml).
+3. Create an `_autoload.rb` file in the `cms`'s root directory. See the [example](_root_autoload.rb).
+
 
 ## How To Create A Page
 

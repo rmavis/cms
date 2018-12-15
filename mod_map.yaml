@@ -1,6 +1,0 @@
----
-specs: 'Local::Specs'
-fields: 'Local::Specs::Fields'
-entries: 'Local::Specs::Entries'
-groups: 'Local::Specs::Groups'
-...

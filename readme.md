@@ -140,12 +140,17 @@ You can render a Group by running something like
 
 Since interaction is on the command line, you can use other CLI tools to automate or script things. For example, you could write a `Makefile`, like
 
-    pages:
-        ./build.rb pages
+    posts:
+	    for FILE in $$(ls local/content/posts); do \
+		    ./cms/cms.rb view html -s MarkdownArticle local/content/posts/$$FILE ; \
+	    done
     
     index:
-        ./cms.rb view html examples/content/index.yaml
+	    ./cms/cms.rb view html local/content/index.yaml
     
-    site: pages index
+    toc:
+	    ./cms/cms.rb view html local/content/contents.yaml
+    
+    site: posts index toc
 
 and build your whole site by running `make site`.

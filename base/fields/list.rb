@@ -1,12 +1,10 @@
 module Base::Fields
-  class Tags < PlainText
+  class List < PlainText
 
-    # validate :: a -> [string]|nil
+    # validate :: a -> [b]|nil
     def validate(val)
       if (val.is_a?(Array))
-        return val.select { |s| s.is_a?(String) }
-      elsif (val.is_a?(String))
-        return (val.split(',').map { |s| s.strip })
+        return val
       else
         return nil
       end

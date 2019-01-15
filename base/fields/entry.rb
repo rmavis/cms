@@ -4,11 +4,11 @@ module Base::Fields
 
     # Entry.make :: (spec, attrs, value) -> Entry
     # For parameter definitions, see `Field.make`.
+    # Here, the `spec` is the spec of the Entry Field and the `value`
+    # is the slug of the Entry's content file. The Field must define
+    # a `content_path` method that returns the directory under which
+    # to look for the file.
     def self.make(spec, attrs = { }, value = nil)
-      if (!attrs.has_key?(:spec))
-        raise "Can't make Entry Field: attributes lack a `:spec`."
-      end
-
       field = self.new(spec, attrs)
       if (!value.nil?)
         field.set_if_valid!(value)
@@ -16,97 +16,51 @@ module Base::Fields
       return field
     end
 
-    # Entry.get_spec :: Symbol -> Constant
-    def self.get_spec(spec)
-      "#{ModMap.entries}::#{spec}".to_const
-    end
-
-    # Entry.new :: attrs -> Entry
-    #   attrs = This is the standard attributes hash but it must also
-    #           contain a `:spec` key, which must be a symbol that
-    #           names the entry's content spec.
+    # Entry.new :: (spec, attrs) -> Entry
+    # For parameter definitions, see `Field.make`.
     def initialize(spec, attrs = { })
       super(spec, attrs)
-      extend!(spec, [:content_path, :public_path])
-      @spec = Entry.get_spec(attrs[:spec])
+      extend!(spec, [:content_path])
     end
 
-    attr_reader :spec
-
-    # set_if_valid! :: raw -> valid|nil
-    #   raw = a string or an array of strings that, when appended to the
-    #         content spec's `content_path`, comprise a valid file path
-    #   valid = will be identical to `raw`
+    # set_if_valid! :: slug -> Entry?
+    # slug = a string, when appended to the field spec's `content_path`,
+    #   comprises a valid file path
     def set_if_valid!(val)
       if ((val.is_a?(String)) &&
-          (self.is_slug_ok?(val)))
-        self.set_attr!(:value, val)
+          (path = self.resolve_slug(val)) &&
+          (!path.nil?))
+        self.set_attr!(:value, self.make_entry(path))
+        return self.value
+      end
 
-      elsif (val.is_a?(Array))
-        if ((self.attrs[:limit].is_a?(Numeric)) &&
-            (val.length > self.attrs[:limit]))
-          raise "Too many slugs for Entry (#{val.length} given, limit #{self.attrs[:limit]})."
-        end
+      return nil
+    end
 
-        slugs = [ ]
-        val.each do |slug|
-          if ((slug.is_a?(String)) &&
-              (self.is_slug_ok?(slug)))
-            slugs.push(slug)
-          else
-            return nil
-          end
-        end
-        self.set_attr!(:value, slugs)
+    # resolve_slug :: string -> string?
+    def resolve_slug(slug)
+      if (slug.match(/\.yaml$/i))  # This might need to change. Only yaml?  #TODO
+        file = "#{self.spec.content_path}/#{slug}"
+      else
+        file = "#{self.spec.content_path}/#{slug}.yaml"
+      end
 
+      if ((File.exist?(file)) && (File.readable?(file)))
+        return file
       else
         return nil
       end
-
-      return self.value
     end
 
-    # is_slug_ok? :: string -> bool
-    def is_slug_ok?(slug)
-      file = self.content_file(slug)
-      return ((File.exist?(file)) && (File.readable?(file)))
-    end
-
-    # content_file :: string -> string
-    def content_file(slug)
-      "#{self.content_path}/#{slug}.yaml"  # This might need to change.  #TODO
-    end
-
-    # path :: void -> string|[string]
-    def path
-      if (self.value.is_a?(String))
-        return self.content_file(slug)
-      elsif (self.value.is_a?(Array))
-        self.value.collect { |slug| self.content_file(slug) }
-      else
-        raise "Can't make Entry's path: `value` must be a String or an Array."
-      end
-    end
-
-    # resolve :: void -> Entry|[Entry]
-    def resolve
-      if (self.value.is_a?(String))
-        return ::Base::Entry.from_file(self.path)
-      elsif (self.value.is_a?(Array))
-        return self.path.collect { |path| ::Base::Entry.from_file(path) }
-      else
-        raise "Can't resolve Entry: `value` must be a String or an Array."
-      end
+    # make_entry :: string -> Entry
+    def make_entry(path)
+      return ::Base::Entry.from_file(path)
     end
 
     # to_view :: symbol -> string
+    # Defer to the field's value's `to_view` method.
     def to_view(type)
-      entry = self.resolve
-      if (entry.is_a?(Array))
-        (entry.collect { |_t| _t.to_view(type) }).join("\n")
-      else
-        return entry.to_view(type)
-      end
+      return self.value.to_view(type)
     end
 
   end
